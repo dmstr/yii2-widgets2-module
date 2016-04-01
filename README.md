@@ -1,5 +1,6 @@
 Widgets2 Module
 ===============
+
 Yii 2.0 Framework Widget Manager
 
 Installation
@@ -22,18 +23,25 @@ or add
 to the require section of your `composer.json` file.
 
 
+Startup
+-------
+
+```
+cd tests
+
+docker-compose up -d
+
+docker-compose run phpfpm bash
+
+setup.sh
+```
+
+
 Usage
 -----
 
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \hrzg\widgets2\AutoloadExample::widget(); ?>```
-
-
-
-hrzg\\widgets2\\Module
-
-
-
-yii gii/giiant-module --moduleID=widgets2 --moduleClass=hrzg\\widgets2\\Module
+<?= \hrzg\widgets2\AutoloadExample::widget(); ?>
+```
