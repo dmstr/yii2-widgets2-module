@@ -29,3 +29,11 @@ Once the extension is installed, simply use it in your code by  :
 
 ```php
 <?= \hrzg\widgets2\AutoloadExample::widget(); ?>```
+
+
+
+hrzg\\widgets2\\Module
+
+
+
+yii gii/giiant-module --moduleID=widgets2 --moduleClass=hrzg\\widgets2\\Module

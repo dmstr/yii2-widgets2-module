@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "hrzg\\widgets2\\": ""
+            "hrzg\\widgets2\\": "src/"
         }
     }
 }
