@@ -6,7 +6,7 @@ class m160401_152059_add_widgets2_table extends Migration
 {
     public function up()
     {
-        $this->createTable('hrzg_widgets2', [
+        $this->createTable('{{%hrzg_widgets2}}', [
             'id' => 'pk',
             'status' => 'VARCHAR(32) NOT NULL',
             'class_name' => 'VARCHAR(128) NOT NULL',
@@ -29,7 +29,7 @@ class m160401_152059_add_widgets2_table extends Migration
 
     public function down()
     {
-        $this->dropTable('hrzg_widgets2');
+        $this->dropTable('{{%hrzg_widgets2}}');
     }
 
 }
