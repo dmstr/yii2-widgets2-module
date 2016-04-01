@@ -1,6 +1,6 @@
 <?php
 
-namespace hrzg\widgets2;
+namespace hrzg\widget;
 
 /**
  * This is just an example.

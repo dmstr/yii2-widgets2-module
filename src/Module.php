@@ -1,10 +1,10 @@
 <?php
 
-namespace hrzg\widgets2;
+namespace hrzg\widget;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'hrzg\widgets2\controllers';
+    public $controllerNamespace = 'hrzg\widget\controllers';
 
     public function init()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace hrzg\widgets2\controllers;
+namespace hrzg\widget\controllers;
 
 use yii\web\Controller;
 

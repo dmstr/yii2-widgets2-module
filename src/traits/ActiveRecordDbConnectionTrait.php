@@ -1,6 +1,6 @@
 <?php
 
-namespace hrzg\widgets2\traits;
+namespace hrzg\widget\traits;
 
 trait ActiveRecordDbConnectionTrait
 {

@@ -1,4 +1,4 @@
-Widgets2 Module
+widget Module
 ===============
 
 Yii 2.0 Framework Widget Manager
@@ -43,5 +43,5 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \hrzg\widgets2\AutoloadExample::widget(); ?>
+<?= \hrzg\widget\AutoloadExample::widget(); ?>
 ```

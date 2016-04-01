@@ -16,18 +16,18 @@ services:
       - mariadb
       - seleniumfirefox
     environment:
-      APP_NAME: hrzg-widgets2
-      APP_TITLE: 'hrzg/yii2-widgets2-module'
+      APP_NAME: hrzg-widget
+      APP_TITLE: 'hrzg/yii2-widget-module'
       YII_ENV: 'prod'
       YII_DEBUG: 'false'
-      APP_CONFIG_FILE: /app/vendor/hrzg/yii2-widgets2-module/tests/_config/test.php
+      APP_CONFIG_FILE: /app/vendor/hrzg/yii2-widget-module/tests/_config/test.php
       DB_PORT_3306_TCP_ADDR: mariadb
       DB_PORT_3306_TCP_PORT: 3306
       DB_ENV_MYSQL_ROOT_USER: root
       DB_ENV_MYSQL_ROOT_PASSWORD: secretadmin
     volumes:
       - /app
-      - ../:/app/vendor/hrzg/yii2-widgets2-module
+      - ../:/app/vendor/hrzg/yii2-widget-module
       #- ../tests/_config/local.php:/app/src/config/local.php
 
   mariadb:
