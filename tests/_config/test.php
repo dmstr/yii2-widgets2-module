@@ -1,33 +1,40 @@
 <?php
 
 return [
-    'aliases' => [
-        '@hrzg/widgets2' => '/app/vendor/hrzg/yii2-widgets2-module/src'
+    'aliases'       => [
+        '@hrzg/widget' => 'app/vendor/hrzg/yii2-widget-module/src'
+    ],
+    'params' => [
+      'yii.migrations' => [
+          '@vendor/hrzg/yii2-widget-module/src/migrations'
+      ]
     ],
     'controllerMap' => [
         'widget-cruds' => [
-            'class' => 'schmunk42\giiant\commands\BatchController',
-            'overwrite' => true,
-            'modelNamespace' => 'app\\modules\\crud\\models',
-            'modelQueryNamespace' => 'app\\modules\\crud\\models\\query',
-            'crudTidyOutput' => true,
-            'crudAccessFilter' => true,
-            'crudControllerNamespace' => 'app\\modules\\crud\\controllers',
-            'crudSearchModelNamespace' => 'app\\modules\\crud\\models\\search',
-            'crudViewPath' => '@app/modules/crud/views',
-            'crudPathPrefix' => '/crud/',
-            'crudProviders' => [
+            'class'                    => 'schmunk42\giiant\commands\BatchController',
+            'overwrite'                => true,
+            'modelNamespace'           => 'hrzg\\widget\\crud\\models',
+            'modelQueryNamespace'      => 'hrzg\\widget\\crud\\models\\query',
+            'modelGenerateQuery'       => true,
+            'crudTidyOutput'           => true,
+            'crudAccessFilter'         => true,
+            'crudControllerNamespace'  => 'hrzg\\widget\\crud\\controllers',
+            'crudSearchModelNamespace' => 'hrzg\\widget\\crud\\models\\search',
+            'crudViewPath'             => 'hrzg/widget/modules/crud/views',
+            'crudPathPrefix'           => '/crud/',
+            'crudProviders'            => [
                 'schmunk42\\giiant\\generators\\crud\\providers\\optsProvider',
             ],
-            'tablePrefix' => 'app_',
-            /*'tables' => [
-                'app_profile',
-            ]*/
+            'tablePrefix'              => 'app_hrzg_',
+            'tables'                   => [
+                'app_hrzg_widget',
+                'app_hrzg_widget_template',
+            ]
         ]
     ],
-    'modules' => [
-        'widgets2' => [
-            'class' => 'hrzg\widgets2\Module',
+    'modules'       => [
+        'widget' => [
+            'class' => 'hrzg\widget\Module',
         ]
     ]
 ];
