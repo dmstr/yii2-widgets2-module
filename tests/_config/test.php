@@ -24,5 +24,10 @@ return [
                 'app_profile',
             ]*/
         ]
+    ],
+    'modules' => [
+        'widgets2' => [
+            'class' => 'hrzg\widgets2\Module',
+        ]
     ]
 ];
