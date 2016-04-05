@@ -6,15 +6,15 @@
  */
 
 
-namespace hrzg\widget\crud\models\search;
+namespace hrzg\widget\models\crud\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use hrzg\widget\crud\models\Widget as WidgetModel;
+use hrzg\widget\models\crud\Widget as WidgetModel;
 
 /**
- * Widget represents the model behind the search form about `hrzg\widget\crud\models\Widget`.
+ * Widget represents the model behind the search form about `hrzg\widget\models\crud\Widget`.
  */
 class Widget extends WidgetModel
 {

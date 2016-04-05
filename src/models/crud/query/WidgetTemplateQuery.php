@@ -1,13 +1,13 @@
 <?php
 
-namespace hrzg\widget\crud\models\query;
+namespace hrzg\widget\models\crud\query;
 
 /**
- * This is the ActiveQuery class for [[\hrzg\widget\crud\models\Widget]].
+ * This is the ActiveQuery class for [[\hrzg\widget\models\crud\WidgetTemplate]].
  *
- * @see \hrzg\widget\crud\models\Widget
+ * @see \hrzg\widget\models\crud\WidgetTemplate
  */
-class WidgetQuery extends \yii\db\ActiveQuery
+class WidgetTemplateQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -17,7 +17,7 @@ class WidgetQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \hrzg\widget\crud\models\Widget[]|array
+     * @return \hrzg\widget\models\crud\WidgetTemplate[]|array
      */
     public function all($db = null)
     {
@@ -26,7 +26,7 @@ class WidgetQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \hrzg\widget\crud\models\Widget|array|null
+     * @return \hrzg\widget\models\crud\WidgetTemplate|array|null
      */
     public function one($db = null)
     {

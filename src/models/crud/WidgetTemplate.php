@@ -1,9 +1,9 @@
 <?php
 
-namespace hrzg\widget\crud\models;
+namespace hrzg\widget\models\crud;
 
 use Yii;
-use \hrzg\widget\crud\models\base\WidgetTemplate as BaseWidgetTemplate;
+use \hrzg\widget\models\crud\base\WidgetTemplate as BaseWidgetTemplate;
 
 /**
  * This is the model class for table "app_hrzg_widget_template".

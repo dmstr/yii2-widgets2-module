@@ -6,12 +6,12 @@
  */
 
 
-namespace hrzg\widget\crud\controllers;
+namespace hrzg\widget\controllers\crud;
 
 /**
  * This is the class for controller "WidgetController".
  */
-class WidgetController extends \hrzg\widget\crud\controllers\base\WidgetController
+class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetController
 {
 
 }

@@ -6,7 +6,7 @@
  */
 
 
-namespace hrzg\widget\crud\controllers\api;
+namespace hrzg\widget\controllers\crud\api;
 
 /**
  * This is the class for REST controller "WidgetTemplateController".
@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
 
 class WidgetTemplateController extends \yii\rest\ActiveController
 {
-	public $modelClass = 'hrzg\widget\crud\models\WidgetTemplate';
+	public $modelClass = 'hrzg\widget\models\crud\WidgetTemplate';
 
 	/**
 	 *
