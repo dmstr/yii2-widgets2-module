@@ -35,7 +35,7 @@ use \dmstr\bootstrap\Tabs;
         <p>
 
 			<?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'json_schema')->textarea(['rows' => 6]) ?>
+			<?php echo $form->field($model, 'json_schema')->widget(\trntv\aceeditor\AceEditor::className()) ?>
 			<?php echo $form->field($model, 'editor_settings')->textarea(['rows' => 6]) ?>
 			<?php echo $form->field($model, 'form')->textarea(['rows' => 6]) ?>
         </p>
