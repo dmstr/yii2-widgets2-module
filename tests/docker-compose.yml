@@ -11,12 +11,12 @@ services:
       - phpfpm
 
   phpfpm:
-    image: phundament/app:latest
+    build: .
     depends_on:
       - mariadb
       - seleniumfirefox
     environment:
-      APP_NAME: hrzg-widget
+      APP_NAME: hrzgwidget
       APP_TITLE: 'hrzg/yii2-widgets2-module'
       YII_ENV: 'prod'
       YII_DEBUG: 'false'
