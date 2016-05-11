@@ -33,29 +33,22 @@ use \dmstr\bootstrap\Tabs;
         <?php $this->beginBlock('main'); ?>
 
         <p>
-
+			<?php
+			$json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id'=>1])->json_schema;
+			$schema = \yii\helpers\Json::decode($json);
+			?>
 			<?php echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 			<?php echo $form->field($model, 'class_name')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'default_properties_json')->widget(beowulfenator\JsonEditor\JsonEditorWidget::className(), [
-		'schema' => \yii\helpers\Json::decode(hrzg\widget\models\crud\WidgetTemplate::find(['id'=>1])->one()->json_schema),
-		'clientOptions' => [
-			//'theme' => 'bootstrap3',
-			'disable_collapse' => true,
-			'disable_edit_json' => true,
-			'disable_properties' => true,
-			'no_additional_properties' => true,
-		],
-	]); ?>
-			<?php echo $form->field($model, 'default_content_json')->widget(beowulfenator\JsonEditor\JsonEditorWidget::className(), [
-		'schema' => \yii\helpers\Json::decode(hrzg\widget\models\crud\WidgetTemplate::find(['id'=>1])->one()->json_schema),
-		'clientOptions' => [
-			//'theme' => 'bootstrap3',
-			'disable_collapse' => true,
-			'disable_edit_json' => true,
-			'disable_properties' => true,
-			'no_additional_properties' => true,
-		],
-	]); ?>
+			<?php echo $form->field($model, 'default_properties_json')->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+				'schema' => $schema,
+				'clientOptions' => [
+					'theme' => 'bootstrap3',
+					'disable_collapse' => true,
+					'disable_edit_json' => true,
+					'disable_properties' => true,
+					'no_additional_properties' => true,
+				],
+			]); ?>
 			<?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
 			<?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
 			<?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
