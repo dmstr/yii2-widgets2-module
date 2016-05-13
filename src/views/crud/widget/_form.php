@@ -34,7 +34,8 @@ use \dmstr\bootstrap\Tabs;
 
         <p>
 			<?php
-			$json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id'=>1])->json_schema;
+			# TODO: improve validation
+			$json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id'=>$_GET['templateId']])->json_schema;
 			$schema = \yii\helpers\Json::decode($json);
 			?>
 			<?php echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
