@@ -11,9 +11,8 @@ use Yii;
  *
  * @property integer $id
  * @property string $status
- * @property string $class_name
+ * @property string $widget_template_id
  * @property string $default_properties_json
- * @property string $default_content_json
  * @property string $name_id
  * @property string $container_id
  * @property string $rank
@@ -61,11 +60,11 @@ abstract class Widget extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'class_name', 'container_id', 'route'], 'required'],
-            [['default_properties_json', 'default_content_json'], 'string'],
+            [['status', 'widget_template_id', 'container_id', 'route'], 'required'],
+            [['default_properties_json'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'string', 'max' => 32],
-            [['class_name', 'container_id', 'route'], 'string', 'max' => 128],
+            [['widget_template_id', 'container_id', 'route'], 'string', 'max' => 128],
             [['name_id'], 'string', 'max' => 64],
             [['rank', 'access_owner'], 'string', 'max' => 11],
             [['request_param', 'access_read', 'access_update', 'access_delete'], 'string', 'max' => 255],
@@ -81,9 +80,8 @@ abstract class Widget extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'status' => Yii::t('app', 'Status'),
-            'class_name' => Yii::t('app', 'Class Name'),
+            'widget_template_id' => Yii::t('app', 'Class Name'),
             'default_properties_json' => Yii::t('app', 'Default Properties Json'),
-            'default_content_json' => Yii::t('app', 'Default Content Json'),
             'name_id' => Yii::t('app', 'Name ID'),
             'container_id' => Yii::t('app', 'Container ID'),
             'rank' => Yii::t('app', 'Rank'),
@@ -109,9 +107,8 @@ abstract class Widget extends \yii\db\ActiveRecord
             [
             'id' => Yii::t('app', 'ID'),
             'status' => Yii::t('app', 'Status'),
-            'class_name' => Yii::t('app', 'Class Name'),
+            'widget_template_id' => Yii::t('app', 'Class Name'),
             'default_properties_json' => Yii::t('app', 'Default Properties Json'),
-            'default_content_json' => Yii::t('app', 'Default Content Json'),
             'name_id' => Yii::t('app', 'Name Id'),
             'container_id' => Yii::t('app', 'Container Id'),
             'rank' => Yii::t('app', 'Rank'),

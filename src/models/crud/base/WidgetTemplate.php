@@ -12,9 +12,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $json_schema
- * @property string $editor_settings
- * @property string $form
- * @property string $aliasModel
+ * @property string $twig_template
  */
 abstract class WidgetTemplate extends \yii\db\ActiveRecord
 {
@@ -50,7 +48,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'json_schema'], 'required'],
-            [['json_schema', 'editor_settings', 'form'], 'string'],
+            [['json_schema', 'twig_template'], 'string'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -64,8 +62,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'json_schema' => Yii::t('app', 'Json Schema'),
-            'editor_settings' => Yii::t('app', 'Editor Settings'),
-            'form' => Yii::t('app', 'Form'),
+            'twig_template' => Yii::t('app', 'Template'),
         ];
     }
 
@@ -80,8 +77,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'json_schema' => Yii::t('app', 'Json Schema'),
-            'editor_settings' => Yii::t('app', 'Editor Settings'),
-            'form' => Yii::t('app', 'Form'),
+            'twig_template' => Yii::t('app', 'Template'),
             ]);
     }
 

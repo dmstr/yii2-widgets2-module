@@ -27,7 +27,7 @@ class WidgetTemplate extends WidgetTemplateModel
 	public function rules() {
 		return [
 			[['id'], 'integer'],
-			[['name', 'json_schema', 'editor_settings', 'form'], 'safe'],
+			[['name', 'json_schema', 'twig_template'], 'safe'],
 		];
 	}
 
@@ -71,8 +71,7 @@ class WidgetTemplate extends WidgetTemplateModel
 
 		$query->andFilterWhere(['like', 'name', $this->name])
 		->andFilterWhere(['like', 'json_schema', $this->json_schema])
-		->andFilterWhere(['like', 'editor_settings', $this->editor_settings])
-		->andFilterWhere(['like', 'form', $this->form]);
+		->andFilterWhere(['like', 'twig_template', $this->twig_template]);
 
 		return $dataProvider;
 	}

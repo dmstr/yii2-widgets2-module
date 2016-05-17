@@ -28,12 +28,10 @@ use yii\widgets\ActiveForm;
 
 		<?php echo $form->field($model, 'status') ?>
 
-		<?php echo $form->field($model, 'class_name') ?>
+		<?php echo $form->field($model, 'widget_template_id') ?>
 
 		<?php echo $form->field($model, 'default_properties_json') ?>
-
-		<?php echo $form->field($model, 'default_content_json') ?>
-
+	
 		<?php // echo $form->field($model, 'name_id') ?>
 
 		<?php // echo $form->field($model, 'container_id') ?>

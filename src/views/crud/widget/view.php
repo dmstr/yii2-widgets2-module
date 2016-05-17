@@ -64,9 +64,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
 		'attributes' => [
 			'id',
 			'status',
-			'class_name',
+			'widget_template_id',
 			'default_properties_json:ntext',
-			'default_content_json:ntext',
 			'name_id',
 			'container_id',
 			'rank',

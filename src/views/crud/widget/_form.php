@@ -20,77 +20,116 @@ use \dmstr\bootstrap\Tabs;
 
 <div class="widget-form">
 
+    <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
+
     <?php $form = ActiveForm::begin([
-		'id' => 'Widget',
-		'layout' => 'horizontal',
-		'enableClientValidation' => true,
-		'errorSummaryCssClass' => 'error-summary alert alert-error'
-	]
-);
-?>
+            'id' => 'Widget',
+            'layout' => 'horizontal',
+            'enableClientValidation' => false,
+            'errorSummaryCssClass' => 'error-summary alert alert-error'
+        ]
+    );
 
-    <div class="">
-        <?php $this->beginBlock('main'); ?>
+    ?>
 
-        <p>
-			<?php
-			# TODO: improve validation
-			$json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id'=>$_GET['templateId']])->json_schema;
-			$schema = \yii\helpers\Json::decode($json);
-			?>
-			<?php echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'class_name')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'default_properties_json')->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
-				'schema' => $schema,
-				'clientOptions' => [
-					'theme' => 'bootstrap3',
-					'disable_collapse' => true,
-					'disable_edit_json' => true,
-					'disable_properties' => true,
-					'no_additional_properties' => true,
-				],
-			]); ?>
-			<?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
-			<?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
-        </p>
-        <?php $this->endBlock(); ?>
+    <?php $js = <<<JS
+var widgets = {
+	'updateTemplate': function(elem){
+		if (confirm('Reset values and update template?')) {
+			url = '/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widget-widget_template_id').val();
+			$.pjax({url: url, container: '#pjax-widget-form'});
+		}
+	}
+}
+JS;
+    ?>
+    <?php $this->registerJs($js, \yii\web\View::POS_HEAD) ?>
 
-        <?php echo
-Tabs::widget(
-	[
-		'encodeLabels' => false,
-		'items' => [ [
-				'label'   => $model->getAliasModel(),
-				'content' => $this->blocks['main'],
-				'active'  => true,
-			], ]
-	]
-);
-?>
-        <hr/>
 
-        <?php echo $form->errorSummary($model); ?>
 
-        <?php echo Html::submitButton(
-	'<span class="glyphicon glyphicon-check"></span> ' .
-	($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Save')),
-	[
-		'id' => 'save-' . $model->formName(),
-		'class' => 'btn btn-success'
-	]
-);
-?>
+    <?php $this->beginBlock('main'); ?>
 
-        <?php ActiveForm::end(); ?>
+    <p>
+        <?php
+        # TODO: This is just a hack, move to controller...
+        if ($model->widget_template_id) {
+            $id = $model->widget_template_id;
+            $json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id' => $id])->json_schema;
+            $schema = \yii\helpers\Json::decode($json);
+        } else {
+            if (isset($_GET['Widget']['widget_template_id'])) {
+                $id = $_GET['Widget']['widget_template_id'];
+                $json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id' => $id])->json_schema;
+                $schema = \yii\helpers\Json::decode($json);
+            } else {
+                $schema = [];
+            }
+        }
+        ?>
+        <?php echo $form->field($model, 'status')->checkbox() ?>
 
-    </div>
+        <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
+            [
+                'onchange' => 'widgets.updateTemplate()'
+            ]
+        ) ?>
+
+        <?php echo $form->field($model, 'default_properties_json')
+            ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+                'schema' => $schema,
+                'clientOptions' => [
+                    'theme' => 'bootstrap3',
+                    'disable_collapse' => true,
+                    'disable_edit_json' => true,
+                    'disable_properties' => true,
+                    'no_additional_properties' => true,
+                ],
+            ]); ?>
+
+
+        <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
+        <?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
+    </p>
+    <?php $this->endBlock(); ?>
+
+    <?php echo
+    Tabs::widget(
+        [
+            'encodeLabels' => false,
+            'items' => [
+                [
+                    'label' => $model->getAliasModel(),
+                    'content' => $this->blocks['main'],
+                    'active' => true,
+                ],
+            ]
+        ]
+    );
+    ?>
+    <hr/>
+
+    <?php echo $form->errorSummary($model); ?>
+
+    <?php echo Html::submitButton(
+        '<span class="glyphicon glyphicon-check"></span> '.
+        ($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Save')),
+        [
+            'id' => 'save-'.$model->formName(),
+            'class' => 'btn btn-success'
+        ]
+    );
+    ?>
+
+    <?php ActiveForm::end(); ?>
+
+    <?php \yii\widgets\Pjax::end() ?>
 
 </div>

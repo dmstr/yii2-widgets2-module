@@ -21,7 +21,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
      *
      * @return mixed
      */
-    public function actionCreateFromTemplate($templateId) {
+    public function actionCreateFromTemplate($templateId = null) {
         $model = new Widget();
 
         try {

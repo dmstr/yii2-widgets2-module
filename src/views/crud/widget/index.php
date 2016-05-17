@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'contentOptions' => ['nowrap'=>'nowrap']
 			],
 			'status',
-			'class_name',
+			'widget_template_id',
 			'container_id',
 			'route',
 			'name_id',

@@ -30,9 +30,8 @@ use yii\widgets\ActiveForm;
 
 		<?php echo $form->field($model, 'json_schema') ?>
 
-		<?php echo $form->field($model, 'editor_settings') ?>
-
-		<?php echo $form->field($model, 'form') ?>
+		<?php echo $form->field($model, 'twig_template') ?>
+	
 
     <div class="form-group">
         <?php echo Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

@@ -27,7 +27,7 @@ class Widget extends WidgetModel
 	public function rules() {
 		return [
 			[['id'], 'integer'],
-			[['status', 'class_name', 'default_properties_json', 'default_content_json', 'name_id', 'container_id', 'rank', 'route', 'request_param', 'access_owner', 'access_domain', 'access_read', 'access_update', 'access_delete', 'created_at', 'updated_at'], 'safe'],
+			[['status', 'widget_template_id', 'default_properties_json','name_id', 'container_id', 'rank', 'route', 'request_param', 'access_owner', 'access_domain', 'access_read', 'access_update', 'access_delete', 'created_at', 'updated_at'], 'safe'],
 		];
 	}
 
@@ -72,9 +72,8 @@ class Widget extends WidgetModel
 			]);
 
 		$query->andFilterWhere(['like', 'status', $this->status])
-		->andFilterWhere(['like', 'class_name', $this->class_name])
+		->andFilterWhere(['like', 'widget_template_id', $this->widget_template_id])
 		->andFilterWhere(['like', 'default_properties_json', $this->default_properties_json])
-		->andFilterWhere(['like', 'default_content_json', $this->default_content_json])
 		->andFilterWhere(['like', 'name_id', $this->name_id])
 		->andFilterWhere(['like', 'container_id', $this->container_id])
 		->andFilterWhere(['like', 'rank', $this->rank])
