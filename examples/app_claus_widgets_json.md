@@ -71,7 +71,8 @@ APP CLAUS WIDGET TEMPLATES (JSON)
         "title": "Icons",
         "properties": {
           "picture_url": {
-            "type": "string"
+            "type": "string",
+            "format": "url"
           }
         }
       }
@@ -101,7 +102,8 @@ APP CLAUS WIDGET TEMPLATES (JSON)
             "type": "string"
           },
           "picture_url": {
-            "type": "string"
+            "type": "string",
+            "format": "url"
           },
           "headline": {
             "type": "string"
@@ -110,7 +112,11 @@ APP CLAUS WIDGET TEMPLATES (JSON)
             "type": "string"
           },
           "text_html": {
-            "type": "string"
+              "type": "string",
+              "format": "html",
+              "options": {
+                 "wysiwyg": true
+              }
           }
         }
       }
@@ -134,7 +140,8 @@ APP CLAUS WIDGET TEMPLATES (JSON)
             "type": "string"
           },
           "picture_url": {
-            "type": "string"
+            "type": "string",
+            "format": "url"
           },
           "headline": {
             "type": "string"
@@ -167,14 +174,20 @@ APP CLAUS WIDGET TEMPLATES (JSON)
         "title": "Image",
         "properties": {
           "picture_url": {
-            "type": "string"
+            "type": "string",
+            "format": "html"
           },
           "text_html": {
-            "type": "string"
+            "type": "string",
+            "format": "html",
+            "options": {
+               "wysiwyg": true
+            }
           }
         }
       }
     }
   }
 }
+
 ```
