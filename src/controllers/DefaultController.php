@@ -2,12 +2,15 @@
 
 namespace hrzg\widget\controllers;
 
+use hrzg\widget\models\crud\search\WidgetTemplate;
 use yii\web\Controller;
 
 class DefaultController extends Controller
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $searchModel = new WidgetTemplate;
+        $dataProvider = $searchModel->search([]);
+        return $this->render('index', ['templatesDataProvider'=>$dataProvider]);
     }
 }
