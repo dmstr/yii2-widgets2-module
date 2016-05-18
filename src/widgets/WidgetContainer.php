@@ -10,7 +10,9 @@
 namespace hrzg\widget\widgets;
 
 
+use hrzg\widget\models\crud\WidgetContent;
 use yii\base\Widget;
+use yii\helpers\Json;
 
 class WidgetContainer extends Widget
 {
@@ -19,6 +21,31 @@ class WidgetContainer extends Widget
             'label' => 'Edit widget',
             'url' => ['/widgets/crud/widget/create']
         ];
-        echo "Widget";
+        #return "Widget";
+        
+        return $this->renderWidgets();
+    }
+    
+    private function queryWidgets(){
+        $models = WidgetContent::find()->all();
+        return $models;
+    }
+    
+    private function renderWidgets(){
+        $html = '';
+        foreach ($this->queryWidgets() AS $widget) {
+            $properties = Json::decode($widget->default_properties_json);
+            $class = \Yii::createObject($widget->template->php_class);
+            $class->setView($widget->getViewFile());
+            $class->setProperties($properties);
+            $html .= $class->run();
+            #var_dump($widget->template->php_class);
+            #$html .= $widget->template->php_class;
+        }
+        return $html;
+    }
+
+    private function createWidget(){
+
     }
 }
