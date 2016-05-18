@@ -25,168 +25,181 @@ use dmstr\bootstrap\Tabs;
 class WidgetController extends Controller
 {
 
-	/**
-	 *
-	 * @var boolean whether to enable CSRF validation for the actions in this controller.
-	 * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
-	 */
-	public $enableCsrfValidation = false;
+    /**
+     *
+     * @var boolean whether to enable CSRF validation for the actions in this controller.
+     * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
+     */
+    public $enableCsrfValidation = false;
 
-	/**
-	 *
-	 * @inheritdoc
-	 * @return unknown
-	 */
-	public function behaviors() {
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'rules' => [
-					[
-						'allow' => true,
+    /**
+     *
+     * @inheritdoc
+     * @return unknown
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
 
-						/**
-						 *
-						 */
-						'matchCallback' => function ($rule, $action) {return \Yii::$app->user->can($this->module->id . '_' . $this->id . '_' . $action->id, ['route' => true]);},
-					]
-				]
-			]
-		];
-	}
-
-
-	/**
-	 * Lists all Widget models.
-	 *
-	 * @return mixed
-	 */
-	public function actionIndex() {
-		$searchModel  = new WidgetSearch;
-		$dataProvider = $searchModel->search($_GET);
-
-		Tabs::clearLocalStorage();
-
-		Url::remember();
-		\Yii::$app->session['__crudReturnUrl'] = null;
-
-		return $this->render('index', [
-				'dataProvider' => $dataProvider,
-				'searchModel' => $searchModel,
-			]);
-	}
+                        /**
+                         *
+                         */
+                        'matchCallback' => function ($rule, $action) {
+                            return \Yii::$app->user->can($this->module->id.'_'.$this->id.'_'.$action->id,
+                                ['route' => true]);
+                        },
+                    ]
+                ]
+            ]
+        ];
+    }
 
 
-	/**
-	 * Displays a single Widget model.
-	 *
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function actionView($id) {
-		\Yii::$app->session['__crudReturnUrl'] = Url::previous();
-		Url::remember();
-		Tabs::rememberActiveState();
+    /**
+     * Lists all Widget models.
+     *
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new WidgetSearch;
+        $dataProvider = $searchModel->search($_GET);
 
-		return $this->render('view', [
-				'model' => $this->findModel($id),
-			]);
-	}
+        Tabs::clearLocalStorage();
 
+        Url::remember();
+        \Yii::$app->session['__crudReturnUrl'] = null;
 
-	/**
-	 * Creates a new Widget model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 *
-	 * @return mixed
-	 */
-	public function actionCreate() {
-		$model = new WidgetContent;
-
-		try {
-			if ($model->load($_POST) && $model->save()) {
-				return $this->redirect(Url::previous());
-			} elseif (!\Yii::$app->request->isPost) {
-				$model->load($_GET);
-			}
-		} catch (\Exception $e) {
-			$msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-			$model->addError('_exception', $msg);
-		}
-		return $this->render('create', ['model' => $model]);
-	}
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
 
 
-	/**
-	 * Updates an existing Widget model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 *
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function actionUpdate($id) {
-		$model = $this->findModel($id);
+    /**
+     * Displays a single Widget model.
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
+        Url::remember();
+        Tabs::rememberActiveState();
 
-		if ($model->load($_POST) && $model->save()) {
-			return $this->redirect(Url::previous());
-		} else {
-			return $this->render('update', [
-					'model' => $model,
-				]);
-		}
-	}
-
-
-	/**
-	 * Deletes an existing Widget model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 *
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function actionDelete($id) {
-		try {
-			$this->findModel($id)->delete();
-		} catch (\Exception $e) {
-			$msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-			\Yii::$app->getSession()->addFlash('error', $msg);
-			return $this->redirect(Url::previous());
-		}
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
 
-		// TODO: improve detection
-		$isPivot = strstr('$id', ',');
-		if ($isPivot == true) {
-			return $this->redirect(Url::previous());
-		} elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-			Url::remember(null);
-			$url = \Yii::$app->session['__crudReturnUrl'];
-			\Yii::$app->session['__crudReturnUrl'] = null;
+    /**
+     * Creates a new Widget model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new WidgetContent;
 
-			return $this->redirect($url);
-		} else {
-			return $this->redirect(['index']);
-		}
-	}
+        try {
+            if ($model->load($_POST) && $model->save()) {
+                return $this->redirect(Url::previous());
+            } elseif (!\Yii::$app->request->isPost) {
+                $model->load($_GET);
+            }
+        } catch (\Exception $e) {
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            $model->addError('_exception', $msg);
+        }
+        return $this->render('create', ['model' => $model]);
+    }
 
 
-	/**
-	 * Finds the Widget model based on its primary key value.
-	 * If the model is not found, a 404 HTTP exception will be thrown.
-	 *
-	 * @throws HttpException if the model cannot be found
-	 * 
-*@param integer $id
-	 * 
-*@return WidgetContent the loaded model
-	 */
-	protected function findModel($id) {
-		if (($model = WidgetContent::findOne($id)) !== null) {
-			return $model;
-		} else {
-			throw new HttpException(404, 'The requested page does not exist.');
-		}
-	}
+    /**
+     * Updates an existing Widget model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load($_POST) && $model->save()) {
+            return $this->redirect(Url::previous());
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
+    /**
+     * Deletes an existing Widget model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $e) {
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            \Yii::$app->getSession()->addFlash('error', $msg);
+            return $this->redirect(Url::previous());
+        }
+
+
+        // TODO: improve detection
+        $isPivot = strstr('$id', ',');
+        if ($isPivot == true) {
+            return $this->redirect(Url::previous());
+        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
+            Url::remember(null);
+            $url = \Yii::$app->session['__crudReturnUrl'];
+            \Yii::$app->session['__crudReturnUrl'] = null;
+
+            return $this->redirect($url);
+        } else {
+            return $this->redirect(['index']);
+        }
+    }
+
+
+    /**
+     * Finds the Widget model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
+     * @throws HttpException if the model cannot be found
+     *
+     * @param integer $id
+     *
+     * @return WidgetContent the loaded model
+     */
+    protected function findModel($id)
+    {
+        if (($model = WidgetContent::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new HttpException(404, 'The requested page does not exist.');
+        }
+    }
 
 
 }

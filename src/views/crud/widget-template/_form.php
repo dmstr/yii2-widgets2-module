@@ -6,9 +6,9 @@
  */
 
 
-use yii\helpers\Html;
+use dmstr\bootstrap\Tabs;
 use yii\bootstrap\ActiveForm;
-use \dmstr\bootstrap\Tabs;
+use yii\helpers\Html;
 
 /**
  *

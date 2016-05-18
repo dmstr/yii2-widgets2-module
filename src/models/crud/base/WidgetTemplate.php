@@ -18,7 +18,6 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
 {
 
 
-
     /**
      * @inheritdoc
      */
@@ -28,15 +27,24 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * @return \hrzg\widget\models\crud\query\WidgetTemplateQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \hrzg\widget\models\crud\query\WidgetTemplateQuery(get_called_class());
+    }
+
+    /**
      * Alias name of table for crud viewsLists all Area models.
      * Change the alias name manual if needed later
      * @return string
      */
-    public function getAliasModel($plural=false)
+    public function getAliasModel($plural = false)
     {
-        if($plural){
+        if ($plural) {
             return Yii::t('app', 'WidgetTemplates');
-        }else{
+        } else {
             return Yii::t('app', 'WidgetTemplate');
         }
     }
@@ -74,22 +82,11 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
         return array_merge(
             parent::attributeHints(),
             [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'json_schema' => Yii::t('app', 'Json Schema'),
-            'twig_template' => Yii::t('app', 'Template'),
+                'id' => Yii::t('app', 'ID'),
+                'name' => Yii::t('app', 'Name'),
+                'json_schema' => Yii::t('app', 'Json Schema'),
+                'twig_template' => Yii::t('app', 'Template'),
             ]);
-    }
-
-
-    
-    /**
-     * @inheritdoc
-     * @return \hrzg\widget\models\crud\query\WidgetTemplateQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \hrzg\widget\models\crud\query\WidgetTemplateQuery(get_called_class());
     }
 
 

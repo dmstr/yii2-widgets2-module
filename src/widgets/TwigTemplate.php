@@ -16,19 +16,23 @@ class TwigTemplate extends Widget
     private $_view;
     private $_properties;
 
-    public function run(){
+    public function run()
+    {
         return $this->renderFile($this->_view, $this->_properties);
     }
 
-    public function setProperties($value){
-        $this->_properties = $value;
-    }
-
-    public function getProperties(){
+    public function getProperties()
+    {
         return $this->_properties;
     }
 
-    public function setView($value){
+    public function setProperties($value)
+    {
+        $this->_properties = $value;
+    }
+
+    public function setView($value)
+    {
         $this->_view = $value;
     }
 }

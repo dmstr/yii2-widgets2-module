@@ -2,7 +2,6 @@
 
 namespace _;
 
-use insolita\wgadminlte\Box;
 use yii\helpers\Html;
 
 ?>

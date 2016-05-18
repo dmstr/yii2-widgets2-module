@@ -21,7 +21,8 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
      *
      * @return mixed
      */
-    public function actionCreateFromTemplate($templateId = null) {
+    public function actionCreateFromTemplate($templateId = null)
+    {
         $model = new WidgetContent();
 
         try {
@@ -31,7 +32,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
                 $model->load($_GET);
             }
         } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             $model->addError('_exception', $msg);
         }
         return $this->render('create', ['model' => $model]);

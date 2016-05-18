@@ -31,7 +31,6 @@ abstract class Widget extends \yii\db\ActiveRecord
 {
 
 
-
     /**
      * @inheritdoc
      */
@@ -41,15 +40,24 @@ abstract class Widget extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * @return \hrzg\widget\models\crud\query\WidgetQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \hrzg\widget\models\crud\query\WidgetQuery(get_called_class());
+    }
+
+    /**
      * Alias name of table for crud viewsLists all Area models.
      * Change the alias name manual if needed later
      * @return string
      */
-    public function getAliasModel($plural=false)
+    public function getAliasModel($plural = false)
     {
-        if($plural){
+        if ($plural) {
             return Yii::t('app', 'Widgets');
-        }else{
+        } else {
             return Yii::t('app', 'Widget');
         }
     }
@@ -105,34 +113,23 @@ abstract class Widget extends \yii\db\ActiveRecord
         return array_merge(
             parent::attributeHints(),
             [
-            'id' => Yii::t('app', 'ID'),
-            'status' => Yii::t('app', 'Status'),
-            'widget_template_id' => Yii::t('app', 'Class Name'),
-            'default_properties_json' => Yii::t('app', 'Default Properties Json'),
-            'name_id' => Yii::t('app', 'Name Id'),
-            'container_id' => Yii::t('app', 'Container Id'),
-            'rank' => Yii::t('app', 'Rank'),
-            'route' => Yii::t('app', 'Route'),
-            'request_param' => Yii::t('app', 'Request Param'),
-            'access_owner' => Yii::t('app', 'Access Owner'),
-            'access_domain' => Yii::t('app', 'Access Domain'),
-            'access_read' => Yii::t('app', 'Access Read'),
-            'access_update' => Yii::t('app', 'Access Update'),
-            'access_delete' => Yii::t('app', 'Access Delete'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+                'id' => Yii::t('app', 'ID'),
+                'status' => Yii::t('app', 'Status'),
+                'widget_template_id' => Yii::t('app', 'Class Name'),
+                'default_properties_json' => Yii::t('app', 'Default Properties Json'),
+                'name_id' => Yii::t('app', 'Name Id'),
+                'container_id' => Yii::t('app', 'Container Id'),
+                'rank' => Yii::t('app', 'Rank'),
+                'route' => Yii::t('app', 'Route'),
+                'request_param' => Yii::t('app', 'Request Param'),
+                'access_owner' => Yii::t('app', 'Access Owner'),
+                'access_domain' => Yii::t('app', 'Access Domain'),
+                'access_read' => Yii::t('app', 'Access Read'),
+                'access_update' => Yii::t('app', 'Access Update'),
+                'access_delete' => Yii::t('app', 'Access Delete'),
+                'created_at' => Yii::t('app', 'Created At'),
+                'updated_at' => Yii::t('app', 'Updated At'),
             ]);
-    }
-
-
-    
-    /**
-     * @inheritdoc
-     * @return \hrzg\widget\models\crud\query\WidgetQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \hrzg\widget\models\crud\query\WidgetQuery(get_called_class());
     }
 
 

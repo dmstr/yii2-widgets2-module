@@ -2,8 +2,8 @@
 
 namespace hrzg\widget\models\crud;
 
+use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use Yii;
-use \hrzg\widget\models\crud\base\Widget as BaseWidget;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -19,7 +19,8 @@ class WidgetContent extends BaseWidget
         );
     }
 
-    public function getTemplate(){
+    public function getTemplate()
+    {
         return $this->hasOne(WidgetTemplate::className(), ['id' => 'widget_template_id']);
     }
 

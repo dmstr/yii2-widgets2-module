@@ -20,21 +20,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="giiant-crud widget-template-create">
 
     <h1>
-        <?php echo $model->getAliasModel() ?>        <small>
-                        <?php echo $model->name ?>        </small>
+        <?php echo $model->getAliasModel() ?>
+        <small>
+            <?php echo $model->name ?>        </small>
     </h1>
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?php echo             Html::a(
-	Yii::t('app', 'Cancel'),
-	\yii\helpers\Url::previous(),
-	['class' => 'btn btn-default']) ?>
+            <?php echo Html::a(
+                Yii::t('app', 'Cancel'),
+                \yii\helpers\Url::previous(),
+                ['class' => 'btn btn-default']) ?>
         </div>
     </div>
 
     <?php echo $this->render('_form', [
-		'model' => $model,
-	]); ?>
+        'model' => $model,
+    ]); ?>
 
 </div>

@@ -16,22 +16,25 @@ use yii\helpers\Json;
 
 class WidgetContainer extends Widget
 {
-    public function run(){
+    public function run()
+    {
         \Yii::$app->params['backend.menuItems'][] = [
             'label' => 'Edit widget',
             'url' => ['/widgets/crud/widget/create']
         ];
         #return "Widget";
-        
+
         return $this->renderWidgets();
     }
-    
-    private function queryWidgets(){
+
+    private function queryWidgets()
+    {
         $models = WidgetContent::find()->all();
         return $models;
     }
-    
-    private function renderWidgets(){
+
+    private function renderWidgets()
+    {
         $html = '';
         foreach ($this->queryWidgets() AS $widget) {
             $properties = Json::decode($widget->default_properties_json);
@@ -45,7 +48,8 @@ class WidgetContainer extends Widget
         return $html;
     }
 
-    private function createWidget(){
+    private function createWidget()
+    {
 
     }
 }

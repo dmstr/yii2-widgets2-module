@@ -11,6 +11,6 @@ class DefaultController extends Controller
     {
         $searchModel = new WidgetTemplate;
         $dataProvider = $searchModel->search([]);
-        return $this->render('index', ['templatesDataProvider'=>$dataProvider]);
+        return $this->render('index', ['templatesDataProvider' => $dataProvider]);
     }
 }
