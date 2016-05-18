@@ -36,7 +36,7 @@ use \dmstr\bootstrap\Tabs;
 var widgets = {
 	'updateTemplate': function(elem){
 		if (confirm('Reset values and update template?')) {
-			url = '/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widget-widget_template_id').val();
+			url = '/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
 			$.pjax({url: url, container: '#pjax-widget-form'});
 		}
 	}

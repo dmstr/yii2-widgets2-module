@@ -3,8 +3,6 @@
 namespace _;
 
 use insolita\wgadminlte\Box;
-use rmrevin\yii\fontawesome\FA;
-use yii\helpers\Inflector;
 use yii\widgets\ListView;
 
 /*
@@ -12,28 +10,38 @@ use yii\widgets\ListView;
  */
 ?>
 
-<?= \insolita\wgadminlte\SmallBox::widget(
-    [
-        'head' => 'Co',
-        'footer' => 'Widget Contents',
-        'footer_link' => ['crud/widget']
-    ]
-) ?>
+<div class="row">
+    <div class="col-sm-6">
 
-<?= \insolita\wgadminlte\SmallBox::widget(
-    [
-        'head' => 'Wi',
-        'footer' => 'Templates',
-        'footer_link' => ['crud/widget-template']
-    ]
-) ?>
+
+        <?= \insolita\wgadminlte\SmallBox::widget(
+            [
+                'head' => 'Co',
+                'footer' => 'Widget Contents',
+                'footer_link' => ['crud/widget']
+            ]
+        ) ?>
+
+    </div>
+    <div class="col-sm-6">
+
+
+        <?= \insolita\wgadminlte\SmallBox::widget(
+            [
+                'head' => 'Wi',
+                'footer' => 'Templates',
+                'footer_link' => ['crud/widget-template']
+            ]
+        ) ?>
+    </div>
+</div>
 
 <?php Box::begin(['title' => 'Create new widgets']) ?>
 <div class="row">
-        <?= ListView::widget([
-            'dataProvider' => $templatesDataProvider,
-            'itemView' => '_create-widget'
-        ]) ?>
+    <?= ListView::widget([
+        'dataProvider' => $templatesDataProvider,
+        'itemView' => '_create-widget'
+    ]) ?>
 </div>
 <?php Box::end() ?>
 

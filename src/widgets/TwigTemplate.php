@@ -17,7 +17,6 @@ class TwigTemplate extends Widget
     private $_properties;
 
     public function run(){
-        var_dump($this->_properties);
         return $this->renderFile($this->_view, $this->_properties);
     }
 
