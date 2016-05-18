@@ -14,7 +14,7 @@ use yii\grid\GridView;
  *
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var hrzg\widget\models\crud\search\Widget $searchModel
+ * @var hrzg\widget\models\crud\search\WidgetContent $searchModel
  */
 $this->title = $searchModel->getAliasModel(true);
 $this->params['breadcrumbs'][] = $this->title;

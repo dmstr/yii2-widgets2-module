@@ -11,8 +11,8 @@
 
 namespace hrzg\widget\controllers\crud\base;
 
-use hrzg\widget\models\crud\Widget;
-use hrzg\widget\models\crud\search\Widget as WidgetSearch;
+use hrzg\widget\models\crud\WidgetContent;
+use hrzg\widget\models\crud\search\WidgetContent as WidgetSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -101,7 +101,7 @@ class WidgetController extends Controller
 	 * @return mixed
 	 */
 	public function actionCreate() {
-		$model = new Widget;
+		$model = new WidgetContent;
 
 		try {
 			if ($model->load($_POST) && $model->save()) {
@@ -175,11 +175,13 @@ class WidgetController extends Controller
 	 * If the model is not found, a 404 HTTP exception will be thrown.
 	 *
 	 * @throws HttpException if the model cannot be found
-	 * @param integer $id
-	 * @return Widget the loaded model
+	 * 
+*@param integer $id
+	 * 
+*@return WidgetContent the loaded model
 	 */
 	protected function findModel($id) {
-		if (($model = Widget::findOne($id)) !== null) {
+		if (($model = WidgetContent::findOne($id)) !== null) {
 			return $model;
 		} else {
 			throw new HttpException(404, 'The requested page does not exist.');

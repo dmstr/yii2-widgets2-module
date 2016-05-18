@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 /**
  *
  * @var yii\web\View $this
- * @var hrzg\widget\models\crud\search\Widget $model
+ * @var hrzg\widget\models\crud\search\WidgetContent $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>

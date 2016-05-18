@@ -11,12 +11,12 @@ namespace hrzg\widget\models\crud\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use hrzg\widget\models\crud\Widget as WidgetModel;
+use hrzg\widget\models\crud\WidgetContent as WidgetModel;
 
 /**
  * Widget represents the model behind the search form about `hrzg\widget\models\crud\Widget`.
  */
-class Widget extends WidgetModel
+class WidgetContent extends WidgetModel
 {
 
 	/**

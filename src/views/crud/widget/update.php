@@ -11,7 +11,7 @@ use yii\helpers\Html;
 /**
  *
  * @var yii\web\View $this
- * @var hrzg\widget\models\crud\Widget $model
+ * @var hrzg\widget\models\crud\WidgetContent $model
  */
 $this->title = $model->getAliasModel() . $model->id . ', ' . Yii::t('app', 'Edit');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];

@@ -16,7 +16,7 @@ use dmstr\bootstrap\Tabs;
 /**
  *
  * @var yii\web\View $this
- * @var hrzg\widget\models\crud\Widget $model
+ * @var hrzg\widget\models\crud\WidgetContent $model
  */
 $copyParams = $model->attributes;
 

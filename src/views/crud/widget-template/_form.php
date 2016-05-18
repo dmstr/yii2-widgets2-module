@@ -43,6 +43,7 @@ use \dmstr\bootstrap\Tabs;
         <p>
 
             <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'php_class')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'json_schema')->widget(\trntv\aceeditor\AceEditor::className()) ?>
             <?php echo $form->field($model, 'twig_template')->widget(\trntv\aceeditor\AceEditor::className()) ?>
 

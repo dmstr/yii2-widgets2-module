@@ -47,7 +47,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'json_schema'], 'required'],
+            [['name', 'php_class', 'json_schema'], 'required'],
             [['json_schema', 'twig_template'], 'string'],
             [['name'], 'string', 'max' => 255]
         ];

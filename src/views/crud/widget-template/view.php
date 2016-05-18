@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
 		'attributes' => [
 			'id',
 			'name',
+            'php_class',
 			'json_schema:ntext',
 			'twig_template:ntext',
 		],

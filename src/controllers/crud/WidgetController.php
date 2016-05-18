@@ -8,7 +8,7 @@
 
 namespace hrzg\widget\controllers\crud;
 
-use hrzg\widget\models\crud\search\Widget;
+use hrzg\widget\models\crud\search\WidgetContent;
 
 /**
  * This is the class for controller "WidgetController".
@@ -22,7 +22,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
      * @return mixed
      */
     public function actionCreateFromTemplate($templateId = null) {
-        $model = new Widget();
+        $model = new WidgetContent();
 
         try {
             if ($model->load($_POST) && $model->save()) {
