@@ -19,8 +19,28 @@ class WidgetContainer extends Widget
     public function run()
     {
         \Yii::$app->params['backend.menuItems'][] = [
-            'label' => 'Edit widget',
-            'url' => ['/widgets/crud/widget/create']
+            'label' => 'Create '.$this->id.' widget',
+            'url' => [
+                '/widgets/crud/widget/create',
+                'WidgetContent' => [
+                    'route' => \Yii::$app->requestedRoute,
+                    'container_id' => $this->id,
+                    'request_param' => \Yii::$app->request->get('id'),
+                    'access_domain' => \Yii::$app->language
+                ]
+            ]
+        ];
+        \Yii::$app->params['backend.menuItems'][] = [
+            'label' => 'Show '.$this->id.' widgets',
+            'url' => [
+                '/widgets/crud/widget/index',
+                'WidgetContent' => [
+                    'route' => \Yii::$app->requestedRoute,
+                    'container_id' => $this->id,
+                    'request_param' => \Yii::$app->request->get('id'),
+                    'access_domain' => \Yii::$app->language
+                ]
+            ]
         ];
         #return "Widget";
 
@@ -29,7 +49,16 @@ class WidgetContainer extends Widget
 
     private function queryWidgets()
     {
-        $models = WidgetContent::find()->all();
+        \Yii::trace(\Yii::$app->requestedRoute, __METHOD__);
+        $models = WidgetContent::find()
+            ->where(
+                [
+                    'container_id' => $this->id,
+                    'route' => \Yii::$app->requestedRoute,
+                    'request_param' => \Yii::$app->request->get('id'),
+                    'access_domain' => \Yii::$app->language
+                ])
+            ->all();
         return $models;
     }
 
@@ -40,7 +69,11 @@ class WidgetContainer extends Widget
             $properties = Json::decode($widget->default_properties_json);
             $class = \Yii::createObject($widget->template->php_class);
             $class->setView($widget->getViewFile());
-            $class->setProperties($properties);
+
+            if($properties) {
+                $class->setProperties($properties);
+            }
+
             $html .= $class->run();
             #var_dump($widget->template->php_class);
             #$html .= $widget->template->php_class;

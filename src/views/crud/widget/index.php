@@ -94,18 +94,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'contentOptions' => ['nowrap' => 'nowrap']
                 ],
-                'status',
-                'widget_template_id',
-                'container_id',
+                'access_domain',
                 'route',
+                'request_param',
+                'container_id',
+                'widget_template_id',
                 'name_id',
                 'rank',
-                'access_owner',
-                /*'request_param'*/
+                'status',
+                /*'access_owner',*/
                 /*'access_read'*/
                 /*'access_update'*/
                 /*'access_delete'*/
-                /*'access_domain'*/
+
+
             ],
         ]); ?>
     </div>

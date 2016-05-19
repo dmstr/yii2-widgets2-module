@@ -14,11 +14,18 @@ use yii\base\Widget;
 class TwigTemplate extends Widget
 {
     private $_view;
-    private $_properties;
+    private $_properties = [];
 
     public function run()
     {
-        return $this->renderFile($this->_view, $this->_properties);
+        try {
+            $output = $this->renderFile($this->_view, $this->_properties);
+            return $output;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+
     }
 
     public function getProperties()
