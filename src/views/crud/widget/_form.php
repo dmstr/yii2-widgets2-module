@@ -20,7 +20,6 @@ use yii\helpers\Html;
 
 <div class="widget-form">
 
-    <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
 
     <?php $form = ActiveForm::begin([
             'id' => 'Widget',
@@ -35,9 +34,11 @@ use yii\helpers\Html;
     <?php $js = <<<JS
 var widgets = {
 	'updateTemplate': function(elem){
+        $.pjax.defaults.timeout = 5000;
 		if (confirm('Reset values and update template?')) {
-			url = '/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
-			$.pjax({url: url, container: '#pjax-widget-form'});
+			url = '/de/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
+			//alert(url);
+			$.pjax.reload({url: url, container: '#pjax-widget-form'});
 		}
 	}
 }
@@ -74,6 +75,7 @@ JS;
             ]
         ) ?>
 
+        <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
         <?php echo $form->field($model, 'default_properties_json')
             ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
                 'schema' => $schema,
@@ -85,6 +87,7 @@ JS;
                     'no_additional_properties' => true,
                 ],
             ]); ?>
+        <?php \yii\widgets\Pjax::end() ?>
 
 
         <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
@@ -130,6 +133,5 @@ JS;
 
     <?php ActiveForm::end(); ?>
 
-    <?php \yii\widgets\Pjax::end() ?>
 
 </div>
