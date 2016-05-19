@@ -11,39 +11,18 @@ namespace hrzg\widget\widgets;
 
 
 use hrzg\widget\models\crud\WidgetContent;
+use yii\base\Event;
 use yii\base\Widget;
 use yii\helpers\Json;
 
 class WidgetContainer extends Widget
 {
+    public function init(){
+        \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
+    }
+
     public function run()
     {
-        \Yii::$app->params['backend.menuItems'][] = [
-            'label' => 'Create '.$this->id.' widget',
-            'url' => [
-                '/widgets/crud/widget/create',
-                'WidgetContent' => [
-                    'route' => \Yii::$app->requestedRoute,
-                    'container_id' => $this->id,
-                    'request_param' => \Yii::$app->request->get('id'),
-                    'access_domain' => \Yii::$app->language
-                ]
-            ]
-        ];
-        \Yii::$app->params['backend.menuItems'][] = [
-            'label' => 'Show '.$this->id.' widgets',
-            'url' => [
-                '/widgets/crud/widget/index',
-                'WidgetContent' => [
-                    'route' => \Yii::$app->requestedRoute,
-                    'container_id' => $this->id,
-                    'request_param' => \Yii::$app->request->get('id'),
-                    'access_domain' => \Yii::$app->language
-                ]
-            ]
-        ];
-        #return "Widget";
-
         return $this->renderWidgets();
     }
 
@@ -75,8 +54,6 @@ class WidgetContainer extends Widget
             }
 
             $html .= $class->run();
-            #var_dump($widget->template->php_class);
-            #$html .= $widget->template->php_class;
         }
         return $html;
     }
@@ -84,5 +61,35 @@ class WidgetContainer extends Widget
     private function createWidget()
     {
 
+    }
+
+    public function getMenuItems(){
+
+        return [
+            [
+                'label' => 'Create '.$this->id.' widget',
+                'url' => [
+                    '/widgets/crud/widget/create',
+                    'WidgetContent' => [
+                        'route' => \Yii::$app->requestedRoute,
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get('id'),
+                        'access_domain' => \Yii::$app->language
+                    ]
+                ]
+            ],
+            [
+                'label' => 'Show '.$this->id.' widgets',
+                'url' => [
+                    '/widgets/crud/widget/index',
+                    'WidgetContent' => [
+                        'route' => \Yii::$app->requestedRoute,
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get('id'),
+                        'access_domain' => \Yii::$app->language
+                    ]
+                ]
+            ]
+        ];
     }
 }

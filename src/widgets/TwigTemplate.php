@@ -24,8 +24,6 @@ class TwigTemplate extends Widget
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-
-
     }
 
     public function getProperties()

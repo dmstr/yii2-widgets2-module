@@ -42,6 +42,8 @@ Usage
 
 Once the extension is installed, simply use it in your code by  :
 
+### Twig
+
 ```
 {{ use ('hrzg/widget/widgets') }}
 {{ widget_container_widget({id: 'main'}) }}
