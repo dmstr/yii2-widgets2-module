@@ -95,9 +95,9 @@ JS;
                     'clientOptions' => [
                         'theme' => 'bootstrap3',
                         'disable_collapse' => true,
-                        'disable_edit_json' => true,
+                        #'disable_edit_json' => true,
                         'disable_properties' => true,
-                        'no_additional_properties' => true,
+                        #'no_additional_properties' => true,
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
