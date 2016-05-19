@@ -88,8 +88,8 @@ abstract class Widget extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'status' => Yii::t('app', 'Status'),
-            'widget_template_id' => Yii::t('app', 'Class Name'),
-            'default_properties_json' => Yii::t('app', 'Default Properties Json'),
+            'widget_template_id' => Yii::t('app', 'Template'),
+            'default_properties_json' => Yii::t('app', 'Widget Properties'),
             'name_id' => Yii::t('app', 'Name ID'),
             'container_id' => Yii::t('app', 'Container ID'),
             'rank' => Yii::t('app', 'Rank'),
@@ -108,7 +108,7 @@ abstract class Widget extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeHints()
+    /*public function attributeHints()
     {
         return array_merge(
             parent::attributeHints(),
@@ -130,7 +130,7 @@ abstract class Widget extends \yii\db\ActiveRecord
                 'created_at' => Yii::t('app', 'Created At'),
                 'updated_at' => Yii::t('app', 'Updated At'),
             ]);
-    }
+    }*/
 
 
 }

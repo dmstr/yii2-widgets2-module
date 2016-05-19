@@ -12,8 +12,6 @@ use yii\widgets\ListView;
 
 <div class="row">
     <div class="col-sm-6">
-
-
         <?= \insolita\wgadminlte\SmallBox::widget(
             [
                 'head' => 'Co',
@@ -21,11 +19,8 @@ use yii\widgets\ListView;
                 'footer_link' => ['crud/widget']
             ]
         ) ?>
-
     </div>
     <div class="col-sm-6">
-
-
         <?= \insolita\wgadminlte\SmallBox::widget(
             [
                 'head' => 'Wi',
@@ -35,13 +30,3 @@ use yii\widgets\ListView;
         ) ?>
     </div>
 </div>
-
-<?php Box::begin(['title' => 'Create new widgets']) ?>
-<div class="row">
-    <?= ListView::widget([
-        'dataProvider' => $templatesDataProvider,
-        'itemView' => '_create-widget'
-    ]) ?>
-</div>
-<?php Box::end() ?>
-

@@ -67,7 +67,7 @@ class WidgetContainer extends Widget
 
         return [
             [
-                'label' => 'Create '.$this->id.' widget',
+                'label' => 'Create '.$this->id.' <span class="label label-info">widget</span>',
                 'url' => [
                     '/widgets/crud/widget/create',
                     'WidgetContent' => [
@@ -79,7 +79,7 @@ class WidgetContainer extends Widget
                 ]
             ],
             [
-                'label' => 'Show '.$this->id.' widgets',
+                'label' => 'Edit '.$this->id.' <span class="label label-info">widget</span>',
                 'url' => [
                     '/widgets/crud/widget/index',
                     'WidgetContent' => [

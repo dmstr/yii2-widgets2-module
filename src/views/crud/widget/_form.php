@@ -5,8 +5,11 @@
  * @package default
  */
 
+namespace _;
 
 use dmstr\bootstrap\Tabs;
+use insolita\wgadminlte\Box;
+use Yii;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -23,9 +26,17 @@ use yii\helpers\Html;
 
     <?php $form = ActiveForm::begin([
             'id' => 'Widget',
-            'layout' => 'horizontal',
+            'layout' => 'default',
             'enableClientValidation' => false,
-            'errorSummaryCssClass' => 'error-summary alert alert-error'
+            'errorSummaryCssClass' => 'error-summary alert alert-error',
+            'fieldConfig' => [
+                'horizontalCssClasses' => [
+                    'label' => 'col-sm-2',
+                    'wrapper' => 'col-sm-10',
+                    'error' => '',
+                    'hint' => 'hidden',
+                ]
+            ]
         ]
     );
 
@@ -67,39 +78,59 @@ JS;
             }
         }
         ?>
-        <?php echo $form->field($model, 'status')->checkbox() ?>
 
-        <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
-            [
-                'onchange' => 'widgets.updateTemplate()'
-            ]
-        ) ?>
+    <div class="row">
+        <div class="col-sm-8">
+            <?php Box::begin() ?>
+            <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
+                [
+                    'onchange' => 'widgets.updateTemplate()'
+                ]
+            ) ?>
 
-        <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-        <?php echo $form->field($model, 'default_properties_json')
-            ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
-                'schema' => $schema,
-                'clientOptions' => [
-                    'theme' => 'bootstrap3',
-                    'disable_collapse' => true,
-                    'disable_edit_json' => true,
-                    'disable_properties' => true,
-                    'no_additional_properties' => true,
-                ],
-            ]); ?>
-        <?php \yii\widgets\Pjax::end() ?>
+            <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
+            <?php echo $form->field($model, 'default_properties_json')
+                ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+                    'schema' => $schema,
+                    'clientOptions' => [
+                        'theme' => 'bootstrap3',
+                        'disable_collapse' => true,
+                        'disable_edit_json' => true,
+                        'disable_properties' => true,
+                        'no_additional_properties' => true,
+                    ],
+                ]); ?>
+            <?php \yii\widgets\Pjax::end() ?>
+
+            <?php Box::end() ?>
+        </div>
+        <div class="col-sm-4">
+            <?php Box::begin() ?>
+
+            <?php echo $form->field($model, 'status')->checkbox() ?>
+            <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
+
+            <?php Box::end() ?>
+
+            <?php Box::begin([
+                'title' => 'Access',
+                'collapse' => true,
+                'collapseDefault' => true
+            ]) ?>
+            <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
+            <?php Box::end() ?>
+        </div>
+    </div>
 
 
-        <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
-        <?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
     </p>
     <?php $this->endBlock(); ?>
 
