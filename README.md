@@ -44,6 +44,8 @@ Once the extension is installed, simply use it in your code by  :
 
 ### Twig
 
+- [Yii 2.0 Twig extension](https://github.com/yiisoft/yii2-twig/tree/master/docs/guide)
+
 ```
 {{ use ('hrzg/widget/widgets') }}
 {{ widget_container_widget({id: 'main'}) }}
