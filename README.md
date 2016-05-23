@@ -63,5 +63,28 @@ Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
 - [JSON schema editor](https://github.com/jdorn/json-editor)
 
 
-### Widget
+### Widget example
 
+```
+Basic
+
+{
+    "title": "Basic",
+    "type": "object",
+    "properties": {
+        "headline": {
+            "type": "string"
+        },
+        "text": {
+            "type": "string"
+        },
+    }
+}
+```
+
+```
+<h2>{{ headline }}</h2>
+<p>{{ text }}</p>
+```
+
+For more examples, please see the [docs](./docs)
