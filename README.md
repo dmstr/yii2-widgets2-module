@@ -42,7 +42,9 @@ Usage
 
 Once the extension is installed, simply use it in your code by  :
 
-### Twig
+### Layout
+
+Example with `yii2-prototype-module`
 
 - [Yii 2.0 Twig extension](https://github.com/yiisoft/yii2-twig/tree/master/docs/guide)
 
@@ -50,3 +52,16 @@ Once the extension is installed, simply use it in your code by  :
 {{ use ('hrzg/widget/widgets') }}
 {{ widget_container_widget({id: 'main'}) }}
 ```
+
+### Widget
+
+Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
+
+
+### JSON
+
+- [JSON schema editor](https://github.com/jdorn/json-editor)
+
+
+### Widget
+
