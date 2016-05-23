@@ -11,13 +11,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist hrzg/yii2-widgets2-module "*"
-```
-
-or add
-
-```
-"hrzg/yii2-widgets2-module": "*"
+composer require hrzg/yii2-widgets2-module
 ```
 
 to the require section of your `composer.json` file.
