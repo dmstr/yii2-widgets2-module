@@ -65,9 +65,9 @@ Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
 
 ### Widget example
 
-```
-Basic
+#### Basic
 
+```
 {
     "title": "Basic",
     "type": "object",
