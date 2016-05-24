@@ -70,9 +70,13 @@ Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
         "headline": {
             "type": "string"
         },
-        "text": {
-            "type": "string"
-        },
+        "text_html": {
+            "type": "string",
+            "format": "html",
+            "options": {
+                "wysiwyg": true
+            }
+        }
     }
 }
 ```
@@ -80,6 +84,12 @@ Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
 ```
 <h2>{{ headline }}</h2>
 <p>{{ text }}</p>
+```
+
+:warning: Workaround required for editor asset.
+
+```
+<?php \franciscomaya\sceditor\SCEditorAsset::register($this) ?>
 ```
 
 For more examples, please see the [docs](./docs)
