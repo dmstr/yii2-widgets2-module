@@ -91,6 +91,11 @@ JS;
             ) ?>
 
             <div style="overflow: auto">
+
+                <?php
+                # TODO: workaround for editor registration
+                \franciscomaya\sceditor\SCEditorAsset::register($this)
+                ?>
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?php echo $form->field($model, 'default_properties_json')
                 ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [

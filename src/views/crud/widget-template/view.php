@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
             <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span> '.Yii::t('app', 'Edit'),
                 ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
             <?php echo Html::a('<span class="glyphicon glyphicon-copy"></span> '.Yii::t('app', 'Copy'),
-                ['create', 'id' => $model->id, 'WidgetTemplate            ' => $copyParams],
+                ['create', 'id' => $model->id, 'WidgetTemplate' => $copyParams],
                 ['class' => 'btn btn-success']) ?>
             <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> '.Yii::t('app', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>
