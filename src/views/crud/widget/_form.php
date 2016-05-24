@@ -8,11 +8,13 @@
 namespace _;
 
 use dmstr\bootstrap\Tabs;
+use franciscomaya\sceditor\SCEditorAsset;
 use insolita\wgadminlte\Box;
 use Yii;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
+SCEditorAsset::register($this);
 /**
  *
  * @var yii\web\View $this
@@ -80,7 +82,7 @@ JS;
         ?>
 
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <?php Box::begin() ?>
             <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
                 [
@@ -88,6 +90,7 @@ JS;
                 ]
             ) ?>
 
+            <div style="overflow: auto">
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?php echo $form->field($model, 'default_properties_json')
                 ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
@@ -101,10 +104,11 @@ JS;
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
+            </div>
 
             <?php Box::end() ?>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <?php Box::begin() ?>
 
             <?php echo $form->field($model, 'status')->checkbox() ?>
