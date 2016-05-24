@@ -41,6 +41,7 @@ Once the extension is installed, simply use it in your code by  :
 Example with `yii2-prototype-module`
 
 - [Yii 2.0 Twig extension](https://github.com/yiisoft/yii2-twig/tree/master/docs/guide)
+- [Twig documentation](http://twig.sensiolabs.org/documentation)
 
 ```
 {{ use ('hrzg/widget/widgets') }}
