@@ -31,6 +31,11 @@ setup.sh
 ```
 
 
+### Settings
+
+`availablePhpClasses`
+
+
 Usage
 -----
 

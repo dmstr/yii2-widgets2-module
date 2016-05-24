@@ -43,7 +43,7 @@ use yii\helpers\Html;
         <p>
 
             <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'php_class')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'php_class')->dropDownList($model->optPhpClass()) ?>
             <?php echo $form->field($model, 'json_schema')->widget(\trntv\aceeditor\AceEditor::className(), ['mode'=>'json']) ?>
             <?php echo $form->field($model, 'twig_template')->widget(\trntv\aceeditor\AceEditor::className(), ['mode'=>'twig']) ?>
 
