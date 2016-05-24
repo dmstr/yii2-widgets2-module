@@ -70,7 +70,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'json_schema' => Yii::t('app', 'Json Schema'),
-            'twig_template' => Yii::t('app', 'Template'),
+            'twig_template' => Yii::t('app', 'Twig Template'),
         ];
     }
 

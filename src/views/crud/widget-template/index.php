@@ -95,6 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'contentOptions' => ['nowrap' => 'nowrap']
                 ],
                 'name',
+                'php_class',
             ],
         ]); ?>
     </div>
