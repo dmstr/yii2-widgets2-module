@@ -69,9 +69,8 @@ class WidgetContainer extends Widget
 
     public function getMenuItems()
     {
+        // todo, register FA-asset from asset bundle
         AssetBundle::register($this->view);
-        $createIcon = (string) FA::icon('home');
-        var_dump($createIcon);
         return [
             [
                 'label' => FA::icon(FA::_PLUS_SQUARE).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
