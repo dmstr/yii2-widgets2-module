@@ -50,7 +50,7 @@ Example with `yii2-prototype-module`
 
 ```
 {{ use ('hrzg/widget/widgets') }}
-{{ widget_container_widget({id: 'main'}) }}
+{{ widget_container_widget({id: 'layout'}) }}
 ```
 
 ### Widget
@@ -73,11 +73,13 @@ Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
     "type": "object",
     "properties": {
         "headline": {
-            "type": "string"
+            "type": "string",
+            "default": "Avo vole tioma profitanto ts,"
         },
         "text_html": {
             "type": "string",
             "format": "html",
+            "default": "Ja sub kiam aliu, fo unt fora danke helpverbo, dev bv tele kibi piedpilko.",
             "options": {
                 "wysiwyg": true
             }
@@ -88,7 +90,7 @@ Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
 
 ```
 <h2>{{ headline }}</h2>
-<p>{{ text }}</p>
+<p>{{ text_html }}</p>
 ```
 
 :warning: Workaround required for editor asset.
