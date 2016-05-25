@@ -10,6 +10,9 @@
 namespace hrzg\widget\widgets;
 
 use hrzg\widget\models\crud\WidgetContent;
+use rmrevin\yii\fontawesome\AssetBundle;
+use rmrevin\yii\fontawesome\component\Icon;
+use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\helpers\Json;
@@ -66,9 +69,12 @@ class WidgetContainer extends Widget
 
     public function getMenuItems()
     {
+        AssetBundle::register($this->view);
+        $createIcon = (string) FA::icon('home');
+        var_dump($createIcon);
         return [
             [
-                'label' => 'Create '.$this->id.' <span class="label label-info">widget</span>',
+                'label' => FA::icon(FA::_PLUS_SQUARE).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
                 'url' => [
                     '/widgets/crud/widget/create',
                     'WidgetContent' => [
@@ -80,7 +86,7 @@ class WidgetContainer extends Widget
                 ],
             ],
             [
-                'label' => 'Edit '.$this->id.' <span class="label label-info">widget</span>',
+                'label' => FA::icon(FA::_EDIT).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
                 'url' => [
                     '/widgets/crud/widget/index',
                     'WidgetContent' => [

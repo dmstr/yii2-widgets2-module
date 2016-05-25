@@ -50,7 +50,10 @@ Example with `yii2-prototype-module`
 
 ```
 {{ use ('hrzg/widget/widgets') }}
-{{ widget_container_widget({id: 'layout'}) }}
+{{ widget_container_widget({id: 'header'}) }}
+<div class="container">
+    {{ widget_container_widget({id: 'container'}) }}
+</div>
 ```
 
 ### Widget
