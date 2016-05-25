@@ -1,14 +1,10 @@
 <?php
 /**
- * /app/src/../runtime/giiant/fccccf4deb34aed738291a9c38e87215
- *
- * @package default
+ * /app/src/../runtime/giiant/fccccf4deb34aed738291a9c38e87215.
  */
-
-
 use yii\helpers\Html;
 
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetContent $model

@@ -18,7 +18,7 @@ use yii\helpers\Html;
             [
                 'head' => WidgetContent::find()->count(),
                 'footer' => 'Contents',
-                'footer_link' => ['crud/widget']
+                'footer_link' => ['crud/widget'],
             ]
         ) ?>
     </div>
@@ -28,7 +28,7 @@ use yii\helpers\Html;
                 'head' => WidgetTemplate::find()->count(),
                 'type' => SmallBox::TYPE_PURPLE,
                 'footer' => 'Templates',
-                'footer_link' => ['crud/widget-template']
+                'footer_link' => ['crud/widget-template'],
             ]
         ) ?>
     </div>
@@ -38,7 +38,7 @@ use yii\helpers\Html;
                 'head' => '+',
                 'type' => SmallBox::TYPE_GREEN,
                 'footer' => 'New template',
-                'footer_link' => ['crud/widget-template/create']
+                'footer_link' => ['crud/widget-template/create'],
             ]
         ) ?>
     </div>

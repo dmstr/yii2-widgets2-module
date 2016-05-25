@@ -1,14 +1,13 @@
 <?php
 /**
  * @link http://www.diemeisterei.de/
+ *
  * @copyright Copyright (c) 2016 diemeisterei GmbH, Stuttgart
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace hrzg\widget\widgets;
-
 
 use hrzg\widget\models\crud\WidgetContent;
 use yii\base\Event;
@@ -36,16 +35,17 @@ class WidgetContainer extends Widget
                     'container_id' => $this->id,
                     'route' => \Yii::$app->requestedRoute,
                     'request_param' => \Yii::$app->request->get('id'),
-                    'access_domain' => \Yii::$app->language
+                    'access_domain' => \Yii::$app->language,
                 ])
             ->all();
+
         return $models;
     }
 
     private function renderWidgets()
     {
         $html = '';
-        foreach ($this->queryWidgets() AS $widget) {
+        foreach ($this->queryWidgets() as $widget) {
             $properties = Json::decode($widget->default_properties_json);
             $class = \Yii::createObject($widget->template->php_class);
             $class->setView($widget->getViewFile());
@@ -56,17 +56,16 @@ class WidgetContainer extends Widget
 
             $html .= $class->run();
         }
+
         return $html;
     }
 
     private function createWidget()
     {
-
     }
 
     public function getMenuItems()
     {
-
         return [
             [
                 'label' => 'Create '.$this->id.' <span class="label label-info">widget</span>',
@@ -76,9 +75,9 @@ class WidgetContainer extends Widget
                         'route' => \Yii::$app->requestedRoute,
                         'container_id' => $this->id,
                         'request_param' => \Yii::$app->request->get('id'),
-                        'access_domain' => \Yii::$app->language
-                    ]
-                ]
+                        'access_domain' => \Yii::$app->language,
+                    ],
+                ],
             ],
             [
                 'label' => 'Edit '.$this->id.' <span class="label label-info">widget</span>',
@@ -88,10 +87,10 @@ class WidgetContainer extends Widget
                         'route' => \Yii::$app->requestedRoute,
                         'container_id' => $this->id,
                         'request_param' => \Yii::$app->request->get('id'),
-                        'access_domain' => \Yii::$app->language
-                    ]
-                ]
-            ]
+                        'access_domain' => \Yii::$app->language,
+                    ],
+                ],
+            ],
         ];
     }
 }

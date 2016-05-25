@@ -26,8 +26,8 @@ class WidgetTemplate extends BaseWidgetTemplate
                         } catch (InvalidParamException $e) {
                             $this->addError($attribute, 'Invalid JSON: '.$e->getMessage());
                         }
-                    }
-                ]
+                    },
+                ],
             ]
         );
     }
@@ -38,6 +38,7 @@ class WidgetTemplate extends BaseWidgetTemplate
         if (!isset($json->scalar)) {
             return [];
         }
+
         return Json::decode($json->scalar);
     }
 }

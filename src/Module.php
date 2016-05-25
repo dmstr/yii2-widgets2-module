@@ -10,7 +10,6 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-
         // custom initialization code goes here
     }
 
@@ -18,6 +17,7 @@ class Module extends \yii\base\Module
     {
         parent::beforeAction($action);
         \Yii::$app->controller->view->params['breadcrumbs'][] = ['label' => 'Widget', 'url' => ['/widgets']];
+
         return true;
     }
 }

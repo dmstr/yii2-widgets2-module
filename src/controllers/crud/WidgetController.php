@@ -1,11 +1,7 @@
 <?php
 /**
- * /app/src/../runtime/giiant/49eb2de82346bc30092f584268252ed2
- *
- * @package default
+ * /app/src/../runtime/giiant/49eb2de82346bc30092f584268252ed2.
  */
-
-
 namespace hrzg\widget\controllers\crud;
 
 use hrzg\widget\models\crud\search\WidgetContent;
@@ -35,6 +31,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             $model->addError('_exception', $msg);
         }
+
         return $this->render('create', ['model' => $model]);
     }
 }

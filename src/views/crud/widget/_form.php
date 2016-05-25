@@ -1,10 +1,7 @@
 <?php
 /**
- * /app/src/../runtime/giiant/4b7e79a8340461fe629a6ac612644d03
- *
- * @package default
+ * /app/src/../runtime/giiant/4b7e79a8340461fe629a6ac612644d03.
  */
-
 namespace _;
 
 use franciscomaya\sceditor\SCEditorAsset;
@@ -14,7 +11,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 SCEditorAsset::register($this);
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetContent $model
@@ -36,8 +33,8 @@ SCEditorAsset::register($this);
                     'wrapper' => 'col-sm-10',
                     'error' => '',
                     'hint' => 'hidden',
-                ]
-            ]
+                ],
+            ],
         ]
     );
 
@@ -85,7 +82,7 @@ JS;
             <?php Box::begin() ?>
             <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
                 [
-                    'onchange' => 'widgets.updateTemplate()'
+                    'onchange' => 'widgets.updateTemplate()',
                 ]
             ) ?>
 
@@ -127,7 +124,7 @@ JS;
             <?php Box::begin([
                 'title' => 'Access',
                 'collapse' => true,
-                'collapseDefault' => true
+                'collapseDefault' => true,
             ]) ?>
             <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
@@ -152,7 +149,7 @@ JS;
         ($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Save')),
         [
             'id' => 'save-'.$model->formName(),
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-success',
         ]
     );
     ?>

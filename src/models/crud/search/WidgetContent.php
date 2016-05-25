@@ -1,15 +1,10 @@
 <?php
 /**
- * /app/src/../runtime/giiant/e0080b9d6ffa35acb85312bf99a557f2
- *
- * @package default
+ * /app/src/../runtime/giiant/e0080b9d6ffa35acb85312bf99a557f2.
  */
-
-
 namespace hrzg\widget\models\crud\search;
 
 use hrzg\widget\models\crud\WidgetContent as WidgetModel;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -18,10 +13,9 @@ use yii\data\ActiveDataProvider;
  */
 class WidgetContent extends WidgetModel
 {
-
     /**
+     * {@inheritdoc}
      *
-     * @inheritdoc
      * @return unknown
      */
     public function rules()
@@ -44,17 +38,16 @@ class WidgetContent extends WidgetModel
                     'access_update',
                     'access_delete',
                     'created_at',
-                    'updated_at'
+                    'updated_at',
                 ],
-                'safe'
+                'safe',
             ],
         ];
     }
 
-
     /**
+     * {@inheritdoc}
      *
-     * @inheritdoc
      * @return unknown
      */
     public function scenarios()
@@ -63,9 +56,8 @@ class WidgetContent extends WidgetModel
         return Model::scenarios();
     }
 
-
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      *
      * @param array $params
@@ -110,6 +102,4 @@ class WidgetContent extends WidgetModel
 
         return $dataProvider;
     }
-
-
 }

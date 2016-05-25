@@ -1,16 +1,12 @@
 <?php
 /**
- * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee
- *
- * @package default
+ * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee.
  */
-
-
 use dmstr\bootstrap\Tabs;
 use dmstr\helpers\Html;
 use yii\widgets\DetailView;
 
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetTemplate $model
@@ -19,7 +15,7 @@ $copyParams = $model->attributes;
 
 $this->title = $model->getAliasModel().$model->name;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'View');
 ?>
 <div class="giiant-crud widget-template-view">
@@ -100,7 +96,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
                     'content' => $this->blocks['hrzg\widget\models\crud\WidgetTemplate'],
                     'active' => true,
                 ],
-            ]
+            ],
         ]
     );
     ?>

@@ -16,7 +16,8 @@ class WidgetTemplateQuery extends \yii\db\ActiveQuery
     }*/
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @return \hrzg\widget\models\crud\WidgetTemplate[]|array
      */
     public function all($db = null)
@@ -25,7 +26,8 @@ class WidgetTemplateQuery extends \yii\db\ActiveQuery
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @return \hrzg\widget\models\crud\WidgetTemplate|array|null
      */
     public function one($db = null)

@@ -1,16 +1,12 @@
 <?php
 /**
- * /app/src/../runtime/giiant/4b7e79a8340461fe629a6ac612644d03
- *
- * @package default
+ * /app/src/../runtime/giiant/4b7e79a8340461fe629a6ac612644d03.
  */
-
-
 use dmstr\bootstrap\Tabs;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetTemplate $model
@@ -31,8 +27,8 @@ use yii\helpers\Html;
                     'wrapper' => 'col-sm-10',
                     'error' => '',
                     'hint' => 'hidden',
-                ]
-            ]
+                ],
+            ],
         ]
     );
     ?>
@@ -62,7 +58,7 @@ use yii\helpers\Html;
                         'content' => $this->blocks['main'],
                         'active' => true,
                     ],
-                ]
+                ],
             ]
         );
         ?>
@@ -75,7 +71,7 @@ use yii\helpers\Html;
             ($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Save')),
             [
                 'id' => 'save-'.$model->formName(),
-                'class' => 'btn btn-success'
+                'class' => 'btn btn-success',
             ]
         );
         ?>

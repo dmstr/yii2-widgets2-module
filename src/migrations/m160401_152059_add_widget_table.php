@@ -11,7 +11,7 @@ class m160401_152059_add_widget_table extends Migration
             'name' => 'VARCHAR(255) NOT NULL',
             'php_class' => 'VARCHAR(255) NOT NULL',
             'json_schema' => 'TEXT NOT NULL',
-            'twig_template' => 'TEXT NULL'
+            'twig_template' => 'TEXT NULL',
         ]);
 
         $this->createTable('{{%hrzg_widget_content}}', [
@@ -48,5 +48,4 @@ class m160401_152059_add_widget_table extends Migration
         $this->dropTable('{{%hrzg_widget_content}}');
         $this->dropTable('{{%hrzg_widget_template}}');
     }
-
 }

@@ -36,7 +36,5 @@ class m160401_152910_add_widget_auth_item extends Migration
         } else {
             throw new \yii\base\Exception('Application authManager must be an instance of \yii\rbac\DbManager');
         }
-
     }
-
 }
