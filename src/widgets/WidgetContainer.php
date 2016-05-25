@@ -17,7 +17,8 @@ use yii\helpers\Json;
 
 class WidgetContainer extends Widget
 {
-    public function init(){
+    public function init()
+    {
         \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
     }
 
@@ -49,7 +50,7 @@ class WidgetContainer extends Widget
             $class = \Yii::createObject($widget->template->php_class);
             $class->setView($widget->getViewFile());
 
-            if($properties) {
+            if ($properties) {
                 $class->setProperties($properties);
             }
 
@@ -63,7 +64,8 @@ class WidgetContainer extends Widget
 
     }
 
-    public function getMenuItems(){
+    public function getMenuItems()
+    {
 
         return [
             [

@@ -7,7 +7,6 @@
 
 namespace _;
 
-use dmstr\bootstrap\Tabs;
 use franciscomaya\sceditor\SCEditorAsset;
 use insolita\wgadminlte\Box;
 use Yii;
@@ -96,19 +95,19 @@ JS;
                 # TODO: workaround for editor registration
                 \franciscomaya\sceditor\SCEditorAsset::register($this)
                 ?>
-            <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-            <?php echo $form->field($model, 'default_properties_json')
-                ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
-                    'schema' => $schema,
-                    'clientOptions' => [
-                        'theme' => 'bootstrap3',
-                        'disable_collapse' => true,
-                        #'disable_edit_json' => true,
-                        'disable_properties' => true,
-                        #'no_additional_properties' => true,
-                    ],
-                ]); ?>
-            <?php \yii\widgets\Pjax::end() ?>
+                <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
+                <?php echo $form->field($model, 'default_properties_json')
+                    ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+                        'schema' => $schema,
+                        'clientOptions' => [
+                            'theme' => 'bootstrap3',
+                            'disable_collapse' => true,
+                            #'disable_edit_json' => true,
+                            'disable_properties' => true,
+                            #'no_additional_properties' => true,
+                        ],
+                    ]); ?>
+                <?php \yii\widgets\Pjax::end() ?>
             </div>
 
             <?php Box::end() ?>
@@ -143,7 +142,7 @@ JS;
     </p>
     <?php $this->endBlock(); ?>
 
-    <?php echo $this->blocks['main']    ?>
+    <?php echo $this->blocks['main'] ?>
     <hr/>
 
     <?php echo $form->errorSummary($model); ?>

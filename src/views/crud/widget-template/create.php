@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'btn btn-default']) ?>
         </div>
     </div>
-    
+
     <hr>
 
     <?php echo $this->render('_form', [

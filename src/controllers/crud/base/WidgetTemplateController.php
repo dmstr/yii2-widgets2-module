@@ -11,13 +11,13 @@
 
 namespace hrzg\widget\controllers\crud\base;
 
-use hrzg\widget\models\crud\WidgetTemplate;
+use dmstr\bootstrap\Tabs;
 use hrzg\widget\models\crud\search\WidgetTemplate as WidgetTemplateSearch;
+use hrzg\widget\models\crud\WidgetTemplate;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\HttpException;
-use yii\helpers\Url;
-use yii\filters\AccessControl;
-use dmstr\bootstrap\Tabs;
 
 /**
  * WidgetTemplateController implements the CRUD actions for WidgetTemplate model.

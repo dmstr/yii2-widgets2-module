@@ -32,7 +32,8 @@ class WidgetTemplate extends BaseWidgetTemplate
         );
     }
 
-    public function optPhpClass(){
+    public function optPhpClass()
+    {
         $json = Yii::$app->settings->get('availablePhpClasses', 'widgets', []);
         if (!isset($json->scalar)) {
             return [];

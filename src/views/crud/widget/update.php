@@ -9,8 +9,8 @@ namespace _;
  */
 
 
-use yii\helpers\Html;
 use Yii;
+use yii\helpers\Html;
 
 /**
  *
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
 <div class="giiant-crud widget-update">
 
     <?php \insolita\wgadminlte\Box::begin() ?>
-    
+
     <h1>
         <?php echo $model->getAliasModel() ?>
         <small>

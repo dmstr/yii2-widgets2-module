@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
 
-<hr>
+    <hr>
 
     <div class="table-responsive">
         <?php echo GridView::widget([
@@ -97,8 +97,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
-<?php \yii\widgets\Pjax::end() ?>
-<?php \insolita\wgadminlte\Box::end() ?>
+    <?php \yii\widgets\Pjax::end() ?>
+    <?php \insolita\wgadminlte\Box::end() ?>
 
 </div>
 

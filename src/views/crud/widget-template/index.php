@@ -82,10 +82,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
+    <?php \yii\widgets\Pjax::end() ?>
 
-<?php \yii\widgets\Pjax::end() ?>
-
-<?php \insolita\wgadminlte\Box::end() ?>
+    <?php \insolita\wgadminlte\Box::end() ?>
 
 </div>
 

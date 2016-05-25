@@ -2,12 +2,10 @@
 
 namespace _;
 
-use yii\helpers\Html;
 use hrzg\widget\models\crud\search\WidgetTemplate;
 use hrzg\widget\models\crud\WidgetContent;
-use insolita\wgadminlte\Box;
 use insolita\wgadminlte\SmallBox;
-use yii\widgets\ListView;
+use yii\helpers\Html;
 
 /*
  * @var yii\web\View $this
@@ -53,6 +51,6 @@ use yii\widgets\ListView;
 </p>
 <h4>Example</h4>
 <p>
-<code>{"hrzg\\widget\\widgets\\TwigTemplate": "Twig layout"}</code></p>
-<?= Html::a('Open settings', ['/settings'], ['class'=>'btn btn-default']) ?>
+    <code>{"hrzg\\widget\\widgets\\TwigTemplate": "Twig layout"}</code></p>
+<?= Html::a('Open settings', ['/settings'], ['class' => 'btn btn-default']) ?>
 <?php \insolita\wgadminlte\Box::end() ?>

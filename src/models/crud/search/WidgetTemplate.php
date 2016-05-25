@@ -8,10 +8,10 @@
 
 namespace hrzg\widget\models\crud\search;
 
+use hrzg\widget\models\crud\WidgetTemplate as WidgetTemplateModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use hrzg\widget\models\crud\WidgetTemplate as WidgetTemplateModel;
 
 /**
  * WidgetTemplate represents the model behind the search form about `hrzg\widget\models\crud\WidgetTemplate`.
