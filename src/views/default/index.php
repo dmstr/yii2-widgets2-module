@@ -26,6 +26,7 @@ use yii\helpers\Html;
         <?= \insolita\wgadminlte\SmallBox::widget(
             [
                 'head' => WidgetTemplate::find()->count(),
+                'type' => SmallBox::TYPE_PURPLE,
                 'footer' => 'Templates',
                 'footer_link' => ['crud/widget-template']
             ]
