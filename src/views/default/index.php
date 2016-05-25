@@ -54,4 +54,8 @@ use yii\helpers\Html;
 <p>
     <code>{"hrzg\\widget\\widgets\\TwigTemplate": "Twig layout"}</code></p>
 <?= Html::a('Open settings', ['/settings'], ['class' => 'btn btn-default']) ?>
+
+<?= Html::a('Online documentation', 'https://git.hrzg.de/hrzg/yii2-widgets2-module', ['class' => 'btn btn-info']) ?>
+
+
 <?php \insolita\wgadminlte\Box::end() ?>

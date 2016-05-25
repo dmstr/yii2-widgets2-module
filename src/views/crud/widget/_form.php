@@ -10,7 +10,6 @@ use Yii;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-SCEditorAsset::register($this);
 /*
  *
  * @var yii\web\View $this
