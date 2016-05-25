@@ -20,6 +20,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
 ?>
 <div class="giiant-crud widget-template-update">
 
+    <?php \insolita\wgadminlte\Box::begin() ?>
+
     <h1>
         <?php echo $model->getAliasModel() ?>
         <small>
@@ -31,8 +33,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
             ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </div>
 
+    <hr>
+
     <?php echo $this->render('_form', [
         'model' => $model,
     ]); ?>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
 
 </div>

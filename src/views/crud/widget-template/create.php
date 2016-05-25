@@ -19,11 +19,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud widget-template-create">
 
+    <?php \insolita\wgadminlte\Box::begin() ?>
+
     <h1>
         <?php echo $model->getAliasModel() ?>
         <small>
             <?php echo $model->name ?>        </small>
     </h1>
+
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">
@@ -33,9 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'btn btn-default']) ?>
         </div>
     </div>
+    
+    <hr>
 
     <?php echo $this->render('_form', [
         'model' => $model,
     ]); ?>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
 
 </div>

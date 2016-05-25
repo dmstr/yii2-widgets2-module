@@ -143,20 +143,7 @@ JS;
     </p>
     <?php $this->endBlock(); ?>
 
-    <?php echo
-    Tabs::widget(
-        [
-            'encodeLabels' => false,
-            'items' => [
-                [
-                    'label' => $model->getAliasModel(),
-                    'content' => $this->blocks['main'],
-                    'active' => true,
-                ],
-            ]
-        ]
-    );
-    ?>
+    <?php echo $this->blocks['main']    ?>
     <hr/>
 
     <?php echo $form->errorSummary($model); ?>

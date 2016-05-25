@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //             echo $this->render('_search', ['model' =>$searchModel]);
     ?>
 
+    <?php \insolita\wgadminlte\Box::begin() ?>
 
     <?php \yii\widgets\Pjax::begin([
         'id' => 'pjax-main',
@@ -45,30 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'btn btn-success']) ?>
         </div>
 
-        <div class="pull-right">
 
-
-            <?php echo
-            \yii\bootstrap\ButtonDropdown::widget(
-                [
-                    'id' => 'giiant-relations',
-                    'encodeLabel' => false,
-                    'label' => '<span class="glyphicon glyphicon-paperclip"></span> '.Yii::t('app', 'Relations'),
-                    'dropdown' => [
-                        'options' => [
-                            'class' => 'dropdown-menu-right'
-                        ],
-                        'encodeLabels' => false,
-                        'items' => []
-                    ],
-                    'options' => [
-                        'class' => 'btn-default'
-                    ]
-                ]
-            );
-            ?>        </div>
     </div>
 
+    <hr/>
 
     <div class="table-responsive">
         <?php echo GridView::widget([
@@ -100,7 +81,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
 
-</div>
 
 
 <?php \yii\widgets\Pjax::end() ?>
+
+<?php \insolita\wgadminlte\Box::end() ?>
+
+</div>
+

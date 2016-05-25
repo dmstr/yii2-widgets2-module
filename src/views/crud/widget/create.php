@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud widget-create">
 
+    <?php \insolita\wgadminlte\Box::begin() ?>
+
     <h1>
         <?php echo $model->getAliasModel() ?>
         <small>
@@ -33,6 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'btn btn-default']) ?>
         </div>
     </div>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
 
     <?php echo $this->render('_form', [
         'model' => $model,

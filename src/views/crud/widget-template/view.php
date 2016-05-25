@@ -33,6 +33,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
         </span>
     <?php endif; ?>
 
+    <?php \insolita\wgadminlte\Box::begin() ?>
+
     <h1>
         <?php echo $model->getAliasModel() ?>
         <small>
@@ -58,6 +60,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
 
     </div>
 
+    <hr>
 
     <?php $this->beginBlock('hrzg\widget\models\crud\WidgetTemplate'); ?>
 
@@ -101,4 +104,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
         ]
     );
     ?>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
+
 </div>

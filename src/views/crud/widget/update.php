@@ -1,4 +1,7 @@
 <?php
+
+namespace _;
+
 /**
  * /app/src/../runtime/giiant/fcd70a9bfdf8de75128d795dfc948a74
  *
@@ -7,6 +10,7 @@
 
 
 use yii\helpers\Html;
+use Yii;
 
 /**
  *
@@ -20,6 +24,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
 ?>
 <div class="giiant-crud widget-update">
 
+    <?php \insolita\wgadminlte\Box::begin() ?>
+    
     <h1>
         <?php echo $model->getAliasModel() ?>
         <small>
@@ -31,8 +37,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
             ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </div>
 
+    <?php \insolita\wgadminlte\Box::end() ?>
+
     <?php echo $this->render('_form', [
         'model' => $model,
     ]); ?>
+
 
 </div>
