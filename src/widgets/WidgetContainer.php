@@ -38,6 +38,7 @@ class WidgetContainer extends Widget
     {
         \Yii::trace(\Yii::$app->requestedRoute, __METHOD__);
         $models = WidgetContent::find()
+            ->orderBy('rank')
             ->where(
                 [
                     'container_id' => $this->id,
