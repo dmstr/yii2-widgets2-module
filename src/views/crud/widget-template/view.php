@@ -1,16 +1,12 @@
 <?php
 /**
- * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee
- *
- * @package default
+ * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee.
  */
-
-
 use dmstr\bootstrap\Tabs;
 use dmstr\helpers\Html;
 use yii\widgets\DetailView;
 
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetTemplate $model
@@ -19,7 +15,7 @@ $copyParams = $model->attributes;
 
 $this->title = $model->getAliasModel().$model->name;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'View');
 ?>
 <div class="giiant-crud widget-template-view">
@@ -32,6 +28,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
             <?php echo \Yii::$app->session->getFlash('deleteError') ?>
         </span>
     <?php endif; ?>
+
+    <?php \insolita\wgadminlte\Box::begin() ?>
 
     <h1>
         <?php echo $model->getAliasModel() ?>
@@ -46,7 +44,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
             <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span> '.Yii::t('app', 'Edit'),
                 ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
             <?php echo Html::a('<span class="glyphicon glyphicon-copy"></span> '.Yii::t('app', 'Copy'),
-                ['create', 'id' => $model->id, 'WidgetTemplate            ' => $copyParams],
+                ['create', 'id' => $model->id, 'WidgetTemplate' => $copyParams],
                 ['class' => 'btn btn-success']) ?>
             <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> '.Yii::t('app', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>
@@ -58,6 +56,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
 
     </div>
 
+    <hr>
 
     <?php $this->beginBlock('hrzg\widget\models\crud\WidgetTemplate'); ?>
 
@@ -97,8 +96,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
                     'content' => $this->blocks['hrzg\widget\models\crud\WidgetTemplate'],
                     'active' => true,
                 ],
-            ]
+            ],
         ]
     );
     ?>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
+
 </div>

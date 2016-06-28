@@ -9,8 +9,9 @@ class DefaultController extends Controller
 {
     public function actionIndex()
     {
-        $searchModel = new WidgetTemplate;
+        $searchModel = new WidgetTemplate();
         $dataProvider = $searchModel->search([]);
+
         return $this->render('index', ['templatesDataProvider' => $dataProvider]);
     }
 }

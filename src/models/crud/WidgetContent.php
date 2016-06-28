@@ -3,7 +3,6 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
-use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -29,8 +28,9 @@ class WidgetContent extends BaseWidget
      */
     public function getViewFile()
     {
-        $file = '/'.\Yii::getAlias('@runtime')."/".md5($this->template->twig_template).".twig";
+        $file = '/'.\Yii::getAlias('@runtime').'/'.md5($this->template->twig_template).'.twig';
         file_put_contents($file, $this->template->twig_template);
+
         return $file;
     }
 }

@@ -1,15 +1,11 @@
 <?php
 /**
- * /app/src/../runtime/giiant/eeda5c365686c9888dbc13dbc58f89a1
- *
- * @package default
+ * /app/src/../runtime/giiant/eeda5c365686c9888dbc13dbc58f89a1.
  */
-
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\search\WidgetTemplate $model

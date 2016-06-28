@@ -9,7 +9,7 @@ use Yii;
 /**
  * This is the base-model class for table "app_hrzg_widget".
  *
- * @property integer $id
+ * @property int $id
  * @property string $status
  * @property string $widget_template_id
  * @property string $default_properties_json
@@ -29,10 +29,8 @@ use Yii;
  */
 abstract class Widget extends \yii\db\ActiveRecord
 {
-
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -40,7 +38,8 @@ abstract class Widget extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @return \hrzg\widget\models\crud\query\WidgetQuery the active query used by this AR class.
      */
     public static function find()
@@ -50,7 +49,8 @@ abstract class Widget extends \yii\db\ActiveRecord
 
     /**
      * Alias name of table for crud viewsLists all Area models.
-     * Change the alias name manual if needed later
+     * Change the alias name manual if needed later.
+     *
      * @return string
      */
     public function getAliasModel($plural = false)
@@ -63,7 +63,7 @@ abstract class Widget extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -76,12 +76,12 @@ abstract class Widget extends \yii\db\ActiveRecord
             [['name_id'], 'string', 'max' => 64],
             [['rank', 'access_owner'], 'string', 'max' => 11],
             [['request_param', 'access_read', 'access_update', 'access_delete'], 'string', 'max' => 255],
-            [['access_domain'], 'string', 'max' => 8]
+            [['access_domain'], 'string', 'max' => 8],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -105,7 +105,7 @@ abstract class Widget extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
+    /*
      * @inheritdoc
      */
     /*public function attributeHints()
@@ -131,6 +131,4 @@ abstract class Widget extends \yii\db\ActiveRecord
                 'updated_at' => Yii::t('app', 'Updated At'),
             ]);
     }*/
-
-
 }

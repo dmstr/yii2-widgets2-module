@@ -1,14 +1,10 @@
 <?php
 /**
- * /app/src/../runtime/giiant/fccccf4deb34aed738291a9c38e87215
- *
- * @package default
+ * /app/src/../runtime/giiant/fccccf4deb34aed738291a9c38e87215.
  */
-
-
 use yii\helpers\Html;
 
-/**
+/*
  *
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetContent $model
@@ -18,6 +14,8 @@ $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud widget-create">
+
+    <?php \insolita\wgadminlte\Box::begin() ?>
 
     <h1>
         <?php echo $model->getAliasModel() ?>
@@ -33,6 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'btn btn-default']) ?>
         </div>
     </div>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
 
     <?php echo $this->render('_form', [
         'model' => $model,

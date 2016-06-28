@@ -9,17 +9,15 @@ use Yii;
 /**
  * This is the base-model class for table "app_hrzg_widget_template".
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $json_schema
  * @property string $twig_template
  */
 abstract class WidgetTemplate extends \yii\db\ActiveRecord
 {
-
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -27,7 +25,8 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @return \hrzg\widget\models\crud\query\WidgetTemplateQuery the active query used by this AR class.
      */
     public static function find()
@@ -37,7 +36,8 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
 
     /**
      * Alias name of table for crud viewsLists all Area models.
-     * Change the alias name manual if needed later
+     * Change the alias name manual if needed later.
+     *
      * @return string
      */
     public function getAliasModel($plural = false)
@@ -50,19 +50,19 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['name', 'php_class', 'json_schema'], 'required'],
             [['json_schema', 'twig_template'], 'string'],
-            [['name'], 'string', 'max' => 255]
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -70,12 +70,12 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'json_schema' => Yii::t('app', 'Json Schema'),
-            'twig_template' => Yii::t('app', 'Template'),
+            'twig_template' => Yii::t('app', 'Twig Template'),
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeHints()
     {
@@ -88,6 +88,4 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
                 'twig_template' => Yii::t('app', 'Template'),
             ]);
     }
-
-
 }
