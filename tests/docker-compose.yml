@@ -25,6 +25,7 @@ services:
       DB_PORT_3306_TCP_PORT: 3306
       DB_ENV_MYSQL_ROOT_USER: root
       DB_ENV_MYSQL_ROOT_PASSWORD: secretadmin
+      MYSQL_PASSWORD: secretadmin
     volumes:
       - /app
       - ../:/app/vendor/hrzg/yii2-widgets2-module
@@ -38,7 +39,7 @@ services:
       MYSQL_ROOT_PASSWORD: secretadmin
 
   seleniumfirefox:
-    image: 'selenium/standalone-firefox-debug:2.47.1'
+    image: 'selenium/standalone-firefox-debug:2.53.0'
     expose:
         - '4444'
     ports:
