@@ -66,7 +66,6 @@ class WidgetController extends Controller
 
         Tabs::clearLocalStorage();
 
-        Url::remember();
         \Yii::$app->session['__crudReturnUrl'] = null;
 
         return $this->render('index', [
@@ -85,7 +84,7 @@ class WidgetController extends Controller
     public function actionView($id)
     {
         \Yii::$app->session['__crudReturnUrl'] = Url::previous();
-        Url::remember();
+
         Tabs::rememberActiveState();
 
         return $this->render('view', [
@@ -105,7 +104,11 @@ class WidgetController extends Controller
 
         try {
             if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
+                if (Url::previous($model->route)) {
+                    return $this->redirect(Url::previous($model->route));
+                } else {
+                    return $this->redirect(['view', 'id'=>$model->id]);
+                }
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -130,7 +133,7 @@ class WidgetController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load($_POST) && $model->save()) {
-            return $this->redirect(Url::previous());
+            return $this->redirect(Url::previous($model->route));
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -149,7 +152,9 @@ class WidgetController extends Controller
     public function actionDelete($id)
     {
         try {
-            $this->findModel($id)->delete();
+            $model = $this->findModel($id);
+            $redirectUrl = $model->route;
+            $model->delete();
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             \Yii::$app->getSession()->addFlash('error', $msg);
@@ -166,7 +171,7 @@ class WidgetController extends Controller
             $url = \Yii::$app->session['__crudReturnUrl'];
             \Yii::$app->session['__crudReturnUrl'] = null;
 
-            return $this->redirect($url);
+            return $this->redirect(Url::previous($redirectUrl));
         } else {
             return $this->redirect(['index']);
         }

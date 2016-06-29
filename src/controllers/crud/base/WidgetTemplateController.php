@@ -66,7 +66,7 @@ class WidgetTemplateController extends Controller
 
         Tabs::clearLocalStorage();
 
-        Url::remember();
+        #Url::remember();
         \Yii::$app->session['__crudReturnUrl'] = null;
 
         return $this->render('index', [
@@ -85,7 +85,7 @@ class WidgetTemplateController extends Controller
     public function actionView($id)
     {
         \Yii::$app->session['__crudReturnUrl'] = Url::previous();
-        Url::remember();
+        #Url::remember();
         Tabs::rememberActiveState();
 
         return $this->render('view', [
@@ -105,7 +105,7 @@ class WidgetTemplateController extends Controller
 
         try {
             if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
+                return $this->redirect('index');
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -130,7 +130,7 @@ class WidgetTemplateController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load($_POST) && $model->save()) {
-            return $this->redirect(Url::previous());
+            return $this->redirect(['view', 'id'=>$model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
