@@ -81,9 +81,9 @@ return [
         ]
     ],
     'modules' => [
-        'widget' => [
+        'widgets' => [
             'class' => 'hrzg\widget\Module',
-            'layout' => '@admin-views/layouts/box',
+            # Experimental frontend layout --- 'layout' => '@app/views/layouts/main',
         ]
     ]
 ];
