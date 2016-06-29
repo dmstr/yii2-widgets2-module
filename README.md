@@ -58,8 +58,8 @@ Example with `yii2-prototype-module`
 
 ### Widget
 
-Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
-
+- Standard Twig widget `hrzg\widget\widgets\TwigTemplate`
+- Char-Rank ordering `001`, `10`, `5`, `aa1`, `aa1.2`, `b0` (not numeric) 
 
 ### JSON
 
