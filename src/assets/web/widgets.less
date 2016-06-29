@@ -1,25 +1,24 @@
 .hrzg-widget-widget-container {
-  min-height: 32px;
+  min-height: 48px;
+  outline: 2px dotted rgba(0,0,0,0.05);
   &:hover {
-    outline: 2px dashed #ccc;
+    outline: 2px dotted #ccc;
+    .hrzg-widget-container-controls, .hrzg-widget-widget-controls {
+      opacity: 1;
+    }
   }
 
   .hrzg-widget-widget-controls {
-    opacity: 0.3;
+    opacity: 0;
     position: absolute;
-    &:hover {
-      opacity: 1;
-    }
   }
 
   .hrzg-widget-container-controls {
-    opacity: 0.3;
-    &:hover {
-      opacity: 1;
-    }
+    opacity: 0;
   }
 
   .hrzg-widget-widget {
+    min-height: 32px;
     &:hover {
       outline: 4px solid gray;
     }
