@@ -19,6 +19,10 @@ class WidgetTemplate extends BaseWidgetTemplate
             parent::rules(),
             [
                 [
+                    ['name'],
+                    'unique'
+                ],
+                [
                     'json_schema',
                     function ($attribute, $params) {
                         try {
@@ -28,6 +32,7 @@ class WidgetTemplate extends BaseWidgetTemplate
                         }
                     },
                 ],
+
             ]
         );
     }
