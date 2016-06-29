@@ -40,14 +40,20 @@ use yii\helpers\Html;
     ?>
 
     <?php $js = <<<JS
+var lastTemplateId = '{$model->widget_template_id}';
 var widgets = {
 	'updateTemplate': function(elem){
         $.pjax.defaults.timeout = 5000;
-		if (confirm('Reset values and update template?')) {
+        console.log($(elem).val());
+		if (!lastTemplateId || confirm('Reset values and update template?')) {
+		    lastTemplateId = $(elem).val(); 
 			url = '/de/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
 			//alert(url);
 			$.pjax.reload({url: url, container: '#pjax-widget-form'});
+		} else {
+		    $(elem).val(lastTemplateId);
 		}
+		return false;
 	}
 }
 JS;
@@ -81,7 +87,7 @@ JS;
             <?php Box::begin() ?>
             <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
                 [
-                    'onchange' => 'widgets.updateTemplate()',
+                    'onchange' => 'widgets.updateTemplate(this)',
                 ]
             ) ?>
 
