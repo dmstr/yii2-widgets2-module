@@ -57,5 +57,14 @@ use yii\helpers\Html;
 
 <?= Html::a('Online documentation', 'https://git.hrzg.de/hrzg/yii2-widgets2-module', ['class' => 'btn btn-info']) ?>
 
+<?php \insolita\wgadminlte\Box::end() ?>
+
+
+<?php \insolita\wgadminlte\Box::begin() ?>
+
+<?= Html::a('Test page index', ['test/index'], ['class' => 'btn btn-warning']) ?>
+
+<?= Html::a('Test page-1 (with parameter)', ['test/with-param', 'id'=>'page-1'], ['class' => 'btn btn-warning']) ?>
+<?= Html::a('Test page-2 (with parameter)', ['test/with-param', 'id'=>'page-2'], ['class' => 'btn btn-warning']) ?>
 
 <?php \insolita\wgadminlte\Box::end() ?>
