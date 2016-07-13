@@ -69,6 +69,8 @@ class WidgetTemplate extends WidgetTemplateModel
             ->andFilterWhere(['like', 'json_schema', $this->json_schema])
             ->andFilterWhere(['like', 'twig_template', $this->twig_template]);
 
+        $query->orderBy('name');
+
         return $dataProvider;
     }
 }
