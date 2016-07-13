@@ -46,4 +46,14 @@ class WidgetTemplate extends BaseWidgetTemplate
 
         return Json::decode($json->scalar);
     }
+
+    /**
+     * Format json_schema before saving to database
+     * @param string $json_schema
+     */
+    public function beforeSave($insert) {
+        $data = json_decode($this->json_schema);
+        $this->json_schema = json_encode($data, JSON_PRETTY_PRINT);
+        return parent::beforeSave($insert);
+    }
 }
