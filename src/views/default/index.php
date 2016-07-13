@@ -17,7 +17,7 @@ use yii\helpers\Html;
         <?= \insolita\wgadminlte\SmallBox::widget(
             [
                 'head' => WidgetContent::find()->count(),
-                'footer' => 'Contents',
+                'footer' => 'Widget Contents',
                 'footer_link' => ['crud/widget'],
             ]
         ) ?>
@@ -53,6 +53,7 @@ use yii\helpers\Html;
 <h4>Example</h4>
 <p>
     <code>{"hrzg\\widget\\widgets\\TwigTemplate": "Twig layout"}</code></p>
+
 <?= Html::a('Open settings', ['/settings'], ['class' => 'btn btn-default']) ?>
 
 <?= Html::a('Online documentation', 'https://git.hrzg.de/hrzg/yii2-widgets2-module', ['class' => 'btn btn-info']) ?>
@@ -62,9 +63,10 @@ use yii\helpers\Html;
 
 <?php \insolita\wgadminlte\Box::begin() ?>
 
-<?= Html::a('Test page index', ['test/index'], ['class' => 'btn btn-warning']) ?>
+<?= Html::a('Test page index', ['test/index'], ['class' => 'btn btn-default']) ?>
 
-<?= Html::a('Test page-1 (with parameter)', ['test/with-param', 'id'=>'page-1'], ['class' => 'btn btn-warning']) ?>
-<?= Html::a('Test page-2 (with parameter)', ['test/with-param', 'id'=>'page-2'], ['class' => 'btn btn-warning']) ?>
+<?= Html::a('Test page-1 (with parameter)', ['test/with-param', 'id' => 'page-1'], ['class' => 'btn btn-default']) ?>
+
+<?= Html::a('Test page-2 (with parameter)', ['test/with-param', 'id' => 'page-2'], ['class' => 'btn btn-default']) ?>
 
 <?php \insolita\wgadminlte\Box::end() ?>

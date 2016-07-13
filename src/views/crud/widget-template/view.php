@@ -67,8 +67,16 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'View');
             'id',
             'name',
             'php_class',
-            'json_schema:ntext',
-            'twig_template:ntext',
+            [
+                'attribute' => 'json_schema',
+                'format' => 'html',
+                'value' => '<pre class="pre-x-scrollable">'.Html::encode($model->json_schema).'</pre>'
+            ],
+            [
+                'attribute' => 'twig_template',
+                'format' => 'html',
+                'value' => '<pre>'.Html::encode($model->twig_template).'</pre>'
+            ],
         ],
     ]); ?>
 

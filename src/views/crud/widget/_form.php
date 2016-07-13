@@ -47,7 +47,7 @@ var widgets = {
         console.log($(elem).val());
 		if (!lastTemplateId || confirm('Reset values and update template?')) {
 		    lastTemplateId = $(elem).val(); 
-			url = '/de/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
+			url = '/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
 			//alert(url);
 			$.pjax.reload({url: url, container: '#pjax-widget-form'});
 		} else {
