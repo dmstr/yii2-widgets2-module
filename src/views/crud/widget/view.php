@@ -1,9 +1,12 @@
 <?php
+
+namespace _;
+
 /**
  * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee.
  */
 use dmstr\bootstrap\Tabs;
-use dmstr\helpers\Html;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /*
@@ -16,7 +19,7 @@ $copyParams = $model->attributes;
 $this->title = $model->getAliasModel().$model->id;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'View');
+$this->params['breadcrumbs'][] = \Yii::t('app', 'View');
 ?>
 <div class="giiant-crud widget-view">
 

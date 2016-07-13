@@ -3,7 +3,7 @@
  * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee.
  */
 use dmstr\bootstrap\Tabs;
-use dmstr\helpers\Html;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /*
