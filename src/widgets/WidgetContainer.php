@@ -12,7 +12,6 @@ namespace hrzg\widget\widgets;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use rmrevin\yii\fontawesome\AssetBundle;
-use rmrevin\yii\fontawesome\component\Icon;
 use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
@@ -22,6 +21,8 @@ use yii\helpers\Url;
 
 class WidgetContainer extends Widget
 {
+    const CSS_PREFIX = 'hrzg-widget';
+
     public function init()
     {
         \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
@@ -32,7 +33,7 @@ class WidgetContainer extends Widget
 
     public function run()
     {
-        Url::remember('',$this->getRoute());
+        Url::remember('', $this->getRoute());
         return $this->renderWidgets();
     }
 
@@ -89,13 +90,17 @@ class WidgetContainer extends Widget
         return $models;
     }
 
-    private function getRoute(){
+    private function getRoute()
+    {
         return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->controller->action->id;
     }
 
     private function renderWidgets()
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-container']);
+        $html = Html::beginTag(
+            'div',
+            ['class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container']
+        );
 
         if (\Yii::$app->user->can('widgets')) {
             $html .= $this->generateContainerControls();
@@ -145,7 +150,7 @@ class WidgetContainer extends Widget
 
     private function generateWidgetControls($widget)
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role'=>'group']);
+        $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role' => 'group']);
         $html .= Html::a(
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
