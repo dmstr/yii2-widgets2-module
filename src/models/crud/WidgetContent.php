@@ -14,7 +14,7 @@ class WidgetContent extends BaseWidget
     {
         return ArrayHelper::merge(
             ['' => 'none'],
-            \yii\helpers\ArrayHelper::map(WidgetTemplate::find()->all(), 'id', 'name')
+            \yii\helpers\ArrayHelper::map(WidgetTemplate::find()->orderBy('name')->all(), 'id', 'name')
         );
     }
 
