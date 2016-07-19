@@ -132,7 +132,7 @@ class WidgetController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load($_POST) && $model->save()) {
+        if ($model->load($_POST) && $model->save() && Url::previous($model->route)) {
             return $this->redirect(Url::previous($model->route));
         } else {
             return $this->render('update', [
@@ -162,15 +162,7 @@ class WidgetController extends Controller
             return $this->redirect(Url::previous());
         }
 
-        // TODO: improve detection
-        $isPivot = strstr('$id', ',');
-        if ($isPivot == true) {
-            return $this->redirect(Url::previous());
-        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-            Url::remember(null);
-            $url = \Yii::$app->session['__crudReturnUrl'];
-            \Yii::$app->session['__crudReturnUrl'] = null;
-
+        if (Url::previous($redirectUrl)) {
             return $this->redirect(Url::previous($redirectUrl));
         } else {
             return $this->redirect(['index']);
