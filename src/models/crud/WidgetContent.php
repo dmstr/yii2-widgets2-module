@@ -10,6 +10,16 @@ use yii\helpers\ArrayHelper;
  */
 class WidgetContent extends BaseWidget
 {
+    public function rules()
+    {
+        return ArrayHelper::merge(
+            parent::rules(),
+            [
+                ['name_id', 'match', 'pattern' => '/^[a-z0-9-]*$/i']
+            ]
+        );
+    }
+
     public static function optsWidgetTemplateId()
     {
         return ArrayHelper::merge(

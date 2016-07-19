@@ -103,3 +103,11 @@ Example with `yii2-prototype-module`
 ```
 
 For more examples, please see the [docs](./docs)
+
+
+Upgrading
+---------
+
+### from 0.2 to 0.3
+
+    {{ cell_widget({id: 'header'}) }}

@@ -19,9 +19,11 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
-class WidgetContainer extends Widget
+class Cell extends Widget
 {
     const CSS_PREFIX = 'hrzg-widget';
+
+    public $requestParam = 'pageId';
 
     public function init()
     {
@@ -49,7 +51,7 @@ class WidgetContainer extends Widget
                     'WidgetContent' => [
                         'route' => $this->getRoute(),
                         'container_id' => $this->id,
-                        'request_param' => \Yii::$app->request->get('id'),
+                        'request_param' => \Yii::$app->request->get($this->requestParam),
                         'access_domain' => \Yii::$app->language,
                     ],
                 ],
@@ -76,13 +78,13 @@ class WidgetContainer extends Widget
             ->orderBy('rank ASC')
             ->andFilterWhere(
                 [
-                    'request_param' => \Yii::$app->request->get('id'),
+                    'request_param' => \Yii::$app->request->get($this->requestParam),
                 ]
             )
             ->andWhere(
                 [
                     'container_id' => $this->id,
-                    'route' => $this->getRoute(),
+                    'route' => [$this->getRoute(), '*'],
                     'access_domain' => \Yii::$app->language,
                 ])
             ->all();
@@ -139,7 +141,7 @@ class WidgetContainer extends Widget
                 'WidgetContent' => [
                     'route' => $this->getRoute(),
                     'container_id' => $this->id,
-                    'request_param' => \Yii::$app->request->get('id'),
+                    'request_param' => \Yii::$app->request->get($this->requestParam),
                     'access_domain' => \Yii::$app->language,
                 ]
             ],
@@ -152,7 +154,7 @@ class WidgetContainer extends Widget
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role' => 'group']);
         $html .= Html::a(
-            FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
+            FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->name_id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
             ['class' => 'btn btn-xs btn-primary']
         );
