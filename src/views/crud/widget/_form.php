@@ -120,18 +120,20 @@ JS;
             <?php Box::begin() ?>
 
             <?php echo $form->field($model, 'status')->checkbox() ?>
-            <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
+            <hr/>
+            <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
 
             <?php Box::end() ?>
 
             <?php Box::begin([
-                'title' => 'Access',
+                'title' => 'Access (beta)',
                 'collapse' => true,
                 'collapseDefault' => true,
+                'collapse_remember' => false,
             ]) ?>
             <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
             <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
