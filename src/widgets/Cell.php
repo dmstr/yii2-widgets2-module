@@ -101,7 +101,9 @@ class Cell extends Widget
     {
         $html = Html::beginTag(
             'div',
-            ['class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container']
+            [
+                'id' => 'cell-'.$this->id,
+                'class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container']
         );
 
         if (\Yii::$app->user->can('widgets')) {
@@ -116,7 +118,7 @@ class Cell extends Widget
             if ($properties) {
                 $class->setProperties($properties);
             }
-            $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget']);
+            $html .= Html::beginTag('div', ['id'=>'widget-'.($widget->name_id?:$widget->id), 'class' => 'hrzg-widget-widget']);
             if (\Yii::$app->user->can('widgets')) {
                 $html .= $this->generateWidgetControls($widget);
             }

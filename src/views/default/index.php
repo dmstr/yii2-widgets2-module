@@ -65,8 +65,8 @@ use yii\helpers\Html;
 
 <?= Html::a('Test page index', ['test/index'], ['class' => 'btn btn-default']) ?>
 
-<?= Html::a('Test page-1 (with parameter)', ['test/with-param', 'id' => 'page-1'], ['class' => 'btn btn-default']) ?>
+<?= Html::a('Test page-1 (with parameter)', ['test/with-param', 'pageId' => 'page-1'], ['class' => 'btn btn-default']) ?>
 
-<?= Html::a('Test page-2 (with parameter)', ['test/with-param', 'id' => 'page-2'], ['class' => 'btn btn-default']) ?>
+<?= Html::a('Test page-2 (with parameter)', ['test/with-param', 'pageId' => 'page-2'], ['class' => 'btn btn-default']) ?>
 
 <?php \insolita\wgadminlte\Box::end() ?>
