@@ -1,6 +1,32 @@
 APP CLAUS WIDGET TEMPLATES (JSON)
 =================================
 
+## Layout
+
+```
+{{ use ('hrzg/widget/widgets') }}
+{{ cell_widget({id: 'header'}) }}
+<div class="container">
+    {{ cell_widget({id: 'container'}) }}
+</div>
+```
+
+
+```
+{{ use ('hrzg/widget/widgets') }}
+{{ cell_widget({id: 'header'}) }}
+<div class="row">
+    <div class="col-sm-4">
+        {{ cell_widget({id: 'block1'}) }}
+    </div>
+    <div class="col-sm-4">
+        {{ cell_widget({id: 'block2'}) }}
+    </div>
+    <div class="col-sm-4">
+        {{ cell_widget({id: 'block3'}) }}
+    </div>
+</div>
+```
 
 *Block Widget*
 ----------------
