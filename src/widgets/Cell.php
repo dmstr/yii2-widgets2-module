@@ -28,7 +28,7 @@ class Cell extends Widget
     public function init()
     {
         \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
-        if (\Yii::$app->user->can('widgets')) {
+        if (\Yii::$app->user->can('widgets_crud_widget')) {
             WidgetAsset::register(\Yii::$app->view);
         }
     }
@@ -106,7 +106,7 @@ class Cell extends Widget
                 'class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container']
         );
 
-        if (\Yii::$app->user->can('widgets')) {
+        if (\Yii::$app->user->can('widgets_crud_widget')) {
             $html .= $this->generateContainerControls();
         }
 
@@ -119,7 +119,7 @@ class Cell extends Widget
                 $class->setProperties($properties);
             }
             $html .= Html::beginTag('div', ['id'=>'widget-'.($widget->name_id?:$widget->id), 'class' => 'hrzg-widget-widget']);
-            if (\Yii::$app->user->can('widgets')) {
+            if (\Yii::$app->user->can('widgets_crud_widget')) {
                 $html .= $this->generateWidgetControls($widget);
             }
             $html .= $class->run();

@@ -6,7 +6,7 @@
     "yii2",
     "extension"
   ],
-  "license": "BSD-3-Clause",
+  "license": "proprietary",
   "authors": [
     {
       "name": "Tobias Munk",
@@ -14,9 +14,9 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "*",
+    "yiisoft/yii2": "2.*",
     "yiisoft/yii2-twig": "^2.0.4",
-    "dmstr/yii2-web": "*",
+    "dmstr/yii2-web": ">=0.3.1",
     "beowulfenator/yii2-json-editor": "^1.1"
   },
   "autoload": {
