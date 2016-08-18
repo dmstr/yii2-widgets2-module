@@ -21,10 +21,29 @@ use yii\helpers\Url;
 
 class Cell extends Widget
 {
+    /**
+     * Global route
+     */
+    const GLOBAL_ROUTE = '*';
+
+    /**
+     * Empty request param
+     */
+    const EMPTY_REQUEST_PARAM = '';
+
+    /**
+     * Class prefix
+     */
     const CSS_PREFIX = 'hrzg-widget';
 
+    /**
+     * @var string
+     */
     public $requestParam = 'pageId';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
@@ -33,6 +52,10 @@ class Cell extends Widget
         }
     }
 
+    /**
+     * @inheritdoc
+     * @return string
+     */
     public function run()
     {
         Url::remember('', $this->getRoute());
@@ -78,25 +101,32 @@ class Cell extends Widget
             ->orderBy('rank ASC')
             ->andFilterWhere(
                 [
-                    'request_param' => \Yii::$app->request->get($this->requestParam),
+                    'request_param' => [\Yii::$app->request->get($this->requestParam), self::EMPTY_REQUEST_PARAM],
                 ]
             )
             ->andWhere(
                 [
                     'container_id' => $this->id,
-                    'route' => [$this->getRoute(), '*'],
-                    'access_domain' => \Yii::$app->language,
+                    'route' => [$this->getRoute(), self::GLOBAL_ROUTE],
+                    'access_domain' => mb_strtolower(\Yii::$app->language),
                 ])
             ->all();
 
         return $models;
     }
 
+    /**
+     * @return string
+     */
     private function getRoute()
     {
         return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->controller->action->id;
     }
 
+    /**
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
     private function renderWidgets()
     {
         $html = Html::beginTag(
@@ -129,10 +159,9 @@ class Cell extends Widget
         return $html;
     }
 
-    private function createWidget()
-    {
-    }
-
+    /**
+     * @return string
+     */
     private function generateContainerControls()
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pull-right']);
@@ -152,6 +181,11 @@ class Cell extends Widget
         return $html;
     }
 
+    /**
+     * @param $widget
+     *
+     * @return string
+     */
     private function generateWidgetControls($widget)
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role' => 'group']);

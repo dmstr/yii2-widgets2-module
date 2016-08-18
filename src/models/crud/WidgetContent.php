@@ -3,6 +3,7 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
+use hrzg\widget\widgets\Cell;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -10,6 +11,10 @@ use yii\helpers\ArrayHelper;
  */
 class WidgetContent extends BaseWidget
 {
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function rules()
     {
         return ArrayHelper::merge(
@@ -20,6 +25,25 @@ class WidgetContent extends BaseWidget
         );
     }
 
+    /**
+     * Global route needs empty request param
+     * @param bool $insert
+     *
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        parent::beforeSave($insert);
+
+        if ($this->route === Cell::GLOBAL_ROUTE) {
+            $this->request_param = Cell::EMPTY_REQUEST_PARAM;
+        }
+        return true;
+    }
+
+    /**
+     * @return array
+     */
     public static function optsWidgetTemplateId()
     {
         return ArrayHelper::merge(
@@ -28,6 +52,9 @@ class WidgetContent extends BaseWidget
         );
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTemplate()
     {
         return $this->hasOne(WidgetTemplate::className(), ['id' => 'widget_template_id']);
