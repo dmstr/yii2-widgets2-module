@@ -46,8 +46,8 @@ class Cell extends Widget
      */
     public function init()
     {
-        \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
         if (\Yii::$app->user->can('widgets_crud_widget')) {
+            \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
             WidgetAsset::register(\Yii::$app->view);
         }
     }
