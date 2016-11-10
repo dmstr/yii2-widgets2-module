@@ -16,10 +16,10 @@ use yii\helpers\Html;
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetContent $model
  */
-$this->title = $model->getAliasModel().$model->id.', '.Yii::t('app', 'Edit');
+$this->title = $model->getAliasModel().$model->id.', '.Yii::t('widgets', 'Edit');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
+$this->params['breadcrumbs'][] = Yii::t('widgets', 'Edit');
 ?>
 <div class="giiant-crud widget-update">
 
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Edit');
     </h1>
 
     <div class="crud-navigation">
-        <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span> '.Yii::t('app', 'View'),
+        <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span> '.Yii::t('widgets', 'View'),
             ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </div>
 

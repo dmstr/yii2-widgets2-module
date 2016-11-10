@@ -9,7 +9,7 @@ use yii\helpers\Html;
  * @var yii\web\View $this
  * @var hrzg\widget\models\crud\WidgetTemplate $model
  */
-$this->title = Yii::t('app', 'Create');
+$this->title = Yii::t('widgets', 'Create');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="clearfix crud-navigation">
         <div class="pull-left">
             <?php echo Html::a(
-                Yii::t('app', 'Cancel'),
+                Yii::t('widgets', 'Cancel'),
                 \yii\helpers\Url::previous(),
                 ['class' => 'btn btn-default']) ?>
         </div>

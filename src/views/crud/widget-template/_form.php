@@ -67,7 +67,7 @@ use yii\helpers\Html;
 
         <?php echo Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> '.
-            ($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Save')),
+            ($model->isNewRecord ? Yii::t('widgets', 'Create') : Yii::t('widgets', 'Save')),
             [
                 'id' => 'save-'.$model->formName(),
                 'class' => 'btn btn-success',

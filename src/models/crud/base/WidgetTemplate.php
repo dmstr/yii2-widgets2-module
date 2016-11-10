@@ -43,9 +43,9 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     public function getAliasModel($plural = false)
     {
         if ($plural) {
-            return Yii::t('app', 'WidgetTemplates');
+            return Yii::t('widgets', 'WidgetTemplates');
         } else {
-            return Yii::t('app', 'WidgetTemplate');
+            return Yii::t('widgets', 'WidgetTemplate');
         }
     }
 
@@ -67,10 +67,10 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'json_schema' => Yii::t('app', 'Json Schema'),
-            'twig_template' => Yii::t('app', 'Twig Template'),
+            'id' => Yii::t('widgets', 'ID'),
+            'name' => Yii::t('widgets', 'Name'),
+            'json_schema' => Yii::t('widgets', 'Json Schema'),
+            'twig_template' => Yii::t('widgets', 'Twig Template'),
         ];
     }
 
@@ -82,10 +82,10 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
         return array_merge(
             parent::attributeHints(),
             [
-                'id' => Yii::t('app', 'ID'),
-                'name' => Yii::t('app', 'Name'),
-                'json_schema' => Yii::t('app', 'Json Schema'),
-                'twig_template' => Yii::t('app', 'Template'),
+                'id' => Yii::t('widgets', 'ID'),
+                'name' => Yii::t('widgets', 'Name'),
+                'json_schema' => Yii::t('widgets', 'Json Schema'),
+                'twig_template' => Yii::t('widgets', 'Template'),
             ]);
     }
 }

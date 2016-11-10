@@ -56,9 +56,9 @@ abstract class Widget extends \yii\db\ActiveRecord
     public function getAliasModel($plural = false)
     {
         if ($plural) {
-            return Yii::t('app', 'Widgets');
+            return Yii::t('widgets', 'Widgets');
         } else {
-            return Yii::t('app', 'Widget');
+            return Yii::t('widgets', 'Widget');
         }
     }
 
@@ -86,22 +86,22 @@ abstract class Widget extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'status' => Yii::t('app', 'Status'),
-            'widget_template_id' => Yii::t('app', 'Template'),
-            'default_properties_json' => Yii::t('app', 'Widget Properties'),
-            'name_id' => Yii::t('app', 'Name ID'),
-            'container_id' => Yii::t('app', 'Container ID'),
-            'rank' => Yii::t('app', 'Rank'),
-            'route' => Yii::t('app', 'Route'),
-            'request_param' => Yii::t('app', 'Request Param'),
-            'access_owner' => Yii::t('app', 'Access Owner'),
-            'access_domain' => Yii::t('app', 'Access Domain'),
-            'access_read' => Yii::t('app', 'Access Read'),
-            'access_update' => Yii::t('app', 'Access Update'),
-            'access_delete' => Yii::t('app', 'Access Delete'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'id' => Yii::t('widgets', 'ID'),
+            'status' => Yii::t('widgets', 'Status'),
+            'widget_template_id' => Yii::t('widgets', 'Template'),
+            'default_properties_json' => Yii::t('widgets', 'Widget Properties'),
+            'name_id' => Yii::t('widgets', 'Name ID'),
+            'container_id' => Yii::t('widgets', 'Container ID'),
+            'rank' => Yii::t('widgets', 'Rank'),
+            'route' => Yii::t('widgets', 'Route'),
+            'request_param' => Yii::t('widgets', 'Request Param'),
+            'access_owner' => Yii::t('widgets', 'Access Owner'),
+            'access_domain' => Yii::t('widgets', 'Access Domain'),
+            'access_read' => Yii::t('widgets', 'Access Read'),
+            'access_update' => Yii::t('widgets', 'Access Update'),
+            'access_delete' => Yii::t('widgets', 'Access Delete'),
+            'created_at' => Yii::t('widgets', 'Created At'),
+            'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
     }
 
@@ -113,22 +113,22 @@ abstract class Widget extends \yii\db\ActiveRecord
         return array_merge(
             parent::attributeHints(),
             [
-                'id' => Yii::t('app', 'ID'),
-                'status' => Yii::t('app', 'Status'),
-                'widget_template_id' => Yii::t('app', 'Class Name'),
-                'default_properties_json' => Yii::t('app', 'Default Properties Json'),
-                'name_id' => Yii::t('app', 'Name Id'),
-                'container_id' => Yii::t('app', 'Container Id'),
-                'rank' => Yii::t('app', 'Rank'),
-                'route' => Yii::t('app', 'Route'),
-                'request_param' => Yii::t('app', 'Request Param'),
-                'access_owner' => Yii::t('app', 'Access Owner'),
-                'access_domain' => Yii::t('app', 'Access Domain'),
-                'access_read' => Yii::t('app', 'Access Read'),
-                'access_update' => Yii::t('app', 'Access Update'),
-                'access_delete' => Yii::t('app', 'Access Delete'),
-                'created_at' => Yii::t('app', 'Created At'),
-                'updated_at' => Yii::t('app', 'Updated At'),
+                'id' => Yii::t('widgets', 'ID'),
+                'status' => Yii::t('widgets', 'Status'),
+                'widget_template_id' => Yii::t('widgets', 'Class Name'),
+                'default_properties_json' => Yii::t('widgets', 'Default Properties Json'),
+                'name_id' => Yii::t('widgets', 'Name Id'),
+                'container_id' => Yii::t('widgets', 'Container Id'),
+                'rank' => Yii::t('widgets', 'Rank'),
+                'route' => Yii::t('widgets', 'Route'),
+                'request_param' => Yii::t('widgets', 'Request Param'),
+                'access_owner' => Yii::t('widgets', 'Access Owner'),
+                'access_domain' => Yii::t('widgets', 'Access Domain'),
+                'access_read' => Yii::t('widgets', 'Access Read'),
+                'access_update' => Yii::t('widgets', 'Access Update'),
+                'access_delete' => Yii::t('widgets', 'Access Delete'),
+                'created_at' => Yii::t('widgets', 'Created At'),
+                'updated_at' => Yii::t('widgets', 'Updated At'),
             ]);
     }*/
 }
