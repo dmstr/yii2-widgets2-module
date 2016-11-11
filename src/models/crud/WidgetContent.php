@@ -11,6 +11,16 @@ use yii\helpers\ArrayHelper;
  */
 class WidgetContent extends BaseWidget
 {
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'bedezign\yii2\audit\AuditTrailBehavior'
+            ]
+        );
+    }
+
     /**
      * @inheritdoc
      * @return array

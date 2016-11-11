@@ -13,6 +13,16 @@ use yii\helpers\Json;
  */
 class WidgetTemplate extends BaseWidgetTemplate
 {
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'bedezign\yii2\audit\AuditTrailBehavior'
+            ]
+        );
+    }
+
     public function rules()
     {
         return ArrayHelper::merge(
