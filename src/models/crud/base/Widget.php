@@ -34,7 +34,7 @@ abstract class Widget extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'app_hrzg_widget_content';
+        return '{{%hrzg_widget_content}}';
     }
 
     /**

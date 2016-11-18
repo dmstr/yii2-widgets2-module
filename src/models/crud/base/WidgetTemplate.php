@@ -21,7 +21,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'app_hrzg_widget_template';
+        return '{{%hrzg_widget_template}}';
     }
 
     /**
