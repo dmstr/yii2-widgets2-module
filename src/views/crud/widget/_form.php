@@ -93,7 +93,7 @@ JS;
                 ]
             ) ?>
 
-            <div style="overflow: auto">
+            <div style="">
 
                 <?php
                 # TODO: workaround for editor registration
