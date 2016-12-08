@@ -4,7 +4,7 @@
  */
 namespace _;
 
-use franciscomaya\sceditor\SCEditorAsset;
+use dosamigos\ckeditor\CKEditorAsset;
 use insolita\wgadminlte\Box;
 use Yii;
 use yii\bootstrap\ActiveForm;
@@ -97,11 +97,12 @@ JS;
 
                 <?php
                 # TODO: workaround for editor registration
-                \franciscomaya\sceditor\SCEditorAsset::register($this)
+                CKEditorAsset::register($this);
                 ?>
                 <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
                 <?php echo $form->field($model, 'default_properties_json')
                     ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+                        'id' => 'editor',
                         'schema' => $schema,
                         'clientOptions' => [
                             'theme' => 'bootstrap3',
@@ -167,3 +168,26 @@ JS;
 
 
 </div>
+    <?php
+$js = <<<JS
+setTimeout(function(){
+CKEDITOR.replaceAll();
+
+    for (var i in CKEDITOR.instances) {
+        CKEDITOR.instances[i].on('change', function() {
+        this.updateElement()
+        for (var name in editor.editors) {
+            editor.editors[name].refreshValue();
+            editor.editors[name].onChange(true);
+        }
+
+        });
+    }
+    }, 10);
+
+JS;
+
+$this->registerJs($js, \yii\web\View::POS_READY)
+
+
+?>
