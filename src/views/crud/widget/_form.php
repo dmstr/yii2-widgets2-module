@@ -168,26 +168,44 @@ JS;
 
 
 </div>
+
+
     <?php
 $js = <<<JS
-setTimeout(function(){
-CKEDITOR.replaceAll();
 
-    for (var i in CKEDITOR.instances) {
-        CKEDITOR.instances[i].on('change', function() {
-        this.updateElement()
-        for (var name in editor.editors) {
-            editor.editors[name].refreshValue();
-            editor.editors[name].onChange(true);
+editor.on('ready',function() 
+    {
+        CKEDITOR.config.height = '400px';
+        CKEDITOR.config.toolbar = [
+   ['Styles','Format'], ['Link','Image','Table','-','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'], ['Source'],
+      '/',
+   ['Bold','Italic','Underline','StrikeThrough','-','RemoveFormat','-','Undo','Redo','-', 'Paste', 'PasteText', 'PasteFromWord','-','Cut','Copy','Find','Replace','-','Outdent','Indent','-','Print']
+] ;
+        CKEDITOR.replaceAll();    
+        for (var i in CKEDITOR.instances) {
+            CKEDITOR.instances[i].on('change', function() {
+                this.updateElement()
+                for (var name in editor.editors) {
+                    console.log(name);
+                    editor.editors[name].refreshValue();
+                    editor.editors[name].onChange(true);
+                }
+            });
         }
-
-        });
     }
-    }, 10);
+);
+
+editor.on('change',function() {
+    console.log('change');
+    $.each($('textarea'),function(key, obj){
+        // workaround: visible textareas have not been replaced yet
+        if ($(obj).is(":visible")) {
+            CKEDITOR.replace(obj);
+        } 
+    });        
+});
+
 
 JS;
-
 $this->registerJs($js, \yii\web\View::POS_READY)
-
-
 ?>
