@@ -39,10 +39,16 @@ class WidgetContent extends WidgetModel
                     'access_delete',
                     'created_at',
                     'updated_at',
+                    'template.name',
                 ],
                 'safe',
             ],
         ];
+    }
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(),['template.name']);
     }
 
     /**
@@ -72,6 +78,8 @@ class WidgetContent extends WidgetModel
             'query' => $query,
         ]);
 
+        $query->joinWith(['template' => function($query) { $query->from(['template' => 'app_hrzg_widget_template']); }]);
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -98,7 +106,8 @@ class WidgetContent extends WidgetModel
             ->andFilterWhere(['like', 'access_domain', $this->access_domain])
             ->andFilterWhere(['like', 'access_read', $this->access_read])
             ->andFilterWhere(['like', 'access_update', $this->access_update])
-            ->andFilterWhere(['like', 'access_delete', $this->access_delete]);
+            ->andFilterWhere(['like', 'access_delete', $this->access_delete])
+            ->andFilterWhere(['like', 'template.name', $this->getAttribute('template.name')]);
 
         return $dataProvider;
     }
