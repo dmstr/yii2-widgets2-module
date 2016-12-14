@@ -1,7 +1,7 @@
 .hrzg-widget-widget-container {
 
   min-height: 48px;
-  outline: 2px dotted rgba(0,0,0,0.05);
+  outline: 2px dotted rgba(0, 0, 0, 0.05);
   position: relative;
 
   &:hover {
@@ -29,5 +29,16 @@
     &:hover {
       outline: 4px solid gray;
     }
+  }
+}
+
+.selectize-control {
+  &.single.loading {
+    .selectize-input {
+      background: #eee;
+    }
+  }
+  .selectize-dropdown-content {
+    min-height: 300px;
   }
 }

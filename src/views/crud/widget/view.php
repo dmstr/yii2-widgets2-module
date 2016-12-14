@@ -7,6 +7,8 @@ namespace _;
  */
 use dmstr\bootstrap\Tabs;
 use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\VarDumper;
 use yii\widgets\DetailView;
 
 /*
@@ -77,7 +79,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'default_properties_json',
                 'format' => 'raw',
-                'value' => "<pre><code>".Html::encode($model->default_properties_json)."</code></pre>",
+                'value' => '<pre>'.Json::encode($model->default_properties_json, JSON_PRETTY_PRINT).'</pre>',
             ],
             'name_id',
             'container_id',

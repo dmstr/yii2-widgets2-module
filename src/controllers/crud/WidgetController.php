@@ -4,6 +4,7 @@
  */
 namespace hrzg\widget\controllers\crud;
 
+use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\search\WidgetContent;
 
 /**
@@ -11,6 +12,13 @@ use hrzg\widget\models\crud\search\WidgetContent;
  */
 class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetController
 {
+
+    public function beforeAction($action)
+    {
+        WidgetAsset::register($this->view);
+        return parent::beforeAction($action);
+    }
+
     /**
      * Creates a new Widget model.
      * If creation is successful, the browser will be redirected to the 'view' page.

@@ -4,7 +4,6 @@
  */
 namespace _;
 
-use franciscomaya\sceditor\SCEditorAsset;
 use insolita\wgadminlte\Box;
 use Yii;
 use yii\bootstrap\ActiveForm;
@@ -12,7 +11,7 @@ use yii\helpers\Html;
 
 /*
  *
- * @var yii\web\View $this
+ * @var $this yii\web\View
  * @var hrzg\widget\models\crud\WidgetContent $model
  * @var yii\widgets\ActiveForm $form
  */
@@ -46,18 +45,29 @@ var lastTemplateId = '{$model->widget_template_id}';
 var widgets = {
 	'updateTemplate': function(elem){
         $.pjax.defaults.timeout = 5000;
-        console.log($(elem).val());
+        console.log('template: update',$(elem).val());
 		if (!lastTemplateId || confirm('Reset values and update template?')) {
+		    console.log('template: reload');
 		    lastTemplateId = $(elem).val(); 
 			url = '/{$language}/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
 			//alert(url);
-			$.pjax.reload({url: url, container: '#pjax-widget-form'});
+			
+			
+			$.pjax.reload({
+			    url: url, 
+			    container: '#pjax-widget-form'
+			});
+			
 		} else {
 		    $(elem).val(lastTemplateId);
+		    console.log('template: last');
+            editor.trigger('ready');
 		}
 		return false;
 	}
 }
+
+
 JS;
     ?>
     <?php $this->registerJs($js, \yii\web\View::POS_HEAD) ?>
@@ -95,14 +105,12 @@ JS;
 
             <div style="">
 
-                <?php
-                # TODO: workaround for editor registration
-                \franciscomaya\sceditor\SCEditorAsset::register($this)
-                ?>
                 <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
                 <?php echo $form->field($model, 'default_properties_json')
                     ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+                        'id' => 'editor',
                         'schema' => $schema,
+                        'enableSelectize' => true,
                         'clientOptions' => [
                             'theme' => 'bootstrap3',
                             'disable_collapse' => true,
@@ -167,3 +175,10 @@ JS;
 
 
 </div>
+
+
+<?php
+// TODO: this is just a positioning workaround
+$js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/widgets-init.js'));
+$this->registerJs($js);
+?>
