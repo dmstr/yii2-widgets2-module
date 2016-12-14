@@ -190,14 +190,22 @@ class Cell extends Widget
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role' => 'group']);
         $html .= Html::a(
+            FA::icon(FA::_EYE),
+            ['/widgets/crud/widget/view', 'id' => $widget->id],
+            ['class' => 'btn btn-xs btn-default']
+        );
+        $html .= Html::a(
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->name_id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
             ['class' => 'btn btn-xs btn-primary']
         );
         $html .= Html::a(
-            FA::icon(FA::_EYE),
-            ['/widgets/crud/widget/view', 'id' => $widget->id],
-            ['class' => 'btn btn-xs btn-default']
+            FA::icon(FA::_TRASH_O),
+            ['/widgets/crud/widget/delete', 'id' => $widget->id],
+            [
+                'class' => 'btn btn-xs btn-danger',
+                'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').''
+            ]
         );
         $html .= Html::endTag('div');
         return $html;
