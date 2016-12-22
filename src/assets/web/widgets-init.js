@@ -1,14 +1,14 @@
 // Add a resolver function to the beginning of the resolver list
 // This will make it run before any other ones
 
-JSONEditor.defaults.resolvers.unshift(function(schema) {
- if(schema.type === "string" && schema.format === "filefly") {
- return "http://placehold.it/320/200";
- }
- // If no valid editor is returned, the next resolver function will be used
- });
+JSONEditor.defaults.resolvers.unshift(function (schema) {
+    if (schema.type === "string" && schema.format === "filefly") {
+        return "http://placehold.it/320/200";
+    }
+    // If no valid editor is returned, the next resolver function will be used
+});
 
-function initSelectize(){
+function initSelectize() {
     // create filepicker, with api endpoint search
     // TODO: cleanup & refactoring
     console.log('selectize: init');
@@ -22,7 +22,7 @@ function initSelectize(){
         options: [],
         create: false,
         render: {
-            item : function (item, escape) {
+            item: function (item, escape) {
                 return '<div class="" style="height: 70px">' +
                     '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="/en/filefly/api?action=download&path=' + (item.path) + '" />' +
                     '<span class="">' + escape(item.path) + '</span><br/>' +
@@ -48,7 +48,7 @@ function initSelectize(){
                 data: {
                     action: 'search',
                     q: query,
-                    page_limit: 50,
+                    page_limit: 50
                 },
                 error: function (e) {
                     console.log(e);
@@ -63,7 +63,7 @@ function initSelectize(){
         }
     });
 
-    $('input[type="filefly"]').on('change',function(){
+    $('input[type="filefly"]').on('change', function () {
         console.log('selectize: filefly change');
         for (var name in editor.editors) {
             console.log(name);
@@ -77,22 +77,11 @@ editor.on('ready', function () {
         // initialize CKeditor
         CKEDITOR.config.height = '400px';
         CKEDITOR.config.toolbar = [
-            ['Styles', 'Format'], ['Link', 'Image', 'Table', '-', 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], ['Source'],
+            ['Format'], ['Link', 'Image', 'Table', '-', 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], ['Source'],
             '/',
             ['Bold', 'Italic', 'Underline', 'StrikeThrough', '-', 'RemoveFormat', '-', 'Undo', 'Redo', '-', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Cut', 'Copy', 'Find', 'Replace', '-', 'Outdent', 'Indent', '-', 'Print']
         ];
-        CKEDITOR.replaceAll();
-        for (var i in CKEDITOR.instances) {
-            CKEDITOR.instances[i].on('change', function () {
-                this.updateElement()
-                for (var name in editor.editors) {
-                    console.log(name);
-                    editor.editors[name].refreshValue();
-                    editor.editors[name].onChange(true);
-                }
-            });
-        }
-        console.log('editor: ready');
+        console.log('jsoneditor: ready');
         initSelectize();
     }
 );
@@ -101,12 +90,32 @@ editor.on('ready', function () {
 // TODO: refresh filepicker
 editor.on('change', function () {
 
-    console.log('editor: change');
+    console.log('jsoneditor: change');
 
-    $.each($('textarea'), function (key, obj) {
-        // workaround: visible textareas have not been replaced yet
-        if ($(obj).is(":visible")) {
+    $.each($('textarea[data-schemaformat="html"]'), function (key, obj) {
+
+        if (!CKEDITOR.instances[$(obj).attr('name')]) {
+
             CKEDITOR.replace(obj);
+            console.log('replaced ' + $(obj).attr('name'));
+
+            CKEDITOR.instances[$(obj).attr('name')].on('change', function () {
+                console.log(this.name);
+                // TODO: if we have only one editor (root) we need to save - FIX ME (!!!)
+                // Editors can not be updated; detect if current editor is missing (usually "blocks")
+                if (Object.keys(editor.editors).length == 1) {
+                    alert('Data structure has been changed, please save before continuing...');
+                }
+
+                this.updateElement();
+                console.log('ckeditor change: ' + this.name);
+                // TODO: it's workaround to update all editors
+                for (var name in editor.editors) {
+                    console.log(name);
+                    editor.editors[name].refreshValue();
+                    editor.editors[name].onChange(true);
+                }
+            });
         }
     });
     initSelectize();
@@ -119,7 +128,7 @@ editor.on('change', function () {
 });
 
 
-$(document).on('pjax:complete', function() {
+$(document).on('pjax:complete', function () {
     console.log('template: reload success');
     editor.trigger('change');
 })
