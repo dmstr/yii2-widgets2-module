@@ -24,14 +24,14 @@ function initSelectize() {
         render: {
             item: function (item, escape) {
                 return '<div class="" style="height: 70px">' +
-                    '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="/en/filefly/api?action=download&path=' + (item.path) + '" />' +
+                    '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="/filefly/api?action=download&path=' + (item.path) + '" />' +
                     '<span class="">' + escape(item.path) + '</span><br/>' +
                     //'<span class="badge">#' + escape(item.access_owner) + '</span>' +
                     '</div>';
             },
             option: function (item, escape) {
                 return '<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="height: 150px">' +
-                    '<img class="img-responsive" style="max-height: 100px" src="/en/filefly/api?action=download&path=' + (item.path) + '" />' +
+                    '<img class="img-responsive" style="max-height: 100px" src="/filefly/api?action=download&path=' + (item.path) + '" />' +
                     '<span class="">' + escape(item.path) + '</span>' +
                     //'<span class="badge">#' + escape(item.access_owner) + '</span>' +
                     '</div>';
@@ -42,7 +42,7 @@ function initSelectize() {
             console.log(query);
             //if (!query.length) return callback();
             $.ajax({
-                url: '/en/filefly/api',
+                url: '/filefly/api',
                 type: 'GET',
                 dataType: 'json',
                 data: {
