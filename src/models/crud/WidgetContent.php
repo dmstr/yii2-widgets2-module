@@ -4,6 +4,7 @@ namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\widgets\Cell;
+use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -16,6 +17,10 @@ class WidgetContent extends BaseWidget
         return ArrayHelper::merge(
             parent::behaviors(),
             [
+                'timestamp' => [
+                    'class' => TimestampBehavior::className(),
+                    'value' => date('Y-m-d h:i:s'),
+                    ],
                 'bedezign\yii2\audit\AuditTrailBehavior'
             ]
         );

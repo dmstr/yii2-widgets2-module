@@ -5,10 +5,10 @@ namespace _;
 /**
  * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee.
  */
+use devgroup\jsoneditor\Jsoneditor;
 use dmstr\bootstrap\Tabs;
+use Highlight\Highlighter;
 use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\helpers\VarDumper;
 use yii\widgets\DetailView;
 
 /*
@@ -64,6 +64,10 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 
     <?php $this->beginBlock('hrzg\widget\models\crud\Widget'); ?>
 
+    <?php
+    $hl = new Highlighter();
+    $r = $hl->highlight("json", $model->default_properties_json, JSON_PRETTY_PRINT);
+    ?>
 
     <?php echo DetailView::widget([
         'options' => ['class' => 'table table-striped table-bordered detail-view'],
@@ -79,7 +83,17 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'default_properties_json',
                 'format' => 'raw',
-                'value' => '<pre>'.Json::encode($model->default_properties_json, JSON_PRETTY_PRINT).'</pre>',
+                'value' => Jsoneditor::widget([
+                    'name' => '_display',
+                    'value' => $model->default_properties_json,
+                    'editorOptions' => [
+                        'mode' => 'view',
+                        'modes' => [
+                            'view',
+                            'code'
+                        ]
+                    ]
+                ]),
             ],
             'name_id',
             'container_id',

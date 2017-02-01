@@ -71,10 +71,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'contentOptions' => ['nowrap' => 'nowrap'],
                 ],
+                'id',
                 [
                     'attribute' => 'template.name',
                     'header' => 'Template',
                     'contentOptions' => ['nowrap' => 'nowrap'],
+                    'filter'=> \yii\helpers\ArrayHelper::map(\hrzg\widget\models\crud\WidgetTemplate::find()->asArray()->all(), 'name', 'name'),
                 ],
                 'access_domain',
                 'route',

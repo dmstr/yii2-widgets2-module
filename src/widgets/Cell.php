@@ -152,7 +152,9 @@ class Cell extends Widget
             if (\Yii::$app->user->can('widgets_crud_widget')) {
                 $html .= $this->generateWidgetControls($widget);
             }
-            $html .= $class->run();
+            if (\Yii::$app->user->can('widgets_crud_widget') || $widget->status == 1) {
+                $html .= $class->run();
+            }
             $html .= Html::endTag('div');
         }
         $html .= Html::endTag('div');
@@ -190,14 +192,14 @@ class Cell extends Widget
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role' => 'group']);
         $html .= Html::a(
-            FA::icon(FA::_EYE),
+            FA::icon(FA::_FILE_O),
             ['/widgets/crud/widget/view', 'id' => $widget->id],
             ['class' => 'btn btn-xs btn-default']
         );
         $html .= Html::a(
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->name_id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
-            ['class' => 'btn btn-xs btn-primary']
+            ['class' => 'btn btn-xs btn-'.($widget->status?'primary':'default')]
         );
         $html .= Html::a(
             FA::icon(FA::_TRASH_O),
