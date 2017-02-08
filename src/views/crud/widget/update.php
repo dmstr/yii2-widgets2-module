@@ -32,15 +32,14 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'Edit');
     </h1>
 
     <div class="crud-navigation">
-        <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span> '.Yii::t('widgets', 'View'),
+        <?php echo Html::a('<span class="glyphicon glyphicon-file"></span> '.Yii::t('widgets', 'View'),
             ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </div>
-
-    <?php \insolita\wgadminlte\Box::end() ?>
 
     <?php echo $this->render('_form', [
         'model' => $model,
     ]); ?>
 
+    <?php \insolita\wgadminlte\Box::end() ?>
 
 </div>

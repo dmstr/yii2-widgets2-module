@@ -8,6 +8,8 @@ namespace _;
 use devgroup\jsoneditor\Jsoneditor;
 use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
+use hrzg\widget\widgets\Cell;
+use hrzg\widget\widgets\CellPreview;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -62,6 +64,11 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 
     <hr/>
 
+    <h2>Preview</h2>
+    <?= CellPreview::widget(['widget_id'=>$model->id]) ?>
+    <hr />
+
+    <h2>Data</h2>
     <?php $this->beginBlock('hrzg\widget\models\crud\Widget'); ?>
 
     <?php

@@ -5,8 +5,10 @@
 namespace _;
 
 use insolita\wgadminlte\Box;
+use insolita\wgadminlte\InfoBox;
 use Yii;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Collapse;
 use yii\helpers\Html;
 
 /*
@@ -96,7 +98,7 @@ JS;
 
     <div class="row">
         <div class="col-sm-9">
-            <?php Box::begin() ?>
+
             <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
                 [
                     'onchange' => 'widgets.updateTemplate(this)',
@@ -122,33 +124,54 @@ JS;
                 <?php \yii\widgets\Pjax::end() ?>
             </div>
 
-            <?php Box::end() ?>
+
         </div>
         <div class="col-sm-3">
-            <?php Box::begin() ?>
 
-            <?php echo $form->field($model, 'status')->checkbox() ?>
-            <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
-            <hr/>
-            <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Meta Data
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <?php echo $form->field($model, 'status')->checkbox() ?>
+                            <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
+                            <hr/>
+                            <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Access (beta)
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
+                            <?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
+                        </div>
+                    </div>
+                </div>
 
-            <?php Box::end() ?>
+            </div>
 
-            <?php Box::begin([
-                'title' => 'Access (beta)',
-                'collapse' => true,
-                'collapseDefault' => true,
-                'collapse_remember' => false,
-            ]) ?>
-            <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
-            <?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
-            <?php Box::end() ?>
+
+
         </div>
     </div>
 

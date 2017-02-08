@@ -32,10 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <?php \insolita\wgadminlte\Box::end() ?>
 
     <?php echo $this->render('_form', [
         'model' => $model,
     ]); ?>
+
+    <?php \insolita\wgadminlte\Box::end() ?>
 
 </div>
