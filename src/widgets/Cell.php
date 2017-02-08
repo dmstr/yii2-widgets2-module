@@ -41,6 +41,10 @@ class Cell extends Widget
      */
     public $requestParam = 'pageId';
 
+
+    public $showWidgetControls = true;
+    public $showContainerControls = true;
+
     /**
      * @inheritdoc
      */
@@ -94,7 +98,7 @@ class Cell extends Widget
         ];
     }
 
-    private function queryWidgets()
+    protected function queryWidgets()
     {
         \Yii::trace(\Yii::$app->requestedRoute, __METHOD__);
         $models = WidgetContent::find()
@@ -136,7 +140,7 @@ class Cell extends Widget
                 'class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container']
         );
 
-        if (\Yii::$app->user->can('widgets_crud_widget')) {
+        if (\Yii::$app->user->can('widgets_crud_widget') && $this->showContainerControls) {
             $html .= $this->generateContainerControls();
         }
 
@@ -149,7 +153,7 @@ class Cell extends Widget
                 $class->setProperties($properties);
             }
             $html .= Html::beginTag('div', ['id'=>'widget-'.($widget->name_id?:$widget->id), 'class' => 'hrzg-widget-widget']);
-            if (\Yii::$app->user->can('widgets_crud_widget')) {
+            if (\Yii::$app->user->can('widgets_crud_widget') && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
             if (\Yii::$app->user->can('widgets_crud_widget') || $widget->status == 1) {
