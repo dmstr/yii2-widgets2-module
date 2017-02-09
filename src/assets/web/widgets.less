@@ -1,33 +1,42 @@
 .hrzg-widget-widget-container {
 
   min-height: 48px;
-  outline: 2px dotted rgba(0, 0, 0, 0.05);
   position: relative;
 
   &:hover {
     outline: 2px dotted #ccc;
-    .hrzg-widget-container-controls, .hrzg-widget-widget-controls {
+    .hrzg-widget-container-controls {
       opacity: 1;
+    }
+    .hrzg-widget-widget-controls {
+      opacity: 0.1;
     }
   }
 
   .hrzg-widget-widget-controls {
     opacity: 0;
     position: absolute;
-    z-index: 1200;
+    z-index: 999;
+    top: -1.5em;
+    background: white;
   }
 
   .hrzg-widget-container-controls {
     opacity: 0;
     position: absolute;
     right: 0;
-    z-index: 1200;
+    z-index: 999;
+    top: -2.75em;
   }
 
   .hrzg-widget-widget {
     min-height: 32px;
+    position: relative;
     &:hover {
       outline: 3px solid #eee;
+      .hrzg-widget-container-controls, .hrzg-widget-widget-controls {
+        opacity: 1;
+      }
     }
   }
 }

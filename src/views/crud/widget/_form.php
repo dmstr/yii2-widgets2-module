@@ -98,6 +98,7 @@ JS;
 
     <div class="row">
         <div class="col-sm-9">
+            <?php echo $form->field($model, 'status')->checkbox() ?>
 
             <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
                 [
@@ -139,7 +140,6 @@ JS;
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
-                            <?php echo $form->field($model, 'status')->checkbox() ?>
                             <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
