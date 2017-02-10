@@ -182,6 +182,7 @@ class Cell extends Widget
     private function generateContainerControls()
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pull-right']);
+        $items = [];
 
         foreach (WidgetTemplate::find()->orderBy('name')->all() as $template) {
             $items[] = [
@@ -198,19 +199,6 @@ class Cell extends Widget
                 ],
             ];
         }
-
-        /*$html .= Html::a(
-            FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
-            [
-                '/widgets/crud/widget/create',
-                'WidgetContent' => [
-                    'route' => $this->getRoute(),
-                    'container_id' => $this->id,
-                    'request_param' => \Yii::$app->request->get($this->requestParam),
-                    'access_domain' => \Yii::$app->language,
-                ],
-            ],
-            ['class' => 'btn btn-success']);*/
 
         $html .= ButtonDropdown::widget([
             'label' => FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
