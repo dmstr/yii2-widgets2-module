@@ -16,21 +16,19 @@
   .hrzg-widget-widget-controls {
     opacity: 0;
     position: absolute;
-    z-index: 999;
+    z-index: 997;
     top: -1.5em;
     background: white;
   }
 
   .hrzg-widget-container-controls {
+    &:hover {
+      z-index: 999;
+    }
     opacity: 0;
     position: absolute;
     left: 0;
     bottom: -2.5em;
-    z-index: 999;
-    //top: -2.75em;
-    button {
-      //background: white;
-    }
   }
 
   .hrzg-widget-widget {
