@@ -11,10 +11,12 @@ namespace hrzg\widget\widgets;
 
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
+use hrzg\widget\models\crud\WidgetTemplate;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
+use yii\bootstrap\ButtonDropdown;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -72,28 +74,35 @@ class Cell extends Widget
         AssetBundle::register($this->view);
         return [
             [
-                'label' => FA::icon(FA::_PLUS_SQUARE).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
-                'url' => [
-                    '/widgets/crud/widget/create',
-                    'WidgetContent' => [
-                        'route' => $this->getRoute(),
-                        'container_id' => $this->id,
-                        'request_param' => \Yii::$app->request->get($this->requestParam),
-                        'access_domain' => \Yii::$app->language,
+                'label' => ' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
+                'url' => null,
+                'items' => [
+                    [
+                        'label' => FA::icon(FA::_PLUS_SQUARE).' Add',
+                        'url' => [
+                            '/widgets/crud/widget/create',
+                            'WidgetContent' => [
+                                'route' => $this->getRoute(),
+                                'container_id' => $this->id,
+                                'request_param' => \Yii::$app->request->get($this->requestParam),
+                                'access_domain' => \Yii::$app->language,
+                            ],
+                        ],
+                    ],
+                    [
+                        'label' => FA::icon(FA::_LIST).' List',
+                        'url' => [
+                            '/widgets/crud/widget/index',
+                            'WidgetContent' => [
+                                'route' => $this->getRoute(),
+                                'container_id' => $this->id,
+                                'request_param' => \Yii::$app->request->get('id'),
+                                'access_domain' => \Yii::$app->language,
+                            ],
+                        ],
                     ],
                 ],
-            ],
-            [
-                'label' => FA::icon(FA::_EDIT).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
-                'url' => [
-                    '/widgets/crud/widget/index',
-                    'WidgetContent' => [
-                        'route' => $this->getRoute(),
-                        'container_id' => $this->id,
-                        'request_param' => \Yii::$app->request->get('id'),
-                        'access_domain' => \Yii::$app->language,
-                    ],
-                ],
+
             ],
         ];
     }
@@ -137,7 +146,8 @@ class Cell extends Widget
             'div',
             [
                 'id' => 'cell-'.$this->id,
-                'class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container']
+                'class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container',
+            ]
         );
 
         if (\Yii::$app->user->can('widgets_crud_widget') && $this->showContainerControls) {
@@ -152,7 +162,8 @@ class Cell extends Widget
             if ($properties) {
                 $class->setProperties($properties);
             }
-            $html .= Html::beginTag('div', ['id'=>'widget-'.($widget->name_id?:$widget->id), 'class' => 'hrzg-widget-widget']);
+            $html .= Html::beginTag('div',
+                ['id' => 'widget-'.($widget->name_id ?: $widget->id), 'class' => 'hrzg-widget-widget']);
             if (\Yii::$app->user->can('widgets_crud_widget') && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
@@ -171,7 +182,24 @@ class Cell extends Widget
     private function generateContainerControls()
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pull-right']);
-        $html .= Html::a(
+
+        foreach (WidgetTemplate::find()->orderBy('name')->all() as $template) {
+            $items[] = [
+                'label' => $template->name,
+                'url' => [
+                    '/widgets/crud/widget/create',
+                    'WidgetContent' => [
+                        'route' => $this->getRoute(),
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get($this->requestParam),
+                        'access_domain' => \Yii::$app->language,
+                        'widget_template_id' => $template->id,
+                    ],
+                ],
+            ];
+        }
+
+        /*$html .= Html::a(
             FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
             [
                 '/widgets/crud/widget/create',
@@ -180,9 +208,19 @@ class Cell extends Widget
                     'container_id' => $this->id,
                     'request_param' => \Yii::$app->request->get($this->requestParam),
                     'access_domain' => \Yii::$app->language,
-                ]
+                ],
             ],
-            ['class' => 'btn btn-success']);
+            ['class' => 'btn btn-success']);*/
+
+        $html .= ButtonDropdown::widget([
+            'label' => FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
+            'encodeLabel' => false,
+            'options' => ['class' => 'btn btn-success'],
+            'dropdown' =>  [
+                'items' => $items,
+            ],
+        ]);
+
         $html .= Html::endTag('div');
         return $html;
     }
@@ -203,14 +241,14 @@ class Cell extends Widget
         $html .= Html::a(
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->name_id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
-            ['class' => 'btn btn-xs btn-'.($widget->status?'primary':'default')]
+            ['class' => 'btn btn-xs btn-'.($widget->status ? 'primary' : 'default')]
         );
         $html .= Html::a(
             FA::icon(FA::_TRASH_O),
             ['/widgets/crud/widget/delete', 'id' => $widget->id],
             [
                 'class' => 'btn btn-xs btn-danger',
-                'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').''
+                'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').'',
             ]
         );
         $html .= Html::endTag('div');

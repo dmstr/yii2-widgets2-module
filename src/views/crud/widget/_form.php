@@ -98,18 +98,19 @@ JS;
 
     <div class="row">
         <div class="col-sm-9">
-            <?php echo $form->field($model, 'status')->checkbox() ?>
 
-            <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
-                [
-                    'onchange' => 'widgets.updateTemplate(this)',
-                ]
-            ) ?>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+            <?php echo $form->field($model, 'status')->checkbox() ?>
+                    </div>
+            </div>
+
+
 
             <div style="">
 
                 <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-                <?php echo $form->field($model, 'default_properties_json')
+                <?php echo $form->field($model, 'default_properties_json')->label(false)
                     ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
                         'id' => 'editor',
                         'schema' => $schema,
@@ -140,6 +141,12 @@ JS;
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
+                            <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
+                                [
+                                    //'disabled' => true,
+                                    'onchange' => 'widgets.updateTemplate(this)',
+                                ]
+                            ) ?>
                             <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>

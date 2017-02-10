@@ -10,6 +10,7 @@ use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
 use hrzg\widget\widgets\Cell;
 use hrzg\widget\widgets\CellPreview;
+use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -77,7 +78,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
     ?>
 
     <?php echo DetailView::widget([
-        'options' => ['class' => 'table table-striped table-bordered detail-view'],
+        'options' => ['class' => 'table table-striped detail-view'],
         'model' => $model,
         'attributes' => [
             'id',
@@ -85,7 +86,9 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'widget_template_id',
                 'format' => 'raw',
-                'value' => \yii\helpers\Html::a($model->template->name, ['crud/widget-template/view', 'id'=>$model->widget_template_id])
+                'value' => \yii\helpers\Html::a($model->template->name, ['crud/widget-template/view', 'id'=>$model->widget_template_id]).
+                    ' '.
+                    \yii\helpers\Html::a(FA::icon(FA::_EDIT), ['crud/widget-template/update', 'id'=>$model->widget_template_id])
             ],
             [
                 'attribute' => 'default_properties_json',

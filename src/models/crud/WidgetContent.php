@@ -35,7 +35,8 @@ class WidgetContent extends BaseWidget
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['name_id', 'match', 'pattern' => '/^[a-z0-9-]*$/i']
+                ['name_id', 'match', 'pattern' => '/^[a-z0-9-]*$/i'],
+                ['rank', 'default', 'value' => '1-'.dechex(date('U'))],
             ]
         );
     }

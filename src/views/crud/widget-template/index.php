@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'lastPageLabel' => Yii::t('widgets', 'Last'),
             ],
             'filterModel' => $searchModel,
-            'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
+            'tableOptions' => ['class' => 'table table-striped table-hover'],
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
 

@@ -14,8 +14,9 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "2.*",
+    "yiisoft/yii2": "2.0.*",
     "yiisoft/yii2-twig": "^2.0.4",
+    "2amigos/yii2-ckeditor-widget": "^2.0.2",
     "dmstr/yii2-web": ">=0.3.1",
     "beowulfenator/yii2-json-editor": "^1.1",
     "bedezign/yii2-audit": "^1.0"

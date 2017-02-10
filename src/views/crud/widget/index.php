@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'lastPageLabel' => Yii::t('widgets', 'Last'),
             ],
             'filterModel' => $searchModel,
-            'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
+            'tableOptions' => ['class' => 'table table-striped table-hover'],
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
 
@@ -85,6 +85,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'name_id',
                 'rank',
                 'status',
+                [
+                    'attribute' => 'default_properties_json',
+                    'format' => 'raw',
+                    'value' => function ($model) { return \devgroup\jsoneditor\Jsoneditor::widget([
+                        'name' => '_display',
+                        'value' => $model->default_properties_json,
+                        'options' => [
+                            'style' => [
+                                'width' => '600px',
+                                ]
+                        ],
+                        'editorOptions' => [
+                            'mode' => 'view',
+
+                            'modes' => [
+                                'view',
+                                'code'
+                            ]
+                        ]
+                    ]);},
+                ],
                 /*'access_owner',*/
                 /*'access_read'*/
                 /*'access_update'*/

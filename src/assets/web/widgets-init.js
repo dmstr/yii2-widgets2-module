@@ -1,13 +1,3 @@
-// Add a resolver function to the beginning of the resolver list
-// This will make it run before any other ones
-
-JSONEditor.defaults.resolvers.unshift(function (schema) {
-    if (schema.type === "string" && schema.format === "filefly") {
-        return "http://placehold.it/320/200";
-    }
-    // If no valid editor is returned, the next resolver function will be used
-});
-
 function initSelectize() {
     // create filepicker, with api endpoint search
     // TODO: cleanup & refactoring
@@ -73,6 +63,16 @@ function initSelectize() {
     });
 }
 
+function updateEditors() {
+    // TODO: it's workaround to update all editors
+    for (var name in editor.editors) {
+        console.log(name);
+        editor.editors[name].refreshValue();
+        editor.editors[name].onChange(true);
+    }
+}
+
+// JSONeditor
 editor.on('ready', function () {
         // initialize CKeditor
         CKEDITOR.config.height = '400px';
@@ -85,6 +85,7 @@ editor.on('ready', function () {
         initSelectize();
     }
 );
+
 
 // replace/refresh CKeditor instances after change
 // TODO: refresh filepicker
@@ -109,15 +110,11 @@ editor.on('change', function () {
 
                 this.updateElement();
                 console.log('ckeditor change: ' + this.name);
-                // TODO: it's workaround to update all editors
-                for (var name in editor.editors) {
-                    console.log(name);
-                    editor.editors[name].refreshValue();
-                    editor.editors[name].onChange(true);
-                }
+                updateEditors();
             });
         }
     });
+    
     initSelectize();
 
     // TODO: workaround for ckeditor init after adding a new block
@@ -130,6 +127,11 @@ editor.on('change', function () {
 
 $(document).on('pjax:complete', function () {
     console.log('template: reload success');
+    for(name in CKEDITOR.instances)
+    {
+        console.log('Destroying CKEditor', name);
+        CKEDITOR.instances[name].destroy()
+    }
     editor.trigger('change');
 })
 
