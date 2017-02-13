@@ -181,7 +181,7 @@ class Cell extends Widget
      */
     private function generateContainerControls()
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pull-right']);
+        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls']);
         $items = [];
 
         foreach (WidgetTemplate::find()->orderBy('name')->all() as $template) {
@@ -205,6 +205,9 @@ class Cell extends Widget
             'encodeLabel' => false,
             'options' => ['class' => 'btn btn-success'],
             'dropdown' =>  [
+                'options' => [
+                    'class'=>'dropdown-menu-right'
+                ],
                 'items' => $items,
             ],
         ]);

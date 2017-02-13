@@ -15,20 +15,22 @@
 
   .hrzg-widget-widget-controls {
     opacity: 0;
+    z-index: 995;
     position: absolute;
-    z-index: 997;
     top: -1.5em;
-    background: white;
+    button {
+      z-index: 997;
+    }
+    ul {
+      z-index: 998;
+    }
   }
 
   .hrzg-widget-container-controls {
-    &:hover {
-      z-index: 999;
-    }
     opacity: 0;
     position: absolute;
-    left: 0;
-    bottom: -2.5em;
+    right: 0;
+    top: -2.5em;
   }
 
   .hrzg-widget-widget {
