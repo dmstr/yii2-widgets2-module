@@ -2,6 +2,7 @@
 
 namespace hrzg\widget\models\crud;
 
+use dmstr\db\traits\ActiveRecordAccessTrait;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\widgets\Cell;
 use yii\behaviors\TimestampBehavior;
@@ -12,6 +13,12 @@ use yii\helpers\ArrayHelper;
  */
 class WidgetContent extends BaseWidget
 {
+    use ActiveRecordAccessTrait;
+
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(
@@ -24,6 +31,21 @@ class WidgetContent extends BaseWidget
                 'bedezign\yii2\audit\AuditTrailBehavior'
             ]
         );
+    }
+
+    /**
+     * Enable access_domain access checks in ActiveRecordAccessTrait
+     * @return array with access field names
+     */
+    public static function accessColumnAttributes()
+    {
+        return [
+            'owner'  => false,
+            'read'   => false,
+            'update' => false,
+            'delete' => false,
+            'domain' => 'access_domain',
+        ];
     }
 
     /**
