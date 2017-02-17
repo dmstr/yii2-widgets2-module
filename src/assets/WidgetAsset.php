@@ -19,6 +19,10 @@ class WidgetAsset extends AssetBundle
         'widgets.less'
     ];
 
+    public $js = [
+        'cell.js'
+    ];
+
     public $depends = [
         'dosamigos\ckeditor\CKEditorAsset',
         'beowulfenator\JsonEditor\SelectizeAsset',
