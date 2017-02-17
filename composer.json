@@ -18,7 +18,7 @@
     "yiisoft/yii2-twig": "^2.0.4",
     "2amigos/yii2-ckeditor-widget": "^2.0.2",
     "dmstr/yii2-web": ">=0.3.1",
-    "dmstr/yii2-db": "^0.8.0-rc2",
+    "dmstr/yii2-db": "^0.8.0-rc4",
     "beowulfenator/yii2-json-editor": "^1.1",
     "bedezign/yii2-audit": "^1.0"
   },
