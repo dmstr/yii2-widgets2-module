@@ -151,8 +151,12 @@ JS;
                             <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
-                            <hr/>
-                            <?php echo $form->field($model, 'name_id')->textInput(['maxlength' => true]) ?>
+                            <!-- READ ONLY property -->
+                            <?php if (!empty($model->name_id)) : ?>
+                                <hr/>
+                                <?php echo Html::label($model->getAttributeLabel('domain_id'), ['class' => 'control-label']) ?><br>
+                                <?php echo $model->domain_id  ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -174,14 +178,9 @@ JS;
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
         </div>
     </div>
-
 
     </p>
     <?php $this->endBlock(); ?>
@@ -211,4 +210,3 @@ JS;
 // TODO: this is just a positioning workaround
 $js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/widgets-init.js'));
 $this->registerJs($js);
-?>

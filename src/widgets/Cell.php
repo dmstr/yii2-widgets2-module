@@ -133,6 +133,7 @@ class Cell extends Widget
      */
     private function getRoute()
     {
+        #return '/' . \Yii::$app->controller->getRoute();
         return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->controller->action->id;
     }
 

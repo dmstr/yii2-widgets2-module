@@ -13,6 +13,9 @@ use yii\helpers\Json;
  */
 class WidgetTemplate extends BaseWidgetTemplate
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(
@@ -23,6 +26,9 @@ class WidgetTemplate extends BaseWidgetTemplate
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return ArrayHelper::merge(
@@ -47,6 +53,9 @@ class WidgetTemplate extends BaseWidgetTemplate
         );
     }
 
+    /**
+     * @return array|mixed
+     */
     public function optPhpClass()
     {
         $json = Yii::$app->settings->get('availablePhpClasses', 'widgets', []);
@@ -59,7 +68,9 @@ class WidgetTemplate extends BaseWidgetTemplate
 
     /**
      * Format json_schema before saving to database
-     * @param string $json_schema
+     * @param bool $insert
+     *
+     * @return bool
      */
     public function beforeSave($insert) {
         $data = json_decode($this->json_schema);

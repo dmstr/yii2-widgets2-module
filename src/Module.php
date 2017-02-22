@@ -10,6 +10,21 @@ class Module extends \yii\base\Module
     
     public $controllerNamespace = 'hrzg\widget\controllers';
 
+    /**
+     * RBAC full permission to widget module
+     */
+    const WIDGETS_ACCESS_PERMISSION = 'widgets';
+
+    /**
+     * RBAC permission name to copy widgets
+     */
+    const COPY_ACCESS_PERMISSION = 'widgets_copy';
+
+    /**
+     * @param \yii\base\Action $action
+     *
+     * @return bool
+     */
     public function beforeAction($action)
     {
         parent::beforeAction($action);

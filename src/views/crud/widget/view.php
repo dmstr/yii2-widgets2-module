@@ -105,6 +105,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
                     ]
                 ]),
             ],
+            'domain_id',
             'name_id',
             'container_id',
             'rank',
