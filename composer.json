@@ -23,7 +23,8 @@
     "beowulfenator/yii2-json-editor": "^1.1",
     "bedezign/yii2-audit": "^1.0",
     "insolita/yii2-adminlte-widgets": "^1.1.4",
-    "mikehaertl/php-shellcommand": "^1.2.4"
+    "mikehaertl/php-shellcommand": "^1.2.4",
+    "uran1980/yii2-jquery-essential": "^0.0.6"
   },
   "autoload": {
     "psr-4": {
