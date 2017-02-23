@@ -98,5 +98,5 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
     <?= \Yii::t('widgets', 'Type')?>: <code>JSON</code>
 </p>
 <p><?= \Yii::t('widgets', 'Example')?>: <code>{"hrzg\\widget\\widgets\\TwigTemplate": "Twig layout"}</code></p>
-<?= Html::a('Open settings', ['/settings'], ['class' => 'btn btn-default']) ?>
+<?= Html::a('Open settings', ['/settings', 'SettingSearch' => ['section' => 'widgets']], ['class' => 'btn btn-default']) ?>
 <?php Box::end();
