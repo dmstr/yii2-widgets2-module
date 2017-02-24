@@ -43,8 +43,8 @@ class CopyForm extends Model
     public function attributeLabels()
     {
         return [
-            'sourceLanguage'        => \Yii::t('pages', 'Source Language'),
-            'destinationLanguage' => \Yii::t('pages', 'Destination Language'),
+            'sourceLanguage'        => \Yii::t('widgets', 'Source Language'),
+            'destinationLanguage' => \Yii::t('widgets', 'Destination Language'),
         ];
     }
 
