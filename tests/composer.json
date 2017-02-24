@@ -1,0 +1,35 @@
+{
+    "name": "dmstr/yii2-app",
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "2.*",
+        "yiisoft/yii2": "^2.0.8",
+        "yiisoft/yii2-bootstrap": "2.*",
+        "yiisoft/yii2-debug": "2.*",
+        "codemix/yii2-streamlog": "^1.0.0",
+        "codemix/yii2-localeurls": "1.4.*",
+        "dektrium/yii2-user": "~0.9.9",
+        "dektrium/yii2-rbac": "^0.3",
+        "dmstr/yii2-db": "^0.8.0",
+        "dmstr/yii2-web": "^0.4.0",
+        "dmstr/yii2-migrate-command": "0.3.*",
+        "dmstr/yii2-pages-module": "^0.20.0",
+        "dmstr/yii2-bootstrap": "~0.0",
+        "dmstr/yii2-widgets2-module": "dev-master",
+        "lajax/yii2-translate-manager": "^1.5.4",
+        "pheme/yii2-settings": "^0.4",
+        "trntv/yii2-aceeditor": "^2.0.2",
+        "friendsofphp/php-cs-fixer": "^2.0.0",
+        "ckeditor/ckeditor": "dev-full/stable as 4.6.2.1"
+    },
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        },
+        "asset-vcs-driver-options": {
+            "github-no-api": true
+        },
+        "asset-pattern-skip-version": "(-build|-patch)"
+    }
+}

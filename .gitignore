@@ -1,0 +1,3 @@
+.php_cs.cache
+_artifacts
+tests/vendor

@@ -7,6 +7,7 @@ namespace hrzg\widget\models\crud\search;
 use hrzg\widget\models\crud\WidgetContent as WidgetModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * Widget represents the model behind the search form about `hrzg\widget\models\crud\Widget`.
@@ -78,7 +79,13 @@ class WidgetContent extends WidgetModel
             'query' => $query,
         ]);
 
-        $query->joinWith(['template' => function($query) { $query->from(['template' => 'app_hrzg_widget_template']); }]);
+        $query->joinWith(
+            [
+                'template' => function (Query $query) {
+                    $query->from(['template' => '{{%hrzg_widget_template}}']);
+                }
+            ]
+        );
 
         $this->load($params);
 
@@ -107,7 +114,7 @@ class WidgetContent extends WidgetModel
             ->andFilterWhere(['like', 'access_read', $this->access_read])
             ->andFilterWhere(['like', 'access_update', $this->access_update])
             ->andFilterWhere(['like', 'access_delete', $this->access_delete])
-            ->andFilterWhere(['like', 'template.name', $this->getAttribute('template.name')]);
+            ->andFilterWhere(['=', 'template.name', $this->getAttribute('template.name')]);
 
         return $dataProvider;
     }

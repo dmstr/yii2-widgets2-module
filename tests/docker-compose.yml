@@ -1,46 +1,52 @@
 version: '2'
-
 services:
-  nginx:
-    image: phundament/nginx-one:1.9
-    volumes_from:
-      - phpfpm
-    ports:
-      - '80'
-    depends_on:
-      - phpfpm
+    web:
+        image: phundament/nginx-one:1.9-5.1.1
+        environment:
+          - FASTCGI_PASS_HOST=php
+        depends_on:
+          - php
+        volumes_from:
+          - php
+        ports:
+          - 80
 
-  phpfpm:
-    build: .
-    depends_on:
-      - mariadb
-      - seleniumfirefox
-    environment:
-      APP_NAME: hrzgwidget
-      APP_TITLE: 'hrzg/yii2-widgets2-module'
-      YII_ENV: 'prod'
-      YII_DEBUG: 'false'
-      APP_CONFIG_FILE: /app/vendor/hrzg/yii2-widgets2-module/tests/_config/test.php
-      DB_PORT_3306_TCP_ADDR: mariadb
-      DB_PORT_3306_TCP_PORT: 3306
-      DB_ENV_MYSQL_ROOT_USER: root
-      DB_ENV_MYSQL_ROOT_PASSWORD: secretadmin
-      MYSQL_PASSWORD: secretadmin
-    volumes:
-      - /app
-      - ../:/app/vendor/hrzg/yii2-widgets2-module
-      #- ../tests/_config/local.php:/app/src/config/local.php
+    php:
+        build:
+            dockerfile: Dockerfile
+            context: .
+        working_dir: /app/vendor/dmstr/yii2-widgets2-module
+        env_file:
+          - db.env
+        depends_on:
+          - db
+          - firefox
+        image: ${STACK_PHP_IMAGE}
+        environment:
+          - APP_NAME=widgets2
+          - YII_ENV=test
+          - YII_DEBUG=1
+          - APP_CONFIG_FILE=/app/vendor/dmstr/yii2-widgets2-module/tests/config/local.php
+        volumes:
+          - /app
+          - ./..:/app/vendor/dmstr/yii2-widgets2-module
+          - ~/.composer/cache:/root/.composer/cache
+            
+    db:
+        image: 'percona:5.7'
+        env_file:
+          - db.env
+        ports:
+          - '3306'
+        environment:
+          MYSQL_ROOT_PASSWORD: secretadmin
 
-  mariadb:
-    image: 'percona:5.6'
-    ports:
-      - '3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: secretadmin
-
-  seleniumfirefox:
-    image: 'selenium/standalone-firefox-debug:2.53.0'
-    expose:
-        - '4444'
-    ports:
-        - '5900'
+    firefox:
+        image: selenium/standalone-firefox-debug:2.53.1
+        # workaround for Docker Beta, see https://github.com/SeleniumHQ/docker-selenium/issues/227#issuecomment-224865735
+        dns: 8.8.4.4
+        environment:
+          - no_proxy=localhost
+        ports:
+          - '4444'
+          - '5900'
