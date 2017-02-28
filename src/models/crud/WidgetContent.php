@@ -16,6 +16,13 @@ class WidgetContent extends BaseWidget
     use ActiveRecordAccessTrait;
 
     /**
+     * Virtual attribute generated from "domain_id"_"access_domain".
+     *
+     * @var string
+     */
+    public $name_id;
+
+    /**
      * @inheritdoc
      * @return array
      */
@@ -28,9 +35,20 @@ class WidgetContent extends BaseWidget
                     'class' => TimestampBehavior::className(),
                     'value' => date('Y-m-d h:i:s'),
                     ],
-                'bedezign\yii2\audit\AuditTrailBehavior'
+                'audit' => [
+                    'class' => 'bedezign\yii2\audit\AuditTrailBehavior'
+                ]
             ]
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->setNameId($this->domain_id.'_'.$this->access_domain);
     }
 
     /**
@@ -49,6 +67,26 @@ class WidgetContent extends BaseWidget
     }
 
     /**
+     * Get virtual name_id.
+     *
+     * @return string
+     */
+    public function getNameId()
+    {
+        return $this->name_id;
+    }
+
+    /**
+     * Generate and Set virtual attribute name_id.
+     *
+     * @param mixed $name_id
+     */
+    public function setNameId($name_id)
+    {
+        $this->name_id = $name_id;
+    }
+
+    /**
      * @inheritdoc
      * @return array
      */
@@ -57,8 +95,21 @@ class WidgetContent extends BaseWidget
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['name_id', 'match', 'pattern' => '/^[a-z0-9-]*$/i'],
                 ['rank', 'default', 'value' => 'a-'.dechex(date('U'))],
+                [
+                    'domain_id',
+                    'default',
+                    'value' => function () {
+                        return uniqid();
+                    }
+                ],
+                [
+                    'access_domain',
+                    'default',
+                    'value' => function () {
+                        return mb_strtolower(\Yii::$app->language);
+                    }
+                ],
             ]
         );
     }
@@ -76,6 +127,10 @@ class WidgetContent extends BaseWidget
         if ($this->route === Cell::GLOBAL_ROUTE) {
             $this->request_param = Cell::EMPTY_REQUEST_PARAM;
         }
+
+        // ensure lowercase language id
+        $this->access_domain = mb_strtolower($this->access_domain);
+
         return true;
     }
 

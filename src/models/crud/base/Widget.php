@@ -13,7 +13,7 @@ use Yii;
  * @property string $status
  * @property string $widget_template_id
  * @property string $default_properties_json
- * @property string $name_id
+ * @property string $domain_id
  * @property string $container_id
  * @property string $rank
  * @property string $route
@@ -72,8 +72,9 @@ abstract class Widget extends \yii\db\ActiveRecord
             [['default_properties_json'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'string', 'max' => 32],
-            [['widget_template_id', 'container_id', 'route'], 'string', 'max' => 128],
-            [['name_id'], 'string', 'max' => 64],
+            [['container_id', 'route'], 'string', 'max' => 128],
+            [['domain_id'], 'string', 'max' => 64],
+            [['widget_template_id'], 'integer'],
             [['rank', 'access_owner'], 'string', 'max' => 11],
             [['request_param', 'access_read', 'access_update', 'access_delete'], 'string', 'max' => 255],
             [['access_domain'], 'string', 'max' => 8],
@@ -90,6 +91,7 @@ abstract class Widget extends \yii\db\ActiveRecord
             'status' => Yii::t('widgets', 'Status'),
             'widget_template_id' => Yii::t('widgets', 'Template'),
             'default_properties_json' => Yii::t('widgets', 'Widget Properties'),
+            'domain_id' => Yii::t('widgets', 'Domain ID'),
             'name_id' => Yii::t('widgets', 'Name ID'),
             'container_id' => Yii::t('widgets', 'Container ID'),
             'rank' => Yii::t('widgets', 'Rank'),
@@ -104,31 +106,4 @@ abstract class Widget extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
     }
-
-    /*
-     * @inheritdoc
-     */
-    /*public function attributeHints()
-    {
-        return array_merge(
-            parent::attributeHints(),
-            [
-                'id' => Yii::t('widgets', 'ID'),
-                'status' => Yii::t('widgets', 'Status'),
-                'widget_template_id' => Yii::t('widgets', 'Class Name'),
-                'default_properties_json' => Yii::t('widgets', 'Default Properties Json'),
-                'name_id' => Yii::t('widgets', 'Name Id'),
-                'container_id' => Yii::t('widgets', 'Container Id'),
-                'rank' => Yii::t('widgets', 'Rank'),
-                'route' => Yii::t('widgets', 'Route'),
-                'request_param' => Yii::t('widgets', 'Request Param'),
-                'access_owner' => Yii::t('widgets', 'Access Owner'),
-                'access_domain' => Yii::t('widgets', 'Access Domain'),
-                'access_read' => Yii::t('widgets', 'Access Read'),
-                'access_update' => Yii::t('widgets', 'Access Update'),
-                'access_delete' => Yii::t('widgets', 'Access Delete'),
-                'created_at' => Yii::t('widgets', 'Created At'),
-                'updated_at' => Yii::t('widgets', 'Updated At'),
-            ]);
-    }*/
 }

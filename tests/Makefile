@@ -1,10 +1,9 @@
-.PHONY: build test
+.PHONY: build run-tests
 
 DOCKER_COMPOSE  ?= docker-compose
-
-WEB_SERVICE ?= nginx
-PHP_SERVICE ?= phpfpm
-DB_SERVICE  ?= db
+PHP_SERVICE ?= php
+WEB_SERVICE ?= web
+CODECEPT_SERVICE ?= forrest
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
@@ -15,37 +14,68 @@ else
 	DOCKER_HOST_IP  ?= 127.0.0.1
 endif
 
-all: build up setup open
+# Targets
+# -------
 
-build:
-	$(shell echo $(shell git describe --long --tags --dirty --always) > src/version)
-	@echo $(shell cat src/version)
+default: help
+
+all: clean build up setup open
+
+up: ##@docker start application stack
+	$(DOCKER_COMPOSE) up -d
+	$(DOCKER_COMPOSE) ps
+
+build: ##@docker build application image
 	$(DOCKER_COMPOSE) build --pull
 
-up:
-	$(DOCKER_COMPOSE) up -d
-
-clean:
+clean: ##@docker cleanup application stack
 	$(DOCKER_COMPOSE) kill
-	$(DOCKER_COMPOSE) rm -fv --all
-	$(DOCKER_COMPOSE) down --rmi local --remove-orphans
+	$(DOCKER_COMPOSE) down -v --remove-orphans
 
 open:	 ##@docker open application web service in browser
 	$(OPEN_CMD) http://$(DOCKER_HOST_IP):$(shell $(DOCKER_COMPOSE) port $(WEB_SERVICE) 80 | sed 's/[0-9.]*://')
 
 open-db:	 ##@docker open application web service in browser
-	$(OPEN_CMD) mysql://root:secret@$(DOCKER_HOST_IP):$(shell $(DOCKER_COMPOSE) port $(DB_SERVICE) 3306 | sed 's/[0-9.]*://')
+	$(OPEN_CMD) mysql://root:secretadmin@$(DOCKER_HOST_IP):$(shell $(DOCKER_COMPOSE) port db 3306 | sed 's/[0-9.]*://')
+
+open-vnc:	 ##@test open application database service in browser
+	$(OPEN_CMD) vnc://x:secret@$(DOCKER_HOST_IP):$(shell $(DOCKER_COMPOSE) port firefox 5900 | sed 's/[0-9.]*://')
 
 bash:	 ##@docker open application development bash
-	$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) bash
+	$(DOCKER_COMPOSE) run --rm -e YII_ENV=test $(PHP_SERVICE) bash
 
-setup:	 ##@docker open application development bash
-	-$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) yii db/create
-	-$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) yii migrate
+setup:	 ##@docker setup application stack
+	$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) yii db/create
+	$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) yii migrate --interactive=0
+	$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) yii user/create testwidgets2@example.com admin admin1
 
-lint:
-	mkdir -p _artifacts/lint && chmod -R 777 _artifacts/lint
-	docker run --rm -v "${PWD}:/project" jolicode/phaudit php-cs-fixer fix --format=txt -v --dry-run src || export ERROR=1; \
-	docker run --rm -v "${PWD}:/project" jolicode/phaudit phpmetrics --report-html=_artifacts/lint/metrics.html src/ || ERROR=1; \
-	docker run --rm -v "${PWD}:/project" jolicode/phaudit phpmd src html cleancode,codesize,controversial,design,unusedcode,tests/phpmd/naming.xml > _artifacts/lint/mess.html || ERROR=1; \
-	exit ${ERROR}
+clean-tests: ##@test clean codeception output
+	$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) codecept clean
+
+run-tests: ##@test run codeception tests
+	$(DOCKER_COMPOSE) run --rm -e YII_ENV=test $(PHP_SERVICE) codecept run e2e,cli,unit -x optional
+
+lint: ##@test run php cs-fixer
+	$(DOCKER_COMPOSE) run --rm $(PHP_SERVICE) /app/vendor/bin/php-cs-fixer fix --format=txt -v --dry-run .
+
+# Help based on https://gist.github.com/prwhite/8168133 thanks to @nowox and @prwhite
+# And add help text after each target name starting with '\#\#'
+# A category can be added with @category
+
+HELP_FUN = \
+		%help; \
+		while(<>) { push @{$$help{$$2 // 'options'}}, [$$1, $$3] if /^([\w-]+)\s*:.*\#\#(?:@([\w-]+))?\s(.*)$$/ }; \
+		print "\nusage: make [target ...]\n\n"; \
+	for (keys %help) { \
+		print "$$_:\n"; \
+		for (@{$$help{$$_}}) { \
+			$$sep = "." x (25 - length $$_->[0]); \
+			print "  $$_->[0]$$sep$$_->[1]\n"; \
+		} \
+		print "\n"; }
+
+help:				##@system show this help
+	#
+	# General targets
+	#
+	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)

@@ -7,6 +7,7 @@ namespace hrzg\widget\models\crud\search;
 use hrzg\widget\models\crud\WidgetContent as WidgetModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * Widget represents the model behind the search form about `hrzg\widget\models\crud\Widget`.
@@ -27,7 +28,7 @@ class WidgetContent extends WidgetModel
                     'status',
                     'widget_template_id',
                     'default_properties_json',
-                    'name_id',
+                    'domain_id',
                     'container_id',
                     'rank',
                     'route',
@@ -78,7 +79,13 @@ class WidgetContent extends WidgetModel
             'query' => $query,
         ]);
 
-        $query->joinWith(['template' => function($query) { $query->from(['template' => 'app_hrzg_widget_template']); }]);
+        $query->joinWith(
+            [
+                'template' => function (Query $query) {
+                    $query->from(['template' => '{{%hrzg_widget_template}}']);
+                }
+            ]
+        );
 
         $this->load($params);
 
@@ -97,7 +104,7 @@ class WidgetContent extends WidgetModel
         $query->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'widget_template_id', $this->widget_template_id])
             ->andFilterWhere(['like', 'default_properties_json', $this->default_properties_json])
-            ->andFilterWhere(['like', 'name_id', $this->name_id])
+            ->andFilterWhere(['like', 'domain_id', $this->domain_id])
             ->andFilterWhere(['like', 'container_id', $this->container_id])
             ->andFilterWhere(['like', 'rank', $this->rank])
             ->andFilterWhere(['like', 'route', $this->route])
@@ -107,7 +114,7 @@ class WidgetContent extends WidgetModel
             ->andFilterWhere(['like', 'access_read', $this->access_read])
             ->andFilterWhere(['like', 'access_update', $this->access_update])
             ->andFilterWhere(['like', 'access_delete', $this->access_delete])
-            ->andFilterWhere(['like', 'template.name', $this->getAttribute('template.name')]);
+            ->andFilterWhere(['=', 'template.name', $this->getAttribute('template.name')]);
 
         return $dataProvider;
     }

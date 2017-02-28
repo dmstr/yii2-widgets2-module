@@ -1,24 +1,24 @@
-widget Module
+Yii2 Widget Module
 ===============
 
-Yii 2.0 Framework Widget Manager
+Widget manager using twig templates
 
 Installation
-------------
+---
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 Either run
 
 ```
-composer require hrzg/yii2-widgets2-module
+composer require dmstr/yii2-widgets2-module
 ```
 
 to the require section of your `composer.json` file.
 
 
-Startup
--------
+Testing
+---
 
 ```
 cd tests
@@ -31,13 +31,14 @@ setup.sh
 ```
 
 
-### Settings
+Settings
+---
 
 `availablePhpClasses`
 
 
 Usage
------
+---
 
 Once the extension is installed, simply use it in your code by  :
 
@@ -93,13 +94,37 @@ Example with `yii2-prototype-module`
 <p>{{ text_html }}</p>
 ```
 
-:warning: Workaround required for editor asset.
-
-```
-<?php \franciscomaya\sceditor\SCEditorAsset::register($this) ?>
-```
 
 For more examples, please see the [docs](./docs)
+
+
+Copy widgets
+---
+
+**Console config**
+
+If you use the `dmstr/yii2-pages-module`, set `pagesModule` to `true` and the widget `route` and `request_param` will be recognized
+```
+'controllerMap'       => [
+	'copy-widgets' => [
+		'class' => '\hrzg\widget\commands\CopyController',
+		'pagesModule' => true
+	]
+]
+```
+
+**CLI**
+
+Command: `yii copy-widgets/language --sourceLanguage --destinationLanguage`
+
+**Web UI**
+
+Url: `/widgets/copy`
+
+**RBAC permission**
+
+`widgets_copy`
+
 
 
 Upgrading

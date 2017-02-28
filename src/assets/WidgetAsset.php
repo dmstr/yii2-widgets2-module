@@ -26,5 +26,7 @@ class WidgetAsset extends AssetBundle
     public $depends = [
         'dosamigos\ckeditor\CKEditorAsset',
         'beowulfenator\JsonEditor\SelectizeAsset',
+        'rmrevin\yii\fontawesome\AssetBundle',
+        'uran1980\yii\assets\jQueryEssential\JqueryCookieAsset'
     ];
 }

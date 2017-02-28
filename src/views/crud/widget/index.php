@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'route',
                 'request_param',
                 'container_id',
-                'name_id',
+                'domain_id',
                 'rank',
                 'status',
                 [
