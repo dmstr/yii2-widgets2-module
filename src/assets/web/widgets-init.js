@@ -14,14 +14,14 @@ function initSelectize() {
         render: {
             item: function (item, escape) {
                 return '<div class="" style="height: 70px">' +
-                    '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="/filefly/api?action=download&path=' + (item.path) + '" />' +
+                    '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="/filefly/api?action=stream&path=' + (item.path) + '" />' +
                     '<span class="">' + escape(item.path) + '</span><br/>' +
                     //'<span class="badge">#' + escape(item.access_owner) + '</span>' +
                     '</div>';
             },
             option: function (item, escape) {
                 return '<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="height: 150px">' +
-                    '<img class="img-responsive" style="max-height: 100px" src="/filefly/api?action=download&path=' + (item.path) + '" />' +
+                    '<img class="img-responsive" style="max-height: 100px" src="/filefly/api?action=stream&path=' + (item.path) + '" />' +
                     '<span class="">' + escape(item.path) + '</span>' +
                     //'<span class="badge">#' + escape(item.access_owner) + '</span>' +
                     '</div>';
@@ -38,7 +38,7 @@ function initSelectize() {
                 data: {
                     action: 'search',
                     q: query,
-                    page_limit: 50
+                    page_limit: 20
                 },
                 error: function (e) {
                     console.log(e);
@@ -58,7 +58,7 @@ function initSelectize() {
         for (var name in editor.editors) {
             console.log(name);
             editor.editors[name].refreshValue();
-            editor.editors[name].onChange(true);
+            //editor.editors[name].onChange(true);
         }
     });
 }
@@ -66,13 +66,28 @@ function initSelectize() {
 function updateEditors() {
     // TODO: it's workaround to update all editors
     for (var name in editor.editors) {
-        console.log(name);
         editor.editors[name].refreshValue();
         editor.editors[name].onChange(true);
     }
+    console.log('jsoneditor: updated all editors');
 }
 
 // JSONeditor
+
+// initialize CKeditors
+editor.theme.afterInputReady = function (input) {
+    if ($(input).prop('tagName') == 'TEXTAREA' && $(input).attr('data-schemaformat') == 'html') {
+        console.log('input ready', $(input).prop('tagName'), input)
+
+        CKEDITOR.replace(input);
+
+        CKEDITOR.instances[$(input).prop('name')].on('change', function () {
+            this.updateElement();
+            updateEditors();
+        });
+    }
+}
+
 editor.on('ready', function () {
         // initialize CKeditor
         CKEDITOR.config.height = '400px';
@@ -81,40 +96,21 @@ editor.on('ready', function () {
             '/',
             ['Bold', 'Italic', 'Underline', 'StrikeThrough', '-', 'RemoveFormat', '-', 'Undo', 'Redo', '-', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Cut', 'Copy', 'Find', 'Replace', '-', 'Outdent', 'Indent', '-', 'Print']
         ];
-        console.log('jsoneditor: ready');
+
         initSelectize();
+
+        console.log('jsoneditor: ready');
     }
 );
 
+// TODO: notice is a workaround for broken editor display on move, delete
+// TODO: replace/refresh CKeditor instances after change
+var notice = false;
 
-// replace/refresh CKeditor instances after change
-// TODO: refresh filepicker
 editor.on('change', function () {
 
-    console.log('jsoneditor: change');
+    console.log('jsoneditor: change', $('textarea[data-schemaformat="html"]'));
 
-    $.each($('textarea[data-schemaformat="html"]'), function (key, obj) {
-
-        if (!CKEDITOR.instances[$(obj).attr('name')]) {
-
-            CKEDITOR.replace(obj);
-            console.log('replaced ' + $(obj).attr('name'));
-
-            CKEDITOR.instances[$(obj).attr('name')].on('change', function () {
-                console.log(this.name);
-                // TODO: if we have only one editor (root) we need to save - FIX ME (!!!)
-                // Editors can not be updated; detect if current editor is missing (usually "blocks")
-                if (Object.keys(editor.editors).length == 1) {
-                    alert('Data structure has been changed, please save before continuing...');
-                }
-
-                this.updateElement();
-                console.log('ckeditor change: ' + this.name);
-                updateEditors();
-            });
-        }
-    });
-    
     initSelectize();
 
     // TODO: workaround for ckeditor init after adding a new block
@@ -122,16 +118,22 @@ editor.on('change', function () {
         editor.trigger('change');
     })
 
+    // TODO: workaround for broken ckeditor after move/delete
+    $('.json-editor-btn-delete, .json-editor-btn-movedown, .json-editor-btn-moveup').on('click', function () {
+        for (name in CKEDITOR.instances) {
+            if (!notice) {
+                alert('NOTICE: Due to data updates, HTML editors will be disabled until changes have been saved.')
+                notice = true
+            }
+            CKEDITOR.instances[name].setReadOnly(true)
+            console.log('TODO', 'ckeditor: disabled', name);
+        }
+    })
+
 });
 
 
 $(document).on('pjax:complete', function () {
     console.log('template: reload success');
-    for(name in CKEDITOR.instances)
-    {
-        console.log('Destroying CKEditor', name);
-        CKEDITOR.instances[name].destroy()
-    }
     editor.trigger('change');
 })
-
