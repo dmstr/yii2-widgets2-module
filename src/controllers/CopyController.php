@@ -50,7 +50,7 @@ class CopyController extends Controller
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
 
             // RUN copy-widgets cli command
-            $command = new Command('yii copy-widgets/language');
+            $command = new Command('./yii copy-widgets/language');
             $command->addArg('--sourceLanguage', $model->sourceLanguage);
             $command->addArg('--destinationLanguage', $model->destinationLanguage);
             if ($command->execute() && empty($command->getError())) {

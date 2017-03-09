@@ -115,7 +115,7 @@ If you use the `dmstr/yii2-pages-module`, set `pagesModule` to `true` and the wi
 
 **CLI**
 
-Command: `yii copy-widgets/language --sourceLanguage --destinationLanguage`
+Command: `./yii copy-widgets/language --sourceLanguage --destinationLanguage`
 
 **Web UI**
 
