@@ -58,7 +58,7 @@ function initSelectize() {
         for (var name in editor.editors) {
             console.log(name);
             editor.editors[name].refreshValue();
-            //editor.editors[name].onChange(true);
+            editor.editors[name].onChange(true);
         }
     });
 }
