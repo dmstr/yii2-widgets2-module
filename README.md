@@ -108,7 +108,7 @@ If you use the `dmstr/yii2-pages-module`, set `pagesModule` to `true` and the wi
 
 **In case `pagesModule` to `true`**
 
-*The copy process will only be successful if every widget which is placed on the default pages route `/pages/default/page` has the corresponding page object in the source language before copy. In short: If you have widgets in your database, placed on `route = /pages/default/page` and `request_param = page id` the page with that page id MUST exist. If not, the widget is an orphan and ,ust be deleted before you are able to copy*
+*The copy process will only be successful if every widget which is placed on the default pages route `/pages/default/page` has the corresponding page object in the source language before copy. In short: If you have widgets in your database, placed on `route = /pages/default/page` and `request_param = page id` the page with that page id MUST exist. If not, the widget is an orphan and must be deleted before you are able to copy*
 
 ```
 'controllerMap'       => [
