@@ -46,8 +46,8 @@ function initSelectize() {
                 },
                 success: function (data) {
                     console.log('selectize: success');
-                    console.log(data.result);
-                    callback(data.result);
+                    console.log(data);
+                    callback(data);
                 }
             });
         }
@@ -77,7 +77,7 @@ function updateEditors() {
 // initialize CKeditors
 editor.theme.afterInputReady = function (input) {
     if ($(input).prop('tagName') == 'TEXTAREA' && $(input).attr('data-schemaformat') == 'html') {
-        console.log('input ready', $(input).prop('tagName'), input)
+        console.log('input ready', $(input).prop('tagName'), input);
 
         CKEDITOR.replace(input);
 
@@ -86,7 +86,7 @@ editor.theme.afterInputReady = function (input) {
             updateEditors();
         });
     }
-}
+};
 
 editor.on('ready', function () {
         // initialize CKeditor
@@ -116,7 +116,7 @@ editor.on('change', function () {
     // TODO: workaround for ckeditor init after adding a new block
     $('.json-editor-btn-add').on('click', function () {
         editor.trigger('change');
-    })
+    });
 
     // TODO: workaround for broken ckeditor after move/delete
     $('.json-editor-btn-delete, .json-editor-btn-movedown, .json-editor-btn-moveup').on('click', function () {
@@ -125,7 +125,7 @@ editor.on('change', function () {
                 alert('NOTICE: Due to data updates, HTML editors will be disabled until changes have been saved.')
                 notice = true
             }
-            CKEDITOR.instances[name].setReadOnly(true)
+            CKEDITOR.instances[name].setReadOnly(true);
             console.log('TODO', 'ckeditor: disabled', name);
         }
     })
@@ -136,4 +136,4 @@ editor.on('change', function () {
 $(document).on('pjax:complete', function () {
     console.log('template: reload success');
     editor.trigger('change');
-})
+});
