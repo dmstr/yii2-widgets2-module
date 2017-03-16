@@ -10,7 +10,7 @@ class m170222_103100_auth_items extends Migration
 
         if ($auth) {
             $permission = $auth->createPermission('widgets_copy');
-            $permission->description = 'Widgets Copy';
+            $permission->description = 'Widget Copy';
             $auth->add($permission);
         }
     }
