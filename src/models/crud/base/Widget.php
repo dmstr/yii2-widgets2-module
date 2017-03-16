@@ -4,6 +4,7 @@
 
 namespace hrzg\widget\models\crud\base;
 
+use dmstr\db\traits\ActiveRecordAccessTrait;
 use Yii;
 
 /**
@@ -29,6 +30,23 @@ use Yii;
  */
 abstract class Widget extends \yii\db\ActiveRecord
 {
+    use ActiveRecordAccessTrait;
+
+    /**
+     * Enable access_domain access checks in ActiveRecordAccessTrait
+     * @return array with access field names
+     */
+    public static function accessColumnAttributes()
+    {
+        return [
+            'owner'  => 'access_owner',
+            'read'   => 'access_read',
+            'update' => 'access_update',
+            'delete' => 'access_delete',
+            'domain' => 'access_domain',
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

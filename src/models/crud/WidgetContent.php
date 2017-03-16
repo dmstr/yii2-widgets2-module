@@ -13,8 +13,6 @@ use yii\helpers\ArrayHelper;
  */
 class WidgetContent extends BaseWidget
 {
-    use ActiveRecordAccessTrait;
-
     /**
      * Virtual attribute generated from "domain_id"_"access_domain".
      *
@@ -49,21 +47,6 @@ class WidgetContent extends BaseWidget
     {
         parent::afterFind();
         $this->setNameId($this->domain_id.'_'.$this->access_domain);
-    }
-
-    /**
-     * Enable access_domain access checks in ActiveRecordAccessTrait
-     * @return array with access field names
-     */
-    public static function accessColumnAttributes()
-    {
-        return [
-            'owner'  => false,
-            'read'   => false,
-            'update' => false,
-            'delete' => false,
-            'domain' => 'access_domain',
-        ];
     }
 
     /**
@@ -110,6 +93,15 @@ class WidgetContent extends BaseWidget
                         return mb_strtolower(\Yii::$app->language);
                     }
                 ],
+                [
+                    [
+                        'access_read',
+                        'access_update',
+                        'access_delete',
+                    ],
+                    'default',
+                    'value' => self::$_all
+                ],
             ]
         );
     }
@@ -132,6 +124,27 @@ class WidgetContent extends BaseWidget
         $this->access_domain = mb_strtolower($this->access_domain);
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public static function optsAccessDomain()
+    {
+        $currentLanguage = mb_strtolower(\Yii::$app->language);
+        $availableLanguages[$currentLanguage] = $currentLanguage;
+        return $availableLanguages;
+    }
+
+    /**
+     * @return array
+     */
+    public static function optsStatus()
+    {
+        return [
+            0 => \Yii::t('widgets', 'Offline'),
+            1 => \Yii::t('widgets', 'Online'),
+        ];
     }
 
     /**

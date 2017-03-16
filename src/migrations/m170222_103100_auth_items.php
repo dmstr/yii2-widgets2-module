@@ -8,7 +8,7 @@ class m170222_103100_auth_items extends Migration
     {
         $auth = Yii::$app->authManager;
 
-        if ($auth) {
+        if ($auth instanceof \yii\rbac\DbManager) {
             $permission = $auth->createPermission('widgets_copy');
             $permission->description = 'Widget Copy';
             $auth->add($permission);

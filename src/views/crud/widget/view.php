@@ -1,25 +1,19 @@
 <?php
 
-namespace _;
-
-/**
- * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee.
- */
 use devgroup\jsoneditor\Jsoneditor;
 use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
-use hrzg\widget\widgets\Cell;
 use hrzg\widget\widgets\CellPreview;
+use insolita\wgadminlte\Box;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/*
+/**
  *
- * @var yii\web\View $this
- * @var hrzg\widget\models\crud\WidgetContent $model
+ * @var \yii\web\View $this
+ * @var \hrzg\widget\models\crud\WidgetContent $model
  */
-$copyParams = $model->attributes;
 
 $this->title = $model->getAliasModel().$model->id;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
@@ -37,7 +31,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         </span>
     <?php endif; ?>
 
-    <?php \insolita\wgadminlte\Box::begin() ?>
+    <?php Box::begin() ?>
 
     <h1>
         <?php echo $model->getAliasModel() ?>
@@ -49,12 +43,33 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
     <div class="clearfix crud-navigation">
         <!-- menu buttons -->
         <div class='pull-left'>
-            <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span> '.\Yii::t('widgets', 'Edit'),
-                ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
-            <?php echo Html::a('<span class="glyphicon glyphicon-copy"></span> '.\Yii::t('widgets', 'Copy'),
-                ['create', 'id' => $model->id, 'Widget' => $copyParams], ['class' => 'btn btn-success']) ?>
-            <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
-                ['class' => 'btn btn-success']) ?>
+
+            <?php echo Html::a(
+                '<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'),
+                ['create'],
+                ['class' => 'btn btn-success']
+            ) ?>
+
+            <?php if ($model->hasPermission('access_update')) : ?>
+                <?php echo Html::a(
+                    '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
+                    ['update', 'id' => $model->id],
+                    ['class' => 'btn btn-info']
+                ) ?>
+            <?php endif; ?>
+
+            <?php if ($model->hasPermission('access_delete')) : ?>
+                <?php echo Html::a(
+                    '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),
+                    ['delete', 'id' => $model->id],
+                    [
+                        'class'        => 'btn btn-danger',
+                        'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
+                        'data-method'  => 'post',
+                    ]
+                ); ?>
+            <?php endif; ?>
+
         </div>
         <div class="pull-right">
             <?php echo Html::a('<span class="glyphicon glyphicon-list"></span> '.\Yii::t('widgets', 'Full list'), ['index'],
@@ -82,7 +97,11 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         'model' => $model,
         'attributes' => [
             'id',
-            'status',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => $model::optsStatus()[$model->status]
+            ],
             [
                 'attribute' => 'widget_template_id',
                 'format' => 'raw',
@@ -123,18 +142,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 
 
     <hr/>
-
-    <?php echo Html::a('<span class="glyphicon glyphicon-trash"></span> '.\Yii::t('widgets', 'Delete'),
-        ['delete', 'id' => $model->id],
-        [
-            'class' => 'btn btn-danger',
-            'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').'',
-            'data-method' => 'post',
-        ]); ?>
     <?php $this->endBlock(); ?>
-
-
-
     <?php echo Tabs::widget(
         [
             'id' => 'relation-tabs',
@@ -149,6 +157,5 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         ]
     );
     ?>
-
-    <?php \insolita\wgadminlte\Box::end() ?>
+    <?php Box::end() ?>
 </div>

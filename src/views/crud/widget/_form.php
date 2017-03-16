@@ -4,23 +4,19 @@
  */
 namespace _;
 
-use insolita\wgadminlte\Box;
-use insolita\wgadminlte\InfoBox;
-use Yii;
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Collapse;
-use yii\helpers\Html;
+use kartik\select2\Select2;use Yii;use yii\bootstrap\ActiveForm;use yii\helpers\Html;use yii\helpers\Inflector;
 
-/*
- *
- * @var $this yii\web\View
- * @var hrzg\widget\models\crud\WidgetContent $model
- * @var yii\widgets\ActiveForm $form
+/**
+ * @var $this \yii\web\View
+ * @var $model \hrzg\widget\models\crud\WidgetContent
+ * @var $form \yii\widgets\ActiveForm
  */
+
+/** @var array $userAuthItems */
+$userAuthItems = $model::getUsersAuthItems();
 ?>
 
 <div class="widget-form">
-
 
     <?php $form = ActiveForm::begin([
             'id' => 'Widget',
@@ -37,7 +33,6 @@ use yii\helpers\Html;
             ],
         ]
     );
-
     ?>
 
     <?php
@@ -68,16 +63,10 @@ var widgets = {
 		return false;
 	}
 }
-
-
 JS;
     ?>
     <?php $this->registerJs($js, \yii\web\View::POS_HEAD) ?>
-
-
-
     <?php $this->beginBlock('main'); ?>
-
     <p>
         <?php
         # TODO: This is just a hack, move to controller...
@@ -101,32 +90,24 @@ JS;
 
             <div class="panel panel-info">
                 <div class="panel-heading">
-            <?php echo $form->field($model, 'status')->checkbox() ?>
-                    </div>
+                    <?php echo $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
+                </div>
             </div>
-
-
-
-            <div style="">
-
-                <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-                <?php echo $form->field($model, 'default_properties_json')->label(false)
-                    ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
-                        'id' => 'editor',
-                        'schema' => $schema,
-                        'enableSelectize' => true,
-                        'clientOptions' => [
-                            'theme' => 'bootstrap3',
-                            'disable_collapse' => true,
-                            #'disable_edit_json' => true,
-                            'disable_properties' => true,
-                            #'no_additional_properties' => true,
-                        ],
-                    ]); ?>
-                <?php \yii\widgets\Pjax::end() ?>
-            </div>
-
-
+            <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
+            <?php echo $form->field($model, 'default_properties_json')->label(false)
+                ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
+                    'id' => 'editor',
+                    'schema' => $schema,
+                    'enableSelectize' => true,
+                    'clientOptions' => [
+                        'theme' => 'bootstrap3',
+                        'disable_collapse' => true,
+                        #'disable_edit_json' => true,
+                        'disable_properties' => true,
+                        #'no_additional_properties' => true,
+                    ],
+                ]); ?>
+            <?php \yii\widgets\Pjax::end() ?>
         </div>
         <div class="col-sm-3">
 
@@ -134,12 +115,12 @@ JS;
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOne">
                         <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMeta" aria-expanded="true" aria-controls="collapseOne">
                                 Meta Data
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div id="collapseMeta" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
                                 [
@@ -151,45 +132,77 @@ JS;
                             <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
-                            <!-- READ ONLY property -->
-                            <?php if (!empty($model->name_id)) : ?>
-                                <hr/>
-                                <?php echo Html::label($model->getAttributeLabel('domain_id'), ['class' => 'control-label']) ?><br>
-                                <?php echo $model->domain_id  ?>
-                            <?php endif; ?>
+                            <?php echo $form->field($model, 'domain_id')->textInput(
+                                [
+                                    'disabled' => (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->isAdmin) ? false : true,
+                                    'maxlength' => true
+                                ]
+                            ); ?>
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingTwo">
                         <h4 class="panel-title">
-                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Access (beta)
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccess" aria-expanded="false" aria-controls="collapseTwo">
+                                <?= \Yii::t('widgets', 'Access')?>
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div id="collapseAccess" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
-                            <?php echo $form->field($model, 'access_domain')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'access_owner')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'access_read')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'access_update')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'access_delete')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'access_domain')->widget(
+                                Select2::classname(),
+                                [
+                                    'data' => $model::optsAccessDomain(),
+                                    'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
+                                    'pluginOptions' => ['allowClear' => true],
+                                ]
+                            );
+                            ?>
+                            <?= $form->field($model, 'access_read')->widget(
+                                Select2::classname(),
+                                [
+                                    'data' => $userAuthItems,
+                                    'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
+                                    'pluginOptions' => ['allowClear' => true],
+                                ]
+                            );
+                            ?>
+                            <?php if ($model->hasPermission('access_update') || $model->isNewRecord) : ?>
+                                <?= $form->field($model, 'access_update')->widget(
+                                    Select2::classname(),
+                                    [
+                                        'data' => $userAuthItems,
+                                        'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
+                                        'pluginOptions' => ['allowClear' => true],
+                                    ]
+                                );
+                                ?>
+                            <?php endif; ?>
+
+                            <?php if ($model->hasPermission('access_delete') || $model->isNewRecord) : ?>
+                                <?= $form->field($model, 'access_delete')->widget(
+                                    Select2::classname(),
+                                    [
+                                        'data' => $userAuthItems,
+                                        'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
+                                        'pluginOptions' => ['allowClear' => true],
+                                    ]
+                                );
+                                ?>
+                            <?php endif; ?>
+                            <?php echo $form->field($model, 'access_owner')->hiddenInput()->label(false) ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    </p>
     <?php $this->endBlock(); ?>
 
     <?php echo $this->blocks['main'] ?>
     <hr/>
-
-    <?php echo $form->errorSummary($model); ?>
-
     <?php echo Html::submitButton(
         '<span class="glyphicon glyphicon-check"></span> '.
         ($model->isNewRecord ? Yii::t('widgets', 'Create') : Yii::t('widgets', 'Save')),
@@ -199,10 +212,7 @@ JS;
         ]
     );
     ?>
-
     <?php ActiveForm::end(); ?>
-
-
 </div>
 
 

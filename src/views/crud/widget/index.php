@@ -2,11 +2,13 @@
 /**
  * /app/src/../runtime/giiant/a0a12d1bd32eaeeb8b2cff56d511aa22.
  */
+use hrzg\widget\models\crud\WidgetTemplate;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/*
+/**
  *
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -14,12 +16,36 @@ use yii\helpers\Url;
  */
 $this->title = $searchModel->getAliasModel(true);
 $this->params['breadcrumbs'][] = $this->title;
+
+
+/**
+ * create action column template depending acces rights
+ */
+$actionColumnTemplates = [];
+
+if (\Yii::$app->user->can('widgets_crud_widget_view', ['route' => true])) {
+    $actionColumnTemplates[] = '{view}';
+}
+
+if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) {
+    $actionColumnTemplates[] = '{update}';
+}
+
+if (\Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) {
+    $actionColumnTemplates[] = '{delete}';
+}
+if (isset($actionColumnTemplates)) {
+    $actionColumnTemplate = implode(' ', $actionColumnTemplates);
+    $actionColumnTemplateString = $actionColumnTemplate;
+} else {
+    Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']);
+    $actionColumnTemplateString = "{view} {update} {delete}";
+}
+$actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
 ?>
 
 <div class="giiant-crud widget-index">
 
-    <?php //             echo $this->render('_search', ['model' =>$searchModel]);
-    ?>
     <?php \insolita\wgadminlte\Box::begin() ?>
 
     <?php \yii\widgets\Pjax::begin([
@@ -62,6 +88,41 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'class' => 'yii\grid\ActionColumn',
+                    'template' => $actionColumnTemplateString,
+                    'buttons' => [
+                        'update' => function ($url, $model, $key) {
+                            /** @var hrzg\widget\models\crud\WidgetContent $model */
+                            if (!$model->hasPermission('access_update')) {
+                                return false;
+                            } else {
+                                $title = Yii::t('yii', 'Update');
+                                $options = [
+                                    'title'      => $title,
+                                    'aria-label' => $title,
+                                    'data-pjax'  => '0',
+                                ];
+                                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]);
+                                return Html::a($icon, $url, $options);
+                            }
+                        },
+                        'delete' => function ($url, $model, $key) {
+                            /** @var hrzg\widget\models\crud\WidgetContent $model */
+                            if (!$model->hasPermission('access_delete')) {
+                                return false;
+                            } else {
+                                $title = Yii::t('yii', 'Delete');
+                                $options = [
+                                    'title'      => $title,
+                                    'aria-label' => $title,
+                                    'data-pjax'  => '0',
+                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                    'data-method' => 'post',
+                                ];
+                                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-trash"]);
+                                return Html::a($icon, $url, $options);
+                            }
+                        }
+                    ],
                     'urlCreator' => function ($action, $model, $key, $index) {
                         // using the column name as key, not mapping to 'id' like the standard generator
                         $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
@@ -73,18 +134,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'id',
                 [
+                    'attribute' => 'status',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        return $model::optsStatus()[$model->status];
+                    }
+                ],
+                [
                     'attribute' => 'template.name',
                     'header' => 'Template',
                     'contentOptions' => ['nowrap' => 'nowrap'],
-                    'filter'=> \yii\helpers\ArrayHelper::map(\hrzg\widget\models\crud\WidgetTemplate::find()->asArray()->all(), 'name', 'name'),
+                    'filter'=> ArrayHelper::map(WidgetTemplate::find()->asArray()->all(), 'name', 'name'),
                 ],
-                'access_domain',
                 'route',
                 'request_param',
                 'container_id',
-                'domain_id',
-                'rank',
-                'status',
+                /*'domain_id',*/
+                /*'rank',*/
                 [
                     'attribute' => 'default_properties_json',
                     'format' => 'raw',
@@ -106,10 +172,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     ]);},
                 ],
+                'access_domain',
                 /*'access_owner',*/
-                /*'access_read'*/
-                /*'access_update'*/
-                /*'access_delete'*/
+                'access_read',
+                'access_update',
+                'access_delete',
 
             ],
         ]); ?>
