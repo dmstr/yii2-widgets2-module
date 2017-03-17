@@ -1,10 +1,8 @@
 <?php
-/**
- * /app/src/../runtime/giiant/4b7e79a8340461fe629a6ac612644d03.
- */
-namespace _;
 
-use kartik\select2\Select2;use Yii;use yii\bootstrap\ActiveForm;use yii\helpers\Html;use yii\helpers\Inflector;
+use kartik\select2\Select2;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 /**
  * @var $this \yii\web\View
@@ -116,18 +114,24 @@ JS;
                     <div class="panel-heading" role="tab" id="headingOne">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMeta" aria-expanded="true" aria-controls="collapseOne">
-                                Meta Data
+                                <?= \Yii::t('widgets', 'Meta Data')?>
                             </a>
                         </h4>
                     </div>
                     <div id="collapseMeta" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
-                            <?php echo $form->field($model, 'widget_template_id')->dropDownList($model::optsWidgetTemplateId(),
+                            <?= $form->field($model, 'widget_template_id')->widget(
+                                Select2::classname(),
                                 [
-                                    //'disabled' => true,
-                                    'onchange' => 'widgets.updateTemplate(this)',
+                                    'data' => $model::optsWidgetTemplateId(),
+                                    'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
+                                    'pluginOptions' => ['allowClear' => true],
+                                    'pluginEvents' => [
+                                        'change' => 'function() {widgets.updateTemplate(this)}'
+                                    ],
                                 ]
-                            ) ?>
+                            );
+                            ?>
                             <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
                             <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
