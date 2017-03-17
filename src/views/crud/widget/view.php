@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'widget_template_id',
                 'format' => 'raw',
-                'value' => (!\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION))
+                'value' => (\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION))
                     ? Html::a($model->template->name, ['crud/widget-template/view', 'id'=>$model->widget_template_id])
                     .' '.Html::a(FA::icon(FA::_EDIT), ['crud/widget-template/update', 'id'=>$model->widget_template_id])
                     : $model->template->name
