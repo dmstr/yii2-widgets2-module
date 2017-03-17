@@ -10,7 +10,7 @@ class m170222_103100_auth_items extends Migration
 
         if ($auth instanceof \yii\rbac\DbManager) {
             $permission = $auth->createPermission('widgets_copy');
-            $permission->description = 'Widgets Copy';
+            $permission->description = 'Widgets Language Copy';
             $auth->add($permission);
         }
     }
