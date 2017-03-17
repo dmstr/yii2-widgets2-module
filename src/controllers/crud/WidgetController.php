@@ -56,8 +56,20 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
 
         // save new widget
         $newWidget = new WidgetContent();
-        if ($newWidget->load(\Yii::$app->request->post()) && $newWidget->save()) {
-            return $this->redirect(['view', 'id' => $newWidget->id]);
+        if ($newWidget->load(\Yii::$app->request->post())) {
+            if ($newWidget->save()) {
+                $successMsg = \Yii::t('widgets', 'Widget successfully copied from #' . $newWidget->copied_from);
+                \Yii::$app->session->setFlash('success', $successMsg);
+                \Yii::info($successMsg, __METHOD__);
+                \Yii::$app->language = $newWidget->access_domain;
+                return $this->redirect(['view', 'id' => $newWidget->id]);
+            } else {
+                $errorMsg = \Yii::t('widgets', 'Copy Widget from from #' . $newWidget->copied_from . ' failed.');
+                \Yii::$app->session->setFlash('error', $errorMsg);
+                \Yii::error($errorMsg, __METHOD__);
+                \Yii::error($newWidget->getErrors(), __METHOD__);
+                return $this->redirect(Url::previous());
+            }
         }
 
         // find widget to copy
@@ -66,6 +78,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
         // apply widgets attributes to new widget
         $newWidget->attributes = $widget->attributes;
         $newWidget->copied_from = $widget->id;
+        $newWidget->access_owner = \Yii::$app->user->id;
 
         // clear attributes
         $newWidget->id = null;

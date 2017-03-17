@@ -1,5 +1,6 @@
 <?php
 
+use hrzg\widget\Module;
 use kartik\select2\Select2;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
@@ -156,15 +157,18 @@ JS;
                     </div>
                     <div id="collapseAccess" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
-                            <?= $form->field($model, 'access_domain')->widget(
-                                Select2::classname(),
-                                [
-                                    'data' => $model::optsAccessDomain(),
-                                    'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
-                                    'pluginOptions' => ['allowClear' => true],
-                                ]
-                            );
-                            ?>
+                            <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION)) : ?>
+                                <?= $form->field($model, 'access_domain')->widget(
+                                    Select2::classname(),
+                                    [
+                                        'data' => $model::optsAccessDomain(),
+                                        'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
+                                        'pluginOptions' => ['allowClear' => true],
+                                    ]
+                                );
+                                ?>
+                            <?php endif; ?>
+
                             <?= $form->field($model, 'access_read')->widget(
                                 Select2::classname(),
                                 [

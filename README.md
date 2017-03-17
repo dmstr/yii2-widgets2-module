@@ -131,6 +131,8 @@ Url: `/widgets/copy`
 
 `widgets_copy`
 
+Also used to enable `access_domain` input with all available application languages. Default is `false`
+
 **Usage**
 
 * Go to -> `/widgets/copy`

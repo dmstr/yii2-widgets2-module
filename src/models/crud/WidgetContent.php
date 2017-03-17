@@ -4,6 +4,7 @@ namespace hrzg\widget\models\crud;
 
 use dmstr\db\traits\ActiveRecordAccessTrait;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
+use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
@@ -92,6 +93,7 @@ class WidgetContent extends BaseWidget
                         return mb_strtolower(\Yii::$app->language);
                     }
                 ],
+                ['access_domain', 'validateAccessDomain'],
                 [
                     [
                         'access_read',
@@ -103,6 +105,23 @@ class WidgetContent extends BaseWidget
                 ],
             ]
         );
+    }
+
+    /**
+     * Check if user tries to save / update records to another language
+     * 'widget_copy' permission required
+     *
+     * @param $attribute
+     */
+    public function validateAccessDomain($attribute)
+    {
+        if ($this->attributes[$attribute] !== \Yii::$app->language) {
+            if ( ! \Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION)) {
+                $errorMsg = \Yii::t('widgets', 'You are not allowed to copy widgets between languages');
+                \Yii::$app->session->setFlash('error', $errorMsg);
+                $this->addError($attribute, $errorMsg);
+            }
+        }
     }
 
     /**

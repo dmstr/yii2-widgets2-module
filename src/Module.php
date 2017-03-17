@@ -33,7 +33,7 @@ class Module extends \yii\base\Module
     public function beforeAction($action)
     {
         parent::beforeAction($action);
-        \Yii::$app->controller->view->params['breadcrumbs'][] = ['label' => 'Widget module', 'url' => ['/widgets']];
+        \Yii::$app->controller->view->params['breadcrumbs'][] = ['label' => 'Widgets module', 'url' => ['/widgets']];
 
         return true;
     }

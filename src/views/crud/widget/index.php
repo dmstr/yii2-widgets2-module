@@ -9,7 +9,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
- *
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var hrzg\widget\models\crud\search\WidgetContent $searchModel
@@ -27,12 +26,12 @@ if (\Yii::$app->user->can('widgets_crud_widget_view', ['route' => true])) {
     $actionColumnTemplates[] = '{view}';
 }
 
-if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) {
-    $actionColumnTemplates[] = '{update}';
+if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) {
+    $actionColumnTemplates[] = '{copy}';
 }
 
-if (\Yii::$app->user->can('widgets_copy_widget', ['route' => true])) {
-    $actionColumnTemplates[] = '{copy}';
+if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) {
+    $actionColumnTemplates[] = '{update}';
 }
 
 if (\Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) {
@@ -43,7 +42,7 @@ if (isset($actionColumnTemplates)) {
     $actionColumnTemplateString = $actionColumnTemplate;
 } else {
     Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']);
-    $actionColumnTemplateString = "{view} {update} {copy} {delete}";
+    $actionColumnTemplateString = "{view} {copy} {update} {delete}";
 }
 $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
 ?>
@@ -89,58 +88,78 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
             'tableOptions' => ['class' => 'table table-striped table-hover'],
             'headerRowOptions' => ['class' => 'x'],
             'columns' => [
-
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'template' => $actionColumnTemplateString,
                     'buttons' => [
                         'update' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            if ( ! ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update'))) {
-                                return false;
-                            } else {
-                                $title = Yii::t('yii', 'Update');
-                                $options = [
-                                    'title'      => $title,
-                                    'aria-label' => $title,
-                                    'data-pjax'  => '0',
-                                ];
-                                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]);
-                                return Html::a($icon, $url, $options);
+                            $title = Yii::t('yii', 'Update');
+                            $disabled = null;
+                            $disabledClass = null;
+                            if ( ! ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true]))) {
+                                $title = Yii::t('widgets', 'Update denied');
+                                $disabled = 'disabled';
+                                $disabledClass = 'btn-default';
+                                $url = null;
                             }
+                            $options = [
+                                'class'      => $disabledClass,
+                                'title'      => $title,
+                                'aria-label' => $title,
+                                'disabled'   => $disabled,
+                                'data-pjax'  => '0',
+                            ];
+                            $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]);
+                            return Html::a($icon, $url, $options);
                         },
                         'copy' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            if ( ! \Yii::$app->user->can('widgets_crud_widget_copy')) {
-                                return false;
-                            } else {
-                                $title = Yii::t('yii', 'Copy');
-                                $options = [
-                                    'title'      => $title,
-                                    'aria-label' => $title,
-                                    'class' => 'btn-default',
-                                    'data-pjax'  => '0',
-                                ];
-                                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-copy"]);
-                                return Html::a($icon, $url, $options);
+                            $title = Yii::t('yii', 'Copy');
+                            $disabled = null;
+                            $disabledClass = null;
+                            if ( ! \Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) {
+                                $title = Yii::t('widgets', 'Copy denied');
+                                $disabled = 'disabled';
+                                $disabledClass = 'btn-default';
+                                $url = null;
                             }
+                            $options = [
+                                'class'      => $disabledClass,
+                                'title'      => $title,
+                                'aria-label' => $title,
+                                'disabled'   => $disabled,
+                                'data-pjax'  => '0',
+                            ];
+                            $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-copy"]);
+                            return Html::a($icon, $url, $options);
                         },
                         'delete' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            if ( ! ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete'))) {
-                                return false;
-                            } else {
-                                $title = Yii::t('yii', 'Delete');
-                                $options = [
-                                    'title'      => $title,
-                                    'aria-label' => $title,
-                                    'data-pjax'  => '0',
-                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                    'data-method' => 'post',
-                                ];
-                                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-trash"]);
-                                return Html::a($icon, $url, $options);
+                            $title = Yii::t('yii', 'Delete');
+                            $disabled = null;
+                            $disabledClass = null;
+                            $dataConfirm = Yii::t('widgets', 'Are you sure you want to delete this item?');
+                            $dataMethod = 'post';
+                            if ( ! ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true]))) {
+                                $title = Yii::t('yii', 'Delete denied');
+                                $disabled = 'disabled';
+                                $disabledClass = 'btn-default';
+                                $url = null;
+                                $dataConfirm = null;
+                                $dataMethod = null;
                             }
+                            $options = [
+                                'class'      => $disabledClass,
+                                'title'        => $title,
+                                'aria-label'   => $title,
+                                'disabled'     => $disabled,
+                                'data-pjax'    => '0',
+                                'data-confirm' => $dataConfirm,
+                                'data-method'  => $dataMethod,
+                            ];
+                            $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-trash"]);
+                            return Html::a($icon, $url, $options);
                         }
                     ],
                     'urlCreator' => function ($action, $model, $key, $index) {
