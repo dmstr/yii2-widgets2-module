@@ -142,6 +142,7 @@ JS;
                                     'maxlength' => true
                                 ]
                             ); ?>
+                            <?php echo $form->field($model, 'copied_from')->hiddenInput()->label(false); ?>
                         </div>
                     </div>
                 </div>

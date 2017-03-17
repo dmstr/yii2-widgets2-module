@@ -142,6 +142,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             'access_read',
             'access_update',
             'access_delete',
+            'copied_from',
             'created_at',
             'updated_at',
         ],

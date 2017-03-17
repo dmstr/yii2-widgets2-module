@@ -24,6 +24,7 @@ use Yii;
  * @property string $access_read
  * @property string $access_update
  * @property string $access_delete
+ * @property string $copied_from
  * @property string $created_at
  * @property string $updated_at
  * @property string $aliasModel
@@ -82,7 +83,7 @@ abstract class Widget extends \yii\db\ActiveRecord
             [['status'], 'string', 'max' => 32],
             [['container_id', 'route'], 'string', 'max' => 128],
             [['domain_id'], 'string', 'max' => 64],
-            [['widget_template_id'], 'integer'],
+            [['widget_template_id', 'copied_from'], 'integer'],
             [['rank', 'access_owner'], 'string', 'max' => 11],
             [['request_param', 'access_read', 'access_update', 'access_delete'], 'string', 'max' => 255],
             [['access_domain'], 'string', 'max' => 8],
@@ -110,6 +111,7 @@ abstract class Widget extends \yii\db\ActiveRecord
             'access_read' => Yii::t('widgets', 'Access Read'),
             'access_update' => Yii::t('widgets', 'Access Update'),
             'access_delete' => Yii::t('widgets', 'Access Delete'),
+            'copied_from' => Yii::t('widgets', 'Copied From'),
             'created_at' => Yii::t('widgets', 'Created At'),
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];

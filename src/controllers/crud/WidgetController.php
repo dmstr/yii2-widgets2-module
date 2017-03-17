@@ -65,6 +65,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
 
         // apply widgets attributes to new widget
         $newWidget->attributes = $widget->attributes;
+        $newWidget->copied_from = $widget->id;
 
         // clear attributes
         $newWidget->id = null;

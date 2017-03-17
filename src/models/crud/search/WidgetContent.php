@@ -20,7 +20,7 @@ class WidgetContent extends WidgetModel
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'copied_from'], 'integer'],
             [
                 [
                     'status',
@@ -112,6 +112,7 @@ class WidgetContent extends WidgetModel
             ->andFilterWhere(['like', 'access_read', $this->access_read])
             ->andFilterWhere(['like', 'access_update', $this->access_update])
             ->andFilterWhere(['like', 'access_delete', $this->access_delete])
+            ->andFilterWhere(['like', 'copied_from', $this->copied_from])
             ->andFilterWhere(['=', 'template.name', $this->getAttribute('template.name')]);
 
         return $dataProvider;
