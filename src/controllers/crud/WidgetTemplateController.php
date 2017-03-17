@@ -1,4 +1,7 @@
 <?php
+
+namespace hrzg\widget\controllers\crud;
+
 /**
  * This is the class for controller "WidgetTemplateController".
  */
