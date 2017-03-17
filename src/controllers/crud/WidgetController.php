@@ -1,6 +1,9 @@
 <?php
+
+namespace hrzg\widget\controllers\crud;
+
 use hrzg\widget\assets\WidgetAsset;
-use hrzg\widget\models\crud\search\WidgetContent;
+use hrzg\widget\models\crud\WidgetContent;
 use yii\helpers\Url;
 
 /**
