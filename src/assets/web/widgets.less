@@ -3,7 +3,7 @@
   min-height: 48px;
   position: relative;
 
-  outline: 2px dotted #ccc;
+  outline: 2px dotted #999;
   &:hover {
     .hrzg-widget-container-controls {
       opacity: 1;
@@ -17,7 +17,12 @@
     opacity: 0;
     z-index: 995;
     position: absolute;
-    top: -1.5em;
+    &.pos-top {
+      top: 0em;
+    }
+    &.pos-bottom {
+      bottom: 0em;
+    }
     button {
       z-index: 997;
     }
@@ -30,14 +35,20 @@
     opacity: 0;
     position: absolute;
     right: 0;
-    top: -2.5em;
+    z-index: 998;
+    &.pos-top {
+      top: 0em;
+    }
+    &.pos-bottom {
+      bottom: 0em;
+    }
   }
 
   .hrzg-widget-widget {
     min-height: 32px;
     position: relative;
     &:hover {
-      outline: 3px solid #eee;
+      outline: 2px solid #999;
       .hrzg-widget-container-controls, .hrzg-widget-widget-controls {
         opacity: 1;
       }

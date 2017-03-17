@@ -47,6 +47,9 @@ class Cell extends Widget
     public $showWidgetControls = true;
     public $showContainerControls = true;
 
+    public $positionWidgetControls = 'top';
+    public $positionContainerControls = 'top';
+
     /**
      * @inheritdoc
      */
@@ -182,8 +185,10 @@ class Cell extends Widget
      */
     private function generateContainerControls()
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls']);
-        $items = [];
+        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pos-'.$this->positionContainerControls]);
+        $items = [
+            ['label'=>$this->id]
+        ];
 
         foreach (WidgetTemplate::find()->orderBy('name')->all() as $template) {
             $items[] = [
@@ -202,7 +207,7 @@ class Cell extends Widget
         }
 
         $html .= ButtonDropdown::widget([
-            'label' => FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
+            'label' => FA::icon(FA::_PLUS_SQUARE),
             'encodeLabel' => false,
             'options' => ['class' => 'btn btn-success'],
             'dropdown' =>  [
@@ -224,14 +229,14 @@ class Cell extends Widget
      */
     private function generateWidgetControls($widget)
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group', 'role' => 'group']);
+        $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group pos-'.$this->positionWidgetControls, 'role' => 'group']);
         $html .= Html::a(
             FA::icon(FA::_FILE_O),
             ['/widgets/crud/widget/view', 'id' => $widget->id],
             ['class' => 'btn btn-xs btn-default']
         );
         $html .= Html::a(
-            FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->name_id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
+            FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
             ['class' => 'btn btn-xs btn-'.($widget->status ? 'primary' : 'default')]
         );
