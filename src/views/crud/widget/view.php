@@ -3,6 +3,7 @@
 use devgroup\jsoneditor\Jsoneditor;
 use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
+use hrzg\widget\Module;
 use hrzg\widget\widgets\CellPreview;
 use insolita\wgadminlte\Box;
 use rmrevin\yii\fontawesome\FA;
@@ -103,7 +104,6 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         'options' => ['class' => 'table table-striped detail-view'],
         'model' => $model,
         'attributes' => [
-            'id',
             [
                 'attribute' => 'status',
                 'format' => 'raw',
@@ -112,9 +112,10 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'widget_template_id',
                 'format' => 'raw',
-                'value' => \yii\helpers\Html::a($model->template->name, ['crud/widget-template/view', 'id'=>$model->widget_template_id]).
-                    ' '.
-                    \yii\helpers\Html::a(FA::icon(FA::_EDIT), ['crud/widget-template/update', 'id'=>$model->widget_template_id])
+                'value' => (!\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION))
+                    ? Html::a($model->template->name, ['crud/widget-template/view', 'id'=>$model->widget_template_id])
+                    .' '.Html::a(FA::icon(FA::_EDIT), ['crud/widget-template/update', 'id'=>$model->widget_template_id])
+                    : $model->template->name
             ],
             [
                 'attribute' => 'default_properties_json',
