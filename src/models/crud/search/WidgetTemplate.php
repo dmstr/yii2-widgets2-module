@@ -1,7 +1,5 @@
 <?php
-/**
- * /app/src/../runtime/giiant/e0080b9d6ffa35acb85312bf99a557f2.
- */
+
 namespace hrzg\widget\models\crud\search;
 
 use hrzg\widget\models\crud\WidgetTemplate as WidgetTemplateModel;

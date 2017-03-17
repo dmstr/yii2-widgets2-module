@@ -56,16 +56,6 @@ abstract class Widget extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return \hrzg\widget\models\crud\query\WidgetQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \hrzg\widget\models\crud\query\WidgetQuery(get_called_class());
-    }
-
-    /**
      * Alias name of table for crud viewsLists all Area models.
      * Change the alias name manual if needed later.
      *

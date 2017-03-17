@@ -6,6 +6,7 @@ use dmstr\db\traits\ActiveRecordAccessTrait;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\widgets\Cell;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -31,7 +32,7 @@ class WidgetContent extends BaseWidget
             [
                 'timestamp' => [
                     'class' => TimestampBehavior::className(),
-                    'value' => date('Y-m-d h:i:s'),
+                    'value' => new Expression('NOW()'),
                     ],
                 'audit' => [
                     'class' => 'bedezign\yii2\audit\AuditTrailBehavior'
@@ -82,9 +83,7 @@ class WidgetContent extends BaseWidget
                 [
                     'domain_id',
                     'default',
-                    'value' => function () {
-                        return uniqid();
-                    }
+                    'value' => uniqid()
                 ],
                 [
                     'access_domain',
@@ -131,8 +130,10 @@ class WidgetContent extends BaseWidget
      */
     public static function optsAccessDomain()
     {
-        $currentLanguage = mb_strtolower(\Yii::$app->language);
-        $availableLanguages[$currentLanguage] = $currentLanguage;
+        $availableLanguages = [];
+        foreach (\Yii::$app->urlManager->languages as $availablelanguage) {
+            $availableLanguages[mb_strtolower($availablelanguage)] = mb_strtolower($availablelanguage);
+        }
         return $availableLanguages;
     }
 

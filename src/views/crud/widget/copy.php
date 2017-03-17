@@ -1,5 +1,4 @@
 <?php
-
 use insolita\wgadminlte\Box;
 use yii\helpers\Html;
 
@@ -7,12 +6,11 @@ use yii\helpers\Html;
  * @var \yii\web\View $this
  * @var \hrzg\widget\models\crud\WidgetContent $model
  */
-$this->title = $model->getAliasModel().$model->id.', '.\Yii::t('widgets', 'Edit');
+$this->title = $model->getAliasModel().$model->id.', '.Yii::t('widgets', 'Copy');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string) $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
+$this->params['breadcrumbs'][] = Yii::t('widgets', 'Copy');
 ?>
-<div class="giiant-crud widget-update">
+<div class="giiant-crud widget-copy">
 
     <?php Box::begin() ?>
     <h1>
@@ -22,8 +20,8 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
     </h1>
 
     <div class="crud-navigation">
-        <?php echo Html::a('<span class="glyphicon glyphicon-file"></span> '.\Yii::t('widgets', 'View'),
-            ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?php echo Html::a('<span class="glyphicon glyphicon-file"></span> '.Yii::t('widgets', 'Cancel'),
+            ['index'], ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php echo $this->render('_form', ['model' => $model]); ?>

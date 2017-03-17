@@ -2,22 +2,22 @@
 
 use yii\db\Migration;
 
-class m170222_103100_auth_items extends Migration
+class m170317_101222_auth_items extends Migration
 {
     public function up()
     {
         $auth = Yii::$app->authManager;
 
         if ($auth instanceof \yii\rbac\DbManager) {
-            $permission = $auth->createPermission('widgets_copy');
-            $permission->description = 'Widgets Copy';
+            $permission = $auth->createPermission('widgets_crud_widget_copy');
+            $permission->description = 'Widgets Copy Widget';
             $auth->add($permission);
         }
     }
 
     public function down()
     {
-        echo "m170222_103100_auth_items cannot be reverted.\n";
+        echo "m170317_101222_auth_items cannot be reverted.\n";
 
         return false;
     }

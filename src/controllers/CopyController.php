@@ -15,7 +15,6 @@ use rmrevin\yii\fontawesome\AssetBundle;
 use yii\helpers\Url;
 use yii\web\Controller;
 
-
 /**
  * Class CopyController
  * @package hrzg\widget\controllers
@@ -38,9 +37,11 @@ class CopyController extends Controller
         // Register font-awesome asset bundle
         AssetBundle::register(\Yii::$app->view);
     }
-    
+
     /**
-     * @return string
+     * Copy all widgets from one language to another
+     *
+     * @return string|\yii\web\Response
      */
     public function actionLanguage()
     {

@@ -10,7 +10,6 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /**
- *
  * @var \yii\web\View $this
  * @var \hrzg\widget\models\crud\WidgetContent $model
  */
@@ -50,7 +49,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
                 ['class' => 'btn btn-success']
             ) ?>
 
-            <?php if ($model->hasPermission('access_update')) : ?>
+            <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update')) : ?>
                 <?php echo Html::a(
                     '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
                     ['update', 'id' => $model->id],
@@ -58,7 +57,15 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
                 ) ?>
             <?php endif; ?>
 
-            <?php if ($model->hasPermission('access_delete')) : ?>
+            <?php if (\Yii::$app->user->can('widgets_crud_widget_copy')) : ?>
+                <?php echo Html::a(
+                    '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
+                    ['copy', 'id' => $model->id],
+                    ['class' => 'btn btn-default']
+                ) ?>
+            <?php endif; ?>
+
+            <?php if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete')) : ?>
                 <?php echo Html::a(
                     '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),
                     ['delete', 'id' => $model->id],
@@ -80,7 +87,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 
     <hr/>
 
-    <h2>Preview</h2>
+    <h2><?=\Yii::t('widgets', 'Preview') ?></h2>
     <?= CellPreview::widget(['widget_id'=>$model->id]) ?>
     <hr />
 
@@ -139,7 +146,6 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             'updated_at',
         ],
     ]); ?>
-
 
     <hr/>
     <?php $this->endBlock(); ?>

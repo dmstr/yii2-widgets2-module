@@ -31,6 +31,10 @@ if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) {
     $actionColumnTemplates[] = '{update}';
 }
 
+if (\Yii::$app->user->can('widgets_copy_widget', ['route' => true])) {
+    $actionColumnTemplates[] = '{copy}';
+}
+
 if (\Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) {
     $actionColumnTemplates[] = '{delete}';
 }
@@ -39,7 +43,7 @@ if (isset($actionColumnTemplates)) {
     $actionColumnTemplateString = $actionColumnTemplate;
 } else {
     Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']);
-    $actionColumnTemplateString = "{view} {update} {delete}";
+    $actionColumnTemplateString = "{view} {update} {copy} {delete}";
 }
 $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
 ?>
@@ -92,7 +96,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                     'buttons' => [
                         'update' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            if (!$model->hasPermission('access_update')) {
+                            if ( ! ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update'))) {
                                 return false;
                             } else {
                                 $title = Yii::t('yii', 'Update');
@@ -105,9 +109,25 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                                 return Html::a($icon, $url, $options);
                             }
                         },
+                        'copy' => function ($url, $model, $key) {
+                            /** @var hrzg\widget\models\crud\WidgetContent $model */
+                            if ( ! \Yii::$app->user->can('widgets_crud_widget_copy')) {
+                                return false;
+                            } else {
+                                $title = Yii::t('yii', 'Copy');
+                                $options = [
+                                    'title'      => $title,
+                                    'aria-label' => $title,
+                                    'class' => 'btn-default',
+                                    'data-pjax'  => '0',
+                                ];
+                                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-copy"]);
+                                return Html::a($icon, $url, $options);
+                            }
+                        },
                         'delete' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            if (!$model->hasPermission('access_delete')) {
+                            if ( ! ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete'))) {
                                 return false;
                             } else {
                                 $title = Yii::t('yii', 'Delete');
