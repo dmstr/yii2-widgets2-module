@@ -86,12 +86,6 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 
     </div>
 
-    <hr/>
-
-    <h2><?=\Yii::t('widgets', 'Preview') ?></h2>
-    <?= CellPreview::widget(['widget_id'=>$model->id]) ?>
-    <hr />
-
     <h2>Data</h2>
     <?php $this->beginBlock('hrzg\widget\models\crud\Widget'); ?>
 
@@ -160,6 +154,13 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
                     'label' => '<b class=""># '.$model->id.'</b>',
                     'content' => $this->blocks['hrzg\widget\models\crud\Widget'],
                     'active' => true,
+                ],
+                [
+                    'label' => '<b class=""><i class="fa fa-photo"></i> '.\Yii::t('widgets', 'Preview').'</b>',
+                    'content' => CellPreview::widget(['widget_id'=>$model->id]),
+                    'options' => [
+                        'class' => 'crud-widget-preview'
+                    ]
                 ],
             ],
         ]

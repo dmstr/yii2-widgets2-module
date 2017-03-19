@@ -1,3 +1,14 @@
+.crud-widget-preview {
+  > .hrzg-widget-widget-container {
+    outline: 0;
+    .hrzg-widget-widget {
+      &:hover {
+        outline: 0;
+      }
+    }
+  }
+}
+
 .hrzg-widget-widget-container {
 
   min-height: 48px;
@@ -18,10 +29,10 @@
     z-index: 995;
     position: absolute;
     &.pos-top {
-      top: 0em;
+      top: 0;
     }
     &.pos-bottom {
-      bottom: 0em;
+      bottom: 0;
     }
     button {
       z-index: 997;
@@ -37,10 +48,10 @@
     right: 0;
     z-index: 998;
     &.pos-top {
-      top: 0em;
+      top: 0;
     }
     &.pos-bottom {
-      bottom: 0em;
+      bottom: 0;
     }
   }
 
