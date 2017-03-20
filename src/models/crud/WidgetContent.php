@@ -11,7 +11,8 @@ use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "app_hrzg_widget".
+ * Class WidgetContent
+ * @package hrzg\widget\models\crud
  */
 class WidgetContent extends BaseWidget
 {
@@ -34,7 +35,7 @@ class WidgetContent extends BaseWidget
                 'timestamp' => [
                     'class' => TimestampBehavior::className(),
                     'value' => new Expression('NOW()'),
-                    ],
+                ],
                 'audit' => [
                     'class' => 'bedezign\yii2\audit\AuditTrailBehavior'
                 ]

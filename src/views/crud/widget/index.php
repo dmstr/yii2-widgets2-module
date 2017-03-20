@@ -94,7 +94,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                     'buttons' => [
                         'update' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            $title = Yii::t('yii', 'Update');
+                            $title = Yii::t('widgets', 'Update');
                             $disabled = null;
                             $disabledClass = null;
                             if ( ! ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true]))) {
@@ -115,7 +115,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                         },
                         'copy' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            $title = Yii::t('yii', 'Copy');
+                            $title = Yii::t('widgets', 'Copy');
                             $disabled = null;
                             $disabledClass = null;
                             if ( ! \Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) {
@@ -136,13 +136,13 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                         },
                         'delete' => function ($url, $model, $key) {
                             /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            $title = Yii::t('yii', 'Delete');
+                            $title = Yii::t('widgets', 'Delete');
                             $disabled = null;
                             $disabledClass = null;
                             $dataConfirm = Yii::t('widgets', 'Are you sure you want to delete this item?');
                             $dataMethod = 'post';
                             if ( ! ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true]))) {
-                                $title = Yii::t('yii', 'Delete denied');
+                                $title = Yii::t('widgets', 'Delete denied');
                                 $disabled = 'disabled';
                                 $disabledClass = 'btn-default';
                                 $url = null;

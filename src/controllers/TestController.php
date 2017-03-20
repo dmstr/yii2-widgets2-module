@@ -2,6 +2,10 @@
 
 namespace hrzg\widget\controllers;
 
+/**
+ * Class TestController
+ * @package hrzg\widget\controllers
+ */
 class TestController extends \yii\web\Controller
 {
     public function actionIndex()

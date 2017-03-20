@@ -7,7 +7,9 @@ use hrzg\widget\models\crud\WidgetContent;
 use yii\helpers\Url;
 
 /**
- * This is the class for controller "WidgetController".
+ * Class WidgetController
+ * @package hrzg\widget\controllers\crud
+ * @author Christopher Stebe <c.stebe@herzogkommunikation.de>
  */
 class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetController
 {
@@ -64,7 +66,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
                 \Yii::$app->language = $newWidget->access_domain;
                 return $this->redirect(['view', 'id' => $newWidget->id]);
             } else {
-                $errorMsg = \Yii::t('widgets', 'Copy Widget from from #' . $newWidget->copied_from . ' failed.');
+                $errorMsg = \Yii::t('widgets', 'Copy widget from from #' . $newWidget->copied_from . ' failed');
                 \Yii::$app->session->setFlash('error', $errorMsg);
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidget->getErrors(), __METHOD__);
