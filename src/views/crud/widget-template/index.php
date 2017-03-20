@@ -25,18 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     ) ?>
     <h1>
-        <?php echo $searchModel->getAliasModel(true) ?>
+        <?= $searchModel->getAliasModel(true) ?>
         <small>List</small>
     </h1>
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
+            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>
         </div>
     </div>
     <hr/>
     <div class="table-responsive">
-        <?php echo GridView::widget([
+        <?= GridView::widget([
             'layout' => '{summary}{pager}{items}{pager}',
             'dataProvider' => $dataProvider,
             'pager' => [

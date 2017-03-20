@@ -20,18 +20,18 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?php echo $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id') ?>
 
-    <?php echo $form->field($model, 'name') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?php echo $form->field($model, 'json_schema') ?>
+    <?= $form->field($model, 'json_schema') ?>
 
-    <?php echo $form->field($model, 'twig_template') ?>
+    <?= $form->field($model, 'twig_template') ?>
 
 
     <div class="form-group">
-        <?php echo Html::submitButton(Yii::t('widgets', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::resetButton(Yii::t('widgets', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('widgets', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('widgets', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

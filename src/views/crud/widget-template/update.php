@@ -1,40 +1,66 @@
 <?php
 /**
- * /app/src/../runtime/giiant/fcd70a9bfdf8de75128d795dfc948a74.
+ * @var \yii\web\View $this
+ * @var \hrzg\widget\models\crud\WidgetTemplate $model
  */
+use insolita\wgadminlte\Box;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-/*
- *
- * @var yii\web\View $this
- * @var hrzg\widget\models\crud\WidgetTemplate $model
- */
-$this->title = $model->getAliasModel().$model->name.', '.Yii::t('widgets', 'Edit');
+$this->title                   = $model->getAliasModel() . $model->id . ', ' . \Yii::t('widgets', 'Edit');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string) $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('widgets', 'Edit');
+$this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
 ?>
-<div class="giiant-crud widget-template-update">
-
-    <?php \insolita\wgadminlte\Box::begin() ?>
-
+<div class="giiant-crud widget-update">
+    <?php $form = ActiveForm::begin(
+        [
+            'id'                     => 'widget-template-update',
+            'layout'                 => 'default',
+            'enableClientValidation' => false,
+            'errorSummaryCssClass'   => 'error-summary alert alert-error',
+            'fieldConfig'            => [
+                'horizontalCssClasses' => [
+                    'label'   => 'col-sm-2',
+                    'wrapper' => 'col-sm-10',
+                    'error'   => '',
+                    'hint'    => 'hidden',
+                ],
+            ],
+        ]
+    );
+    ?>
+    <?php Box::begin() ?>
     <h1>
-        <?php echo $model->getAliasModel() ?>
-        <small>
-            <?php echo $model->name ?>        </small>
+        <?= $model->getAliasModel() ?>
+        <small><?= $model->name ?></small>
     </h1>
 
-    <div class="crud-navigation">
-        <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span> '.Yii::t('widgets', 'View'),
-            ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+    <div class="clearfix crud-navigation">
+        <?= Html::submitButton(
+            '<span class="glyphicon glyphicon-check"></span> ' .
+            \Yii::t('widgets', 'Update'),
+            [
+                'id'    => 'update-' . $model->formName(),
+                'class' => 'btn btn-success',
+            ]
+        );
+        ?>
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-file"></span> ' . \Yii::t('widgets', 'View'),
+            ['view', 'id' => $model->id],
+            ['class' => 'btn btn-default']
+        );
+        ?>
+        <div class="pull-right">
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-file"></span> ' . Yii::t('widgets', 'Cancel'),
+                ['/widgets/crud/widget-template/index'],
+                ['class' => 'btn btn-default']
+            ) ?>
+        </div>
     </div>
-
-    <hr>
-
-    <?php echo $this->render('_form', [
-        'model' => $model,
-    ]); ?>
-
-    <?php \insolita\wgadminlte\Box::end() ?>
-
+    <?= $this->render('_form', ['model' => $model, 'form' => $form]); ?>
+    <?php Box::end() ?>
+    <?php ActiveForm::end(); ?>
 </div>

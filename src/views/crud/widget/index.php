@@ -1,21 +1,19 @@
 <?php
 /**
- * /app/src/../runtime/giiant/a0a12d1bd32eaeeb8b2cff56d511aa22.
- */
-use hrzg\widget\models\crud\WidgetTemplate;
-use yii\grid\GridView;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
-
-/**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var hrzg\widget\models\crud\search\WidgetContent $searchModel
  */
+use hrzg\widget\models\crud\WidgetTemplate;
+use insolita\wgadminlte\Box;
+use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
+
 $this->title = $searchModel->getAliasModel(true);
 $this->params['breadcrumbs'][] = $this->title;
-
 
 /**
  * create action column template depending acces rights
@@ -49,9 +47,9 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 
 <div class="giiant-crud widget-index">
 
-    <?php \insolita\wgadminlte\Box::begin() ?>
+    <?php Box::begin() ?>
 
-    <?php \yii\widgets\Pjax::begin([
+    <?php Pjax::begin([
         'id' => 'pjax-main',
         'enableReplaceState' => false,
         'linkSelector' => '#pjax-main ul.pagination a, th a',
@@ -59,24 +57,24 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     ]) ?>
 
     <h1>
-        <?php echo $searchModel->getAliasModel(true) ?>
+        <?= $searchModel->getAliasModel(true) ?>
         <small>
             List
         </small>
     </h1>
-    <div class="clearfix crud-navigation">
-        <div class="pull-left">
-            <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> '.Yii::t('widgets', 'New'), ['create'],
-                ['class' => 'btn btn-success']) ?>
+
+    <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
+        <div class="clearfix crud-navigation">
+            <div class="pull-left">
+                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.Yii::t('widgets', 'New'), ['create'],
+                        ['class' => 'btn btn-success']) ?>
+            </div>
         </div>
-
-
-    </div>
-
-    <hr>
+    <hr />
+    <?php endif; ?>
 
     <div class="table-responsive">
-        <?php echo GridView::widget([
+        <?= GridView::widget([
             'layout' => '{summary}{pager}{items}{pager}',
             'dataProvider' => $dataProvider,
             'pager' => [
@@ -220,10 +218,8 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
             ],
         ]); ?>
     </div>
-
-
-    <?php \yii\widgets\Pjax::end() ?>
-    <?php \insolita\wgadminlte\Box::end() ?>
+    <?php Pjax::end() ?>
+    <?php Box::end() ?>
 
 </div>
 

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @var \yii\web\View $this
+ * @var \hrzg\widget\models\crud\WidgetContent $model
+ */
 use devgroup\jsoneditor\Jsoneditor;
 use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
@@ -10,11 +13,6 @@ use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/**
- * @var \yii\web\View $this
- * @var \hrzg\widget\models\crud\WidgetContent $model
- */
-
 $this->title = $model->getAliasModel().$model->id;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->id, 'url' => ['view', 'id' => $model->id]];
@@ -22,52 +20,41 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 ?>
 <div class="giiant-crud widget-view">
 
-    <!-- flash message -->
-    <?php if (\Yii::$app->session->getFlash('deleteError') !== null) : ?>
-        <span class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-            <?php echo \Yii::$app->session->getFlash('deleteError') ?>
-        </span>
-    <?php endif; ?>
-
     <?php Box::begin() ?>
-
     <h1>
-        <?php echo $model->getAliasModel() ?>
-        <small>
-            <?php echo $model->name_id ?>        </small>
+        <?= $model->getAliasModel() ?>
+        <small><?= $model->name_id ?></small>
     </h1>
-
 
     <div class="clearfix crud-navigation">
         <!-- menu buttons -->
         <div class='pull-left'>
+            <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
+                <?= Html::a(
+                    '<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'),
+                    ['create'],
+                    ['class' => 'btn btn-success']
+                ) ?>
 
-            <?php echo Html::a(
-                '<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'),
-                ['create'],
-                ['class' => 'btn btn-success']
-            ) ?>
+                <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
+                    <?= Html::a(
+                        '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
+                        ['copy', 'id' => $model->id],
+                        ['class' => 'btn btn-default']
+                    ) ?>
+                <?php endif; ?>
+            <?php endif; ?>
 
             <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
-                <?php echo Html::a(
+                <?= Html::a(
                     '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
                     ['update', 'id' => $model->id],
                     ['class' => 'btn btn-info']
                 ) ?>
             <?php endif; ?>
 
-            <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
-                <?php echo Html::a(
-                    '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
-                    ['copy', 'id' => $model->id],
-                    ['class' => 'btn btn-warning']
-                ) ?>
-            <?php endif; ?>
-
             <?php if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
-                <?php echo Html::a(
+                <?= Html::a(
                     '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),
                     ['delete', 'id' => $model->id],
                     [
@@ -80,7 +67,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 
         </div>
         <div class="pull-right">
-            <?php echo Html::a('<span class="glyphicon glyphicon-list"></span> '.\Yii::t('widgets', 'Full list'), ['index'],
+            <?= Html::a('<span class="glyphicon glyphicon-list"></span> '.\Yii::t('widgets', 'Full list'), ['index'],
                 ['class' => 'btn btn-default']) ?>
         </div>
 
@@ -94,7 +81,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
     $r = $hl->highlight("json", $model->default_properties_json, JSON_PRETTY_PRINT);
     ?>
 
-    <?php echo DetailView::widget([
+    <?= DetailView::widget([
         'options' => ['class' => 'table table-striped detail-view'],
         'model' => $model,
         'attributes' => [
@@ -143,7 +130,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         ],
     ]); ?>
     <?php $this->endBlock(); ?>
-    <?php echo Tabs::widget(
+    <?= Tabs::widget(
         [
             'id' => 'relation-tabs',
             'encodeLabels' => false,

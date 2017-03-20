@@ -67,7 +67,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
                 return $this->redirect(['view', 'id' => $newWidget->id]);
             } else {
                 $errorMsg = \Yii::t('widgets', 'Copy widget from from #' . $newWidget->copied_from . ' failed');
-                \Yii::$app->session->setFlash('error', $errorMsg);
+                \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . implode('<br>', $newWidget->getFirstErrors()));
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidget->getErrors(), __METHOD__);
                 return $this->redirect(Url::previous());

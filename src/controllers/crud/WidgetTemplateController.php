@@ -34,7 +34,7 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
                 return $this->redirect(['view', 'id' => $newWidgetTemplate->id]);
             } else {
                 $errorMsg = \Yii::t('widgets', 'Copy widget template failed');
-                \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . $newWidgetTemplate->getFirstError('name'));
+                \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . implode('<br>', $newWidgetTemplate->getFirstErrors()));
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidgetTemplate->getErrors(), __METHOD__);
                 return $this->redirect(Url::previous());

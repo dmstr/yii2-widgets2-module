@@ -1,44 +1,59 @@
 <?php
 /**
- * /app/src/../runtime/giiant/fccccf4deb34aed738291a9c38e87215.
+ * @var \yii\web\View $this
+ * @var \hrzg\widget\models\crud\WidgetTemplate $model
  */
+use insolita\wgadminlte\Box;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-/*
- *
- * @var yii\web\View $this
- * @var hrzg\widget\models\crud\WidgetTemplate $model
- */
-$this->title = Yii::t('widgets', 'Create');
+$this->title                   = Yii::t('widgets', 'Create');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="giiant-crud widget-template-create">
-
-    <?php \insolita\wgadminlte\Box::begin() ?>
-
+<div class="giiant-crud widget-create">
+    <?php $form = ActiveForm::begin(
+        [
+            'id'                     => 'widget-template-create',
+            'layout'                 => 'default',
+            'enableClientValidation' => false,
+            'errorSummaryCssClass'   => 'error-summary alert alert-error',
+            'fieldConfig'            => [
+                'horizontalCssClasses' => [
+                    'label'   => 'col-sm-2',
+                    'wrapper' => 'col-sm-10',
+                    'error'   => '',
+                    'hint'    => 'hidden',
+                ],
+            ],
+        ]
+    );
+    ?>
+    <?php Box::begin() ?>
     <h1>
-        <?php echo $model->getAliasModel() ?>
-        <small>
-            <?php echo $model->name ?>        </small>
+        <?= $model->getAliasModel() ?>
+        <small><?= $model->name ?></small>
     </h1>
-
-
     <div class="clearfix crud-navigation">
-        <div class="pull-left">
-            <?php echo Html::a(
-                Yii::t('widgets', 'Cancel'),
-                \yii\helpers\Url::previous(),
-                ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(
+            '<span class="glyphicon glyphicon-check"></span> ' .
+            \Yii::t('widgets', 'Create'),
+            [
+                'id'    => 'create-' . $model->formName(),
+                'class' => 'btn btn-success',
+            ]
+        );
+        ?>
+        <div class="pull-right">
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-file"></span> ' . Yii::t('widgets', 'Cancel'),
+                ['/widgets/crud/widget-template/index'],
+                ['class' => 'btn btn-default']
+            ) ?>
         </div>
     </div>
-
-    <hr>
-
-    <?php echo $this->render('_form', [
-        'model' => $model,
-    ]); ?>
-
-    <?php \insolita\wgadminlte\Box::end() ?>
-
+    <hr/>
+    <?= $this->render('_form', ['model' => $model, 'form' => $form]); ?>
+    <?php Box::end() ?>
+    <?php ActiveForm::end(); ?>
 </div>

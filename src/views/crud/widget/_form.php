@@ -1,39 +1,17 @@
 <?php
-
-use hrzg\widget\Module;
-use kartik\select2\Select2;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
-
 /**
  * @var $this \yii\web\View
  * @var $model \hrzg\widget\models\crud\WidgetContent
  * @var $form \yii\widgets\ActiveForm
+ * @var array $userAuthItems
  */
+use hrzg\widget\Module;
+use kartik\select2\Select2;
 
-/** @var array $userAuthItems */
 $userAuthItems = $model::getUsersAuthItems();
 ?>
 
 <div class="widget-form">
-
-    <?php $form = ActiveForm::begin([
-            'id' => 'Widget',
-            'layout' => 'default',
-            'enableClientValidation' => false,
-            'errorSummaryCssClass' => 'error-summary alert alert-error',
-            'fieldConfig' => [
-                'horizontalCssClasses' => [
-                    'label' => 'col-sm-2',
-                    'wrapper' => 'col-sm-10',
-                    'error' => '',
-                    'hint' => 'hidden',
-                ],
-            ],
-        ]
-    );
-    ?>
-
     <?php
     $language = Yii::$app->language;
     $js = <<<JS
@@ -89,11 +67,11 @@ JS;
 
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <?php echo $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
+                    <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
                 </div>
             </div>
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-            <?php echo $form->field($model, 'default_properties_json')->label(false)
+            <?= $form->field($model, 'default_properties_json')->label(false)
                 ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::className(), [
                     'id' => 'editor',
                     'schema' => $schema,
@@ -133,17 +111,17 @@ JS;
                                 ]
                             );
                             ?>
-                            <?php echo $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
-                            <?php echo $form->field($model, 'domain_id')->textInput(
+                            <?= $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'domain_id')->textInput(
                                 [
                                     'disabled' => (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->isAdmin) ? false : true,
                                     'maxlength' => true
                                 ]
                             ); ?>
-                            <?php echo $form->field($model, 'copied_from')->hiddenInput()->label(false); ?>
+                            <?= $form->field($model, 'copied_from')->hiddenInput()->label(false); ?>
                         </div>
                     </div>
                 </div>
@@ -168,7 +146,6 @@ JS;
                                 );
                                 ?>
                             <?php endif; ?>
-
                             <?= $form->field($model, 'access_read')->widget(
                                 Select2::classname(),
                                 [
@@ -189,7 +166,6 @@ JS;
                                 );
                                 ?>
                             <?php endif; ?>
-
                             <?php if ($model->hasPermission('access_delete') || $model->isNewRecord) : ?>
                                 <?= $form->field($model, 'access_delete')->widget(
                                     Select2::classname(),
@@ -201,7 +177,7 @@ JS;
                                 );
                                 ?>
                             <?php endif; ?>
-                            <?php echo $form->field($model, 'access_owner')->hiddenInput()->label(false) ?>
+                            <?= $form->field($model, 'access_owner')->hiddenInput()->label(false) ?>
                         </div>
                     </div>
                 </div>
@@ -209,21 +185,8 @@ JS;
         </div>
     </div>
     <?php $this->endBlock(); ?>
-
-    <?php echo $this->blocks['main'] ?>
-    <hr/>
-    <?php echo Html::submitButton(
-        '<span class="glyphicon glyphicon-check"></span> '.
-        ($model->isNewRecord ? Yii::t('widgets', 'Create') : Yii::t('widgets', 'Save')),
-        [
-            'id' => 'save-'.$model->formName(),
-            'class' => 'btn btn-success',
-        ]
-    );
-    ?>
-    <?php ActiveForm::end(); ?>
+    <?= $this->blocks['main'] ?>
 </div>
-
 
 <?php
 // TODO: this is just a positioning workaround

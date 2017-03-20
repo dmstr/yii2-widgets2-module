@@ -20,13 +20,13 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?php echo $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id') ?>
 
-    <?php echo $form->field($model, 'status') ?>
+    <?= $form->field($model, 'status') ?>
 
-    <?php echo $form->field($model, 'widget_template_id') ?>
+    <?= $form->field($model, 'widget_template_id') ?>
 
-    <?php echo $form->field($model, 'default_properties_json') ?>
+    <?= $form->field($model, 'default_properties_json') ?>
 
     <?php // echo $form->field($model, 'name_id') ?>
 
@@ -53,8 +53,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated_at') ?>
 
     <div class="form-group">
-        <?php echo Html::submitButton(Yii::t('widgets', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::resetButton(Yii::t('widgets', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('widgets', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('widgets', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
