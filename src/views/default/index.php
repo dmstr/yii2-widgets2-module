@@ -14,7 +14,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
 ?>
 <?php Box::begin(['title' => \Yii::t('widgets', 'General')]) ?>
     <div class="row">
-        <?php if (\Yii::$app->user->can(Module::CONTENT_ACCESS_PERMISSION)) : ?>
+        <?php if (\Yii::$app->user->can('widgets_crud_widget_create')) : ?>
             <div class="col-xs-12 col-sm-4 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
@@ -29,6 +29,8 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 echo Html::a($infoBoxHtml, ['/widgets/crud/widget/create']);
                 ?>
             </div>
+        <?php endif; ?>
+        <?php if (\Yii::$app->user->can('widgets_crud_widget_index')) : ?>
             <div class="col-xs-12 col-sm-8 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
