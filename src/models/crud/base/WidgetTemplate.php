@@ -76,19 +76,4 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeHints()
-    {
-        return array_merge(
-            parent::attributeHints(),
-            [
-                'id' => Yii::t('widgets', 'ID'),
-                'name' => Yii::t('widgets', 'Name'),
-                'json_schema' => Yii::t('widgets', 'Json Schema'),
-                'twig_template' => Yii::t('widgets', 'Template'),
-            ]);
-    }
 }
