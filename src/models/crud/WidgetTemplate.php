@@ -5,11 +5,14 @@ namespace hrzg\widget\models\crud;
 use hrzg\widget\models\crud\base\WidgetTemplate as BaseWidgetTemplate;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 /**
- * This is the model class for table "app_hrzg_widget_template".
+ * Class WidgetTemplate
+ * @package hrzg\widget\models\crud
  */
 class WidgetTemplate extends BaseWidgetTemplate
 {
@@ -21,7 +24,13 @@ class WidgetTemplate extends BaseWidgetTemplate
         return ArrayHelper::merge(
             parent::behaviors(),
             [
-                'bedezign\yii2\audit\AuditTrailBehavior'
+                'timestamp' => [
+                    'class' => TimestampBehavior::className(),
+                    'value' => new Expression('NOW()'),
+                ],
+                'audit' => [
+                    'class' => 'bedezign\yii2\audit\AuditTrailBehavior'
+                ]
             ]
         );
     }

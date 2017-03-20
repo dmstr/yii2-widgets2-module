@@ -77,6 +77,8 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
                 'format' => 'html',
                 'value' => '<pre>'.Html::encode($model->twig_template).'</pre>'
             ],
+            'created_at',
+            'updated_at',
         ],
     ]); ?>
 

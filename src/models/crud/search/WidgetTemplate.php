@@ -12,22 +12,20 @@ use yii\data\ActiveDataProvider;
 class WidgetTemplate extends WidgetTemplateModel
 {
     /**
-     * {@inheritdoc}
-     *
-     * @return unknown
+     * @inheritdoc
+     * @return array
      */
     public function rules()
     {
         return [
             [['id'], 'integer'],
-            [['name', 'json_schema', 'twig_template'], 'safe'],
+            [['name', 'json_schema', 'twig_template', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return unknown
+     * @inheritdoc
+     * @return array
      */
     public function scenarios()
     {

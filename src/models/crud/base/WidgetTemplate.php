@@ -57,6 +57,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
         return [
             [['name', 'php_class', 'json_schema'], 'required'],
             [['json_schema', 'twig_template'], 'string'],
+            [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -71,6 +72,8 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'name' => Yii::t('widgets', 'Name'),
             'json_schema' => Yii::t('widgets', 'Json Schema'),
             'twig_template' => Yii::t('widgets', 'Twig Template'),
+            'created_at' => Yii::t('widgets', 'Created At'),
+            'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
     }
 
