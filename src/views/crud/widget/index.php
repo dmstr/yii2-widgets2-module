@@ -114,7 +114,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                             $title = Yii::t('widgets', 'Copy');
                             $disabled = null;
                             $disabledClass = null;
-                            if ( ! \Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) {
+                            if ( ! \Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) {
                                 $title = Yii::t('widgets', 'Copy denied');
                                 $disabled = 'disabled';
                                 $disabledClass = 'btn-default';

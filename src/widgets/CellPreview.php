@@ -9,7 +9,6 @@
 
 namespace hrzg\widget\widgets;
 
-
 use hrzg\widget\models\crud\WidgetContent;
 
 class CellPreview extends Cell
@@ -18,7 +17,10 @@ class CellPreview extends Cell
     public $showWidgetControls = false;
     public $showContainerControls = false;
 
+    /**
+     * @return static[]
+     */
     protected function queryWidgets() {
-        return WidgetContent::findAll(['id'=>$this->widget_id]);
+        return WidgetContent::findAll($this->widget_id);
     }
 }

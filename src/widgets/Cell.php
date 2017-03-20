@@ -168,10 +168,10 @@ class Cell extends Widget
             }
             $html .= Html::beginTag('div',
                 ['id' => 'widget-'.($widget->name_id ?: $widget->id), 'class' => 'hrzg-widget-widget']);
-            if (\Yii::$app->user->can('widgets_crud_widget') && $this->showWidgetControls) {
+            if (\Yii::$app->user->can('widgets_crud_widget_update') && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
-            if (\Yii::$app->user->can('widgets_crud_widget') || $widget->status == 1) {
+            if (\Yii::$app->user->can('widgets_crud_widget_view') || $widget->status == 1) {
                 $html .= $class->run();
             }
             $html .= Html::endTag('div');
