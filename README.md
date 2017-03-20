@@ -131,7 +131,8 @@ Url: `/widgets/copy`
 
 `widgets_copy`
 
-Also used to enable `access_domain` input with all available application languages. Default is `false`
+This permission means that the user is allowed to copy widgets between languages.
+Also used to enable the `access_domain` input for widget content with all available application languages.
 
 **Usage**
 

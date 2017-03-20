@@ -142,8 +142,6 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             'updated_at',
         ],
     ]); ?>
-
-    <hr/>
     <?php $this->endBlock(); ?>
     <?php echo Tabs::widget(
         [
