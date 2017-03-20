@@ -63,6 +63,17 @@ Example with `yii2-prototype-module`
 
 - [JSON schema editor](https://github.com/jdorn/json-editor)
 
+### Settings
+
+**Section:** widgets
+
+**Key:** availablePhpClasses
+
+**Type:** JSON
+
+####Example:
+ 
+`{"hrzg\\widget\\widgets\\TwigTemplate": "Twig layout"}`
 
 ### Widget example
 
