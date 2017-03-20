@@ -13,16 +13,35 @@ use yii\web\AssetBundle;
 
 class WidgetAsset extends AssetBundle
 {
+    /**
+     * @var string
+     */
     public $sourcePath = __DIR__.'/web';
 
+    /**
+     * @var array
+     */
     public $css = [
         'widgets.less'
     ];
 
+    /**
+     * @var array
+     */
     public $js = [
         'cell.js'
     ];
 
+    /**
+     * @var array $publishOptions
+     */
+    public $publishOptions = [
+        'forceCopy' => false,
+    ];
+
+    /**
+     * @var array
+     */
     public $depends = [
         'dosamigos\ckeditor\CKEditorAsset',
         'beowulfenator\JsonEditor\SelectizeAsset',
