@@ -64,6 +64,9 @@ class WidgetTemplateController extends Controller
 
         try {
             if ($model->load($_POST) && $model->save()) {
+                if (isset($_POST['apply'])) {
+                    return $this->redirect(['update', 'id' => $model->id]);
+                }
                 return $this->redirect('index');
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
@@ -89,6 +92,9 @@ class WidgetTemplateController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load($_POST) && $model->save()) {
+            if (isset($_POST['apply'])) {
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
             return $this->redirect(['view', 'id'=>$model->id]);
         } else {
             return $this->render('update', [

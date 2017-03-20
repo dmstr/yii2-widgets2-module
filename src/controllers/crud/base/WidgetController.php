@@ -61,6 +61,7 @@ class WidgetController extends Controller
      */
     public function actionIndex()
     {
+        Url::remember();
         $searchModel = new WidgetSearch();
         $dataProvider = $searchModel->search($_GET);
 
@@ -83,6 +84,7 @@ class WidgetController extends Controller
      */
     public function actionView($id)
     {
+        Url::remember();
         \Yii::$app->session['__crudReturnUrl'] = Url::previous();
 
         Tabs::rememberActiveState();
@@ -104,7 +106,10 @@ class WidgetController extends Controller
 
         try {
             if ($model->load($_POST) && $model->save()) {
-                if (Url::previous($model->route)) {
+
+                if (isset($_POST['apply'])) {
+                    return $this->redirect(['update', 'id' => $model->id]);
+                } else if (Url::previous($model->route)) {
                     return $this->redirect(Url::previous($model->route));
                 } else {
                     return $this->redirect(['view', 'id'=>$model->id]);
@@ -132,14 +137,21 @@ class WidgetController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load($_POST) && $model->save() && Url::previous($model->route)) {
-            return $this->redirect(Url::previous($model->route));
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'schema' => $this->getJsonSchema($model),
-            ]);
+        if ($model->load($_POST) && $model->save()) {
+
+            if (isset($_POST['apply'])) {
+                return $this->redirect(['update', 'id' => $model->id]);
+            } else if (Url::previous($model->route)) {
+                return $this->redirect(Url::previous($model->route));
+            } else {
+                return $this->redirect(Url::previous());
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'schema' => $this->getJsonSchema($model),
+        ]);
     }
 
     /**

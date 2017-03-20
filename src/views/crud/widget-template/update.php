@@ -46,6 +46,15 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
             ]
         );
         ?>
+        <?= Html::submitButton(
+            '<span class="glyphicon glyphicon-refresh"></span> ' .
+            \Yii::t('widgets', 'Apply'),
+            [
+                'name' => 'apply',
+                'class' => 'btn btn-warning',
+            ]
+        );
+        ?>
         <?= Html::a(
             '<span class="glyphicon glyphicon-file"></span> ' . \Yii::t('widgets', 'View'),
             ['view', 'id' => $model->id],

@@ -44,6 +44,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         );
         ?>
+        <?= Html::submitButton(
+            '<span class="glyphicon glyphicon-refresh"></span> ' .
+            \Yii::t('widgets', 'Apply'),
+            [
+                'name' => 'apply',
+                'class' => 'btn btn-warning',
+            ]
+        );
+        ?>
         <div class="pull-right">
             <?= Html::a(
                 '<span class="glyphicon glyphicon-file"></span> ' . Yii::t('widgets', 'Cancel'),
