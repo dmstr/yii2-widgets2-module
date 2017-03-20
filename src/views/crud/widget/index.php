@@ -53,7 +53,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
         'id' => 'pjax-main',
         'enableReplaceState' => false,
         'linkSelector' => '#pjax-main ul.pagination a, th a',
-        'clientOptions' => ['pjax:success' => 'function(){alert("yo")}'],
     ]) ?>
 
     <h1>
