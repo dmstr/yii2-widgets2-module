@@ -92,6 +92,6 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
         $newWidget->rank = 'a-'.dechex(date('U'));
 
         // render copy form
-        return $this->render('copy', ['model' => $newWidget]);
+        return $this->render('copy', ['model' => $newWidget, 'schema' => $this->getJsonSchema($newWidget)]);
     }
 }

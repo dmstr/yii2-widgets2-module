@@ -45,22 +45,6 @@ JS;
     <?php $this->registerJs($js, \yii\web\View::POS_HEAD) ?>
     <?php $this->beginBlock('main'); ?>
     <p>
-        <?php
-        # TODO: This is just a hack, move to controller...
-        if ($model->widget_template_id) {
-            $id = $model->widget_template_id;
-            $json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id' => $id])->json_schema;
-            $schema = \yii\helpers\Json::decode($json);
-        } else {
-            if (isset($_GET['Widget']['widget_template_id'])) {
-                $id = $_GET['Widget']['widget_template_id'];
-                $json = \hrzg\widget\models\crud\WidgetTemplate::findOne(['id' => $id])->json_schema;
-                $schema = \yii\helpers\Json::decode($json);
-            } else {
-                $schema = [];
-            }
-        }
-        ?>
 
     <div class="row">
         <div class="col-sm-9">

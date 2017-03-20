@@ -2,6 +2,7 @@
 /**
  * @var \yii\web\View $this
  * @var \hrzg\widget\models\crud\WidgetContent $model
+ * @var array $schema
  */
 use insolita\wgadminlte\Box;
 use yii\bootstrap\ActiveForm;
@@ -46,14 +47,14 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
         <div class="pull-right">
             <?= Html::a(
-                '<span class="glyphicon glyphicon-file"></span> ' . Yii::t('widgets', 'Cancel'),
+                '<span class="glyphicon glyphicon-file"></span> ' . \Yii::t('widgets', 'Cancel'),
                 ['/widgets/crud/widget/index'],
                 ['class' => 'btn btn-default']
             ) ?>
         </div>
     </div>
     <hr/>
-    <?= $this->render('_form', ['model' => $model, 'form' => $form]); ?>
+    <?= $this->render('_form', ['model' => $model, 'form' => $form, 'schema' => $schema]); ?>
     <?php Box::end() ?>
     <?php ActiveForm::end(); ?>
 </div>

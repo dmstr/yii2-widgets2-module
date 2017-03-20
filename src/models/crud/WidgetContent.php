@@ -173,10 +173,7 @@ class WidgetContent extends BaseWidget
      */
     public static function optsWidgetTemplateId()
     {
-        return ArrayHelper::merge(
-            ['' => 'none'],
-            \yii\helpers\ArrayHelper::map(WidgetTemplate::find()->orderBy('name')->all(), 'id', 'name')
-        );
+        return ArrayHelper::map(WidgetTemplate::find()->orderBy('name')->all(), 'id', 'name');
     }
 
     /**

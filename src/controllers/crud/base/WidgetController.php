@@ -5,6 +5,8 @@ namespace hrzg\widget\controllers\crud\base;
 use dmstr\bootstrap\Tabs;
 use hrzg\widget\models\crud\search\WidgetContent as WidgetSearch;
 use hrzg\widget\models\crud\WidgetContent;
+use hrzg\widget\models\crud\WidgetTemplate;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -15,6 +17,43 @@ use yii\web\HttpException;
  */
 class WidgetController extends Controller
 {
+    /**
+     * @param WidgetContent $model
+     *
+     * @return array|mixed
+     * @throws HttpException
+     */
+    public function getJsonSchema(WidgetContent $model)
+    {
+        $schema = [];
+
+        // get json schema
+        switch (true) {
+            case !empty($model->widget_template_id):
+
+                $template = WidgetTemplate::findOne($model->widget_template_id);
+                if(empty($template)) {
+                    throw new HttpException(404, \Yii::t('widgets', 'Template not found'));
+                }
+
+                break;
+            case \Yii::$app->request->get('Widget'):
+                $template = WidgetTemplate::findOne(\Yii::$app->request->get('Widget')['widget_template_id']);
+                if(empty($template)) {
+                    throw new HttpException(404, \Yii::t('widgets', 'Template not found'));
+                }
+                break;
+            default:
+                $templateId = null;
+        }
+
+        if (!empty($template)) {
+            $schema = Json::decode($template->json_schema);
+        }
+
+        return $schema;
+    }
+
     /**
      * Lists all Widget models.
      *
@@ -78,7 +117,7 @@ class WidgetController extends Controller
             $model->addError('_exception', $msg);
         }
 
-        return $this->render('create', ['model' => $model]);
+        return $this->render('create', ['model' => $model, 'schema' => $this->getJsonSchema($model)]);
     }
 
     /**
@@ -98,6 +137,7 @@ class WidgetController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'schema' => $this->getJsonSchema($model),
             ]);
         }
     }
