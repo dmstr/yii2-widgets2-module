@@ -131,7 +131,7 @@ class CopyController extends \yii\console\Controller
                 $newWidget = new WidgetContent($sourceWidget->attributes);
                 $newWidget->id = null;
                 $newWidget->access_domain = mb_strtolower($destinationLanguage);
-                $newWidget->copied_from = $sourceLanguage->id;
+                $newWidget->copied_from = $sourceWidget->id;
 
                 /**
                  * with pages module usage
