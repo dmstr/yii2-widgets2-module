@@ -55,7 +55,7 @@ class Cell extends Widget
      */
     public function init()
     {
-        if (\Yii::$app->user->can('widgets_crud_widget')) {
+        if (\Yii::$app->user->can('widgets_crud_widget', ['route' => true])) {
             \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
             WidgetAsset::register(\Yii::$app->view);
         }
@@ -154,7 +154,7 @@ class Cell extends Widget
             ]
         );
 
-        if (\Yii::$app->user->can('widgets_crud_widget') && $this->showContainerControls) {
+        if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true]) && $this->showContainerControls) {
             $html .= $this->generateContainerControls();
         }
 
@@ -168,10 +168,10 @@ class Cell extends Widget
             }
             $html .= Html::beginTag('div',
                 ['id' => 'widget-'.($widget->name_id ?: $widget->id), 'class' => 'hrzg-widget-widget']);
-            if (\Yii::$app->user->can('widgets_crud_widget_update') && $this->showWidgetControls) {
+            if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true]) && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
-            if (\Yii::$app->user->can('widgets_crud_widget_view') || $widget->status == 1) {
+            if (\Yii::$app->user->can('widgets_crud_widget_view', ['route' => true]) || $widget->status == 1) {
                 $html .= $class->run();
             }
             $html .= Html::endTag('div');
