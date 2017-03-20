@@ -16,6 +16,11 @@ class Module extends \yii\base\Module
     const WIDGETS_ACCESS_PERMISSION = 'widgets';
 
     /**
+     * RBAC permission name to widget test
+     */
+    const TEST_ACCESS_PERMISSION = 'widgets_test';
+
+    /**
      * RBAC permission name to widget content
      */
     const CONTENT_ACCESS_PERMISSION = 'widgets_crud_widget';

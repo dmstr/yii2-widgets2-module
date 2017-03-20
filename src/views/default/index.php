@@ -77,47 +77,48 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
     </div>
 <?php Box::end() ?>
 
-<?php Box::begin(['title' => \Yii::t('widgets', 'Playground')]) ?>
-    <div class="row">
-        <div class="col-xs-12 col-sm-4 col-md-3">
-            <?php $infoBoxHtml = InfoBox::widget(
-                [
-                    'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
-                        . \Yii::t('widgets', 'Test page') . '</h3>Index</div>',
-                    'boxBg' => InfoBox::TYPE_LBLUE,
-                    'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
-                ]
-            );
-            echo Html::a($infoBoxHtml, ['/widgets/test/index'], ['target' => '_blank']);
-            ?>
+<?php if (\Yii::$app->user->can(Module::TEST_ACCESS_PERMISSION)) : ?>
+    <?php Box::begin(['title' => \Yii::t('widgets', 'Playground')]) ?>
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3">
+                <?php $infoBoxHtml = InfoBox::widget(
+                    [
+                        'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
+                            . \Yii::t('widgets', 'Test page') . '</h3>Index</div>',
+                        'boxBg' => InfoBox::TYPE_LBLUE,
+                        'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
+                    ]
+                );
+                echo Html::a($infoBoxHtml, ['/widgets/test/index'], ['target' => '_blank']);
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3">
+                <?php $infoBoxHtml = InfoBox::widget(
+                    [
+                        'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
+                            . \Yii::t('widgets', 'Test page') . '</h3>params</div>',
+                        'boxBg' => InfoBox::TYPE_LBLUE,
+                        'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
+                    ]
+                );
+                echo Html::a($infoBoxHtml, ['/widgets/test/with-param', 'pageId' => 'page-1'], ['target' => '_blank']);
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3">
+                <?php $infoBoxHtml = InfoBox::widget(
+                    [
+                        'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
+                            . \Yii::t('widgets', 'Test page 2') . '</h3>params</div>',
+                        'boxBg' => InfoBox::TYPE_LBLUE,
+                        'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
+                    ]
+                );
+                echo Html::a($infoBoxHtml, ['/widgets/test/with-param', 'pageId' => 'page-2'], ['target' => '_blank']);
+                ?>
+            </div>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-3">
-            <?php $infoBoxHtml = InfoBox::widget(
-                [
-                    'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
-                        . \Yii::t('widgets', 'Test page') . '</h3>params</div>',
-                    'boxBg' => InfoBox::TYPE_LBLUE,
-                    'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
-                ]
-            );
-            echo Html::a($infoBoxHtml, ['/widgets/test/with-param', 'pageId' => 'page-1'], ['target' => '_blank']);
-            ?>
-        </div>
-        <div class="col-xs-12 col-sm-4 col-md-3">
-            <?php $infoBoxHtml = InfoBox::widget(
-                [
-                    'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
-                        . \Yii::t('widgets', 'Test page 2') . '</h3>params</div>',
-                    'boxBg' => InfoBox::TYPE_LBLUE,
-                    'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
-                ]
-            );
-            echo Html::a($infoBoxHtml, ['/widgets/test/with-param', 'pageId' => 'page-2'], ['target' => '_blank']);
-            ?>
-        </div>
-    </div>
-<?php Box::end(); ?>
-
+    <?php Box::end(); ?>
+<?php endif; ?>
 
 <?php Box::begin(['title' => \Yii::t('widgets', 'Extras')]) ?>
 <div class="row">
