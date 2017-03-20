@@ -83,7 +83,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
             ],
             'filterModel' => $searchModel,
             'tableOptions' => ['class' => 'table table-striped table-hover'],
-            'headerRowOptions' => ['class' => 'x'],
             'columns' => [
                 [
                     'class' => 'yii\grid\ActionColumn',

@@ -46,7 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'filterModel' => $searchModel,
             'tableOptions' => ['class' => 'table table-striped table-hover'],
-            'headerRowOptions' => ['class' => 'x'],
             'columns' => [
                 [
                     'class' => 'yii\grid\ActionColumn',
