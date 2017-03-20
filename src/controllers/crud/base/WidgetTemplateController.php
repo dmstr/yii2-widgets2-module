@@ -22,6 +22,7 @@ class WidgetTemplateController extends Controller
      */
     public function actionIndex()
     {
+        Url::remember();
         $searchModel = new WidgetTemplateSearch();
         $dataProvider = $searchModel->search($_GET);
 
@@ -44,6 +45,7 @@ class WidgetTemplateController extends Controller
      */
     public function actionView($id)
     {
+        Url::remember();
         \Yii::$app->session['__crudReturnUrl'] = Url::previous();
         Tabs::rememberActiveState();
 
