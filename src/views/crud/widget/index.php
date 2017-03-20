@@ -173,15 +173,25 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                 [
                     'attribute' => 'status',
                     'format' => 'raw',
+                    'contentOptions' => ['nowrap' => 'nowrap'],
+                    'filter'=> \hrzg\widget\models\crud\WidgetContent::optsStatus(),
                     'value' => function($model) {
                         return $model::optsStatus()[$model->status];
-                    }
+                    },
+                    'filterInputOptions' => [
+                        'class' => 'form-control',
+                        'style' => 'width:80px;'
+                    ]
                 ],
                 [
                     'attribute' => 'template.name',
                     'header' => 'Template',
                     'contentOptions' => ['nowrap' => 'nowrap'],
                     'filter'=> ArrayHelper::map(WidgetTemplate::find()->asArray()->all(), 'name', 'name'),
+                    'filterInputOptions' => [
+                        'class' => 'form-control',
+                        'style' => 'width:180px;'
+                    ]
                 ],
                 'route',
                 'request_param',

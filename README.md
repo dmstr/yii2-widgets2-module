@@ -168,8 +168,7 @@ RBAC
 
 Name | Description
 --- | ---
-widgets | Widgets Module
-widgets_copy | Widgets Language Copy
+widgets_default_index | Widgets Manager
 widgets_crud_api | Widgets CRUD API
 widgets_crud_widget | Widgets CRUD Content
 widgets_crud_widget_copy | Widgets CRUD Content Copy
@@ -179,5 +178,6 @@ widgets_crud_widget_index | Widgets CRUD Content Index
 widgets_crud_widget_update | Widgets CRUD Content Update
 widgets_crud_widget_view | Widgets CRUD Content View
 widgets_crud_widget-template | Widgets CRUD Template
-widgets_default_index | Widgets Manager
 widgets_test | Widgets TEST Playground
+widgets_copy | Widgets Language Copy
+widgets | Widgets Module
