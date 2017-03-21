@@ -138,60 +138,10 @@ class CopyController extends \yii\console\Controller
                  */
                 if ($this->pagesModule && \Yii::$app->getModule(PagesModule::NAME) !== null) {
 
-                    // Disable access trait access_domain checks in find
-                    Tree::$activeAccessTrait = false;
+                    $targetPage = (new Tree())->sibling($destinationLanguage, $sourceWidget->request_param, $sourceWidget->route);
 
-                    // check if route = default pages route (no strict compare because Cell getRoute() didn't uses the controller getRoute method)
-                    // therefore widgets sets 'pages/default/page' instead of defined in pages module (Tree::DEFAULT_PAGE_ROUTE)
-                    if (strpos(Tree::DEFAULT_PAGE_ROUTE, $sourceWidget->route) !== false) {
-
-                        /**
-                         * find page with page id and source language
-                         *
-                         * @var Tree $sourcePage
-                         */
-                        $sourcePage = Tree::findOne(
-                            [
-                                Tree::ATTR_ID            => $sourceWidget->request_param,
-                                Tree::ATTR_ACCESS_DOMAIN => $sourceWidget->access_domain
-                            ]
-                        );
-                        if ($sourcePage === null) {
-                            throw new Exception(
-                                \Yii::t(
-                                    'widgets',
-                                    'Page with id {PAGE_ID} in language "{LANGUAGE}"',
-                                    ['PAGE_ID' => $sourceWidget->request_param, 'LANGUAGE' => $sourceLanguage]
-                                ), 404
-                            );
-                        }
-
-                        /**
-                         * find page with domain_id and destination language
-                         *
-                         * @var Tree $destinationPage
-                         */
-                        $destinationPage = Tree::findOne(
-                            [
-                                Tree::ATTR_DOMAIN_ID     => $sourcePage->domain_id,
-                                Tree::ATTR_ACCESS_DOMAIN => mb_strtolower($destinationLanguage)
-                            ]
-                        );
-                        if ($destinationPage === null) {
-                            throw new Exception(
-                                \Yii::t(
-                                    'widgets',
-                                    'Page with domain_id {DOMAIN_ID} in language "{LANGUAGE}" does not exists!',
-                                    [
-                                        'DOMAIN_ID' => $sourcePage->domain_id,
-                                        'LANGUAGE'  => mb_strtolower($destinationLanguage)
-                                    ]
-                                ), 404
-                            );
-                        }
-
-                        // set request_param of newWidget to page id in destination language
-                        $newWidget->request_param = (string) $destinationPage->id;
+                    if ($targetPage !== null) {
+                        $newWidget->request_param = (string) $targetPage->id;
                     }
                 }
 
@@ -215,3 +165,4 @@ class CopyController extends \yii\console\Controller
         }
     }
 }
+

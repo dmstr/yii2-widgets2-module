@@ -114,7 +114,7 @@ Copy widgets
 
 **Console config**
 
-If you use the `dmstr/yii2-pages-module`, set `pagesModule` to `true` and the widget `route` and `request_param` will be recognized.
+If you use the `dmstr/yii2-pages-module >= 0.21.3`, set `pagesModule` to `true` and the widget `route` and `request_param` will be recognized.
 
 
 **In case `pagesModule` to `true`**
