@@ -14,7 +14,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
 ?>
 <?php Box::begin(['title' => \Yii::t('widgets', 'General')]) ?>
     <div class="row">
-        <?php if (\Yii::$app->user->can('widgets_crud_widget_create')) : ?>
+        <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) : ?>
             <div class="col-xs-12 col-sm-4 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
@@ -30,7 +30,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 ?>
             </div>
         <?php endif; ?>
-        <?php if (\Yii::$app->user->can('widgets_crud_widget_index')) : ?>
+        <?php if (\Yii::$app->user->can('widgets_crud_widget_index', ['route' => true])) : ?>
             <div class="col-xs-12 col-sm-8 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
@@ -124,7 +124,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
 
 <?php Box::begin(['title' => \Yii::t('widgets', 'Extras')]) ?>
 <div class="row">
-    <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION)) : ?>
+    <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) : ?>
         <div class="col-xs-12 col-sm-4 col-md-3">
             <?php $infoBoxHtml = InfoBox::widget(
                 [

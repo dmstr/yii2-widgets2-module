@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
             '<span class="glyphicon glyphicon-refresh"></span> ' .
             \Yii::t('widgets', 'Apply'),
             [
+                'id'    => 'apply-' . $model->formName(),
                 'name' => 'apply',
                 'class' => 'btn btn-warning',
             ]
