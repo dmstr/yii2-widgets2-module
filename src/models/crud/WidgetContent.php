@@ -133,16 +133,19 @@ class WidgetContent extends BaseWidget
      */
     public function beforeSave($insert)
     {
-        parent::beforeSave($insert);
+        if (parent::beforeSave($insert)) {
 
-        if ($this->route === Cell::GLOBAL_ROUTE) {
-            $this->request_param = Cell::EMPTY_REQUEST_PARAM;
+            if ($this->route === Cell::GLOBAL_ROUTE) {
+                $this->request_param = Cell::EMPTY_REQUEST_PARAM;
+            }
+
+            // ensure lowercase language id
+            $this->access_domain = mb_strtolower($this->access_domain);
+
+            return true;
+        } else {
+            return false;
         }
-
-        // ensure lowercase language id
-        $this->access_domain = mb_strtolower($this->access_domain);
-
-        return true;
     }
 
     /**
