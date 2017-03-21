@@ -8,8 +8,6 @@
  */
 namespace hrzg\widget\commands;
 
-use dmstr\modules\pages\models\Tree;
-use dmstr\modules\pages\Module as PagesModule;
 use hrzg\widget\models\crud\WidgetContent;
 use yii\console\Exception;
 
@@ -136,9 +134,9 @@ class CopyController extends \yii\console\Controller
                 /**
                  * with pages module usage
                  */
-                if ($this->pagesModule && \Yii::$app->getModule(PagesModule::NAME) !== null) {
+                if ($this->pagesModule && \Yii::$app->getModule('pages') !== null) {
 
-                    $targetPage = (new Tree())->sibling($destinationLanguage, $sourceWidget->request_param, $sourceWidget->route);
+                    $targetPage = (new \dmstr\modules\pages\models\Tree())->sibling($destinationLanguage, $sourceWidget->request_param, $sourceWidget->route);
 
                     if ($targetPage !== null) {
                         $newWidget->request_param = (string) $targetPage->id;
