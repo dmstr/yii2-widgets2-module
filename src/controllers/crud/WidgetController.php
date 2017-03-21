@@ -60,13 +60,13 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
         $newWidget = new WidgetContent();
         if ($newWidget->load(\Yii::$app->request->post())) {
             if ($newWidget->save()) {
-                $successMsg = \Yii::t('widgets', 'Widget successfully copied from #' . $newWidget->copied_from);
+                $successMsg = \Yii::t('widgets', 'Widget successfully copied from #{ID}', ['ID' => $newWidget->copied_from]);
                 \Yii::$app->session->setFlash('success', $successMsg);
                 \Yii::info($successMsg, __METHOD__);
                 \Yii::$app->language = $newWidget->access_domain;
                 return $this->redirect(['view', 'id' => $newWidget->id]);
             } else {
-                $errorMsg = \Yii::t('widgets', 'Copy widget from from #' . $newWidget->copied_from . ' failed');
+                $errorMsg = \Yii::t('widgets', 'Copy widget from from #{ID}', ['ID' => $newWidget->copied_from]);
                 \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . implode('<br>', $newWidget->getFirstErrors()));
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidget->getErrors(), __METHOD__);

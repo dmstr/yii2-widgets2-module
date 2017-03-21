@@ -137,19 +137,53 @@ class WidgetController extends Controller
     {
         $model = $this->findModel($id);
 
+        // remember old model
+        $oldAccessDomain = $model->oldAttributes['access_domain'];
+
         if ($model->load($_POST) && $model->save()) {
 
-            if (isset($_POST['apply'])) {
-                return $this->redirect(['update', 'id' => $model->id]);
-            } else if (Url::previous($model->route)) {
-                return $this->redirect(Url::previous($model->route));
-            } else {
-                return $this->redirect(Url::previous());
+            // detect cross side domain update
+            if (\Yii::$app->getModule('pages') !== null && $oldAccessDomain !== $model->access_domain) {
+
+                $targetPage = (new \dmstr\modules\pages\models\Tree())->sibling(
+                    $model->access_domain,
+                    $model->request_param,
+                    $model->route
+                );
+
+                if ($targetPage !== null) {
+                    $model->request_param = (string)$targetPage->id;
+                    $model->save();
+                    $newPageSuccessMsg = \Yii::t(
+                        'widgets',
+                        'Placed widget on page "{PAGE} #{ID}" in language "{LANGUAGE}"',
+                        ['ID' => $targetPage->id, 'PAGE' => $targetPage->name, 'LANGUAGE' => $targetPage->access_domain]
+                    );
+                    \Yii::$app->session->setFlash('success', $newPageSuccessMsg);
+                } else {
+                    $newPageInfoMsg = \Yii::t(
+                        'widgets',
+                        'No sibling page found for page "#{PAGE_ID}" in language "{LANGUAGE}"',
+                        ['PAGE_ID' => $model->request_param, 'LANGUAGE' => $model->access_domain]
+                    );
+                    \Yii::$app->session->setFlash('info', $newPageInfoMsg);
+                }
+            }
+
+            switch (true) {
+                case isset($_POST['apply']):
+                    return $this->redirect(['update', 'id' => $model->id, 'language' => $model->access_domain]);
+
+                case Url::previous($model->route):
+                    return $this->redirect(Url::previous($model->route));
+
+                default:
+                    return $this->redirect(Url::previous());
             }
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $this->findModel($id),
             'schema' => $this->getJsonSchema($model),
         ]);
     }
