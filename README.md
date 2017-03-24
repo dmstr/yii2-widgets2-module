@@ -1,6 +1,10 @@
 Yii2 Widget Module
 ===============
 
+[![Latest Stable Version](https://poser.pugx.org/dmstr/yii2-widgets2-module/v/stable.svg)](https://packagist.org/packages/dmstr/yii2-widgets2-module) 
+[![Total Downloads](https://poser.pugx.org/dmstr/yii2-widgets2-module/downloads.svg)](https://packagist.org/packages/dmstr/yii2-widgets2-module)
+[![License](https://poser.pugx.org/dmstr/yii2-widgets2-module/license.svg)](https://packagist.org/packages/dmstr/yii2-widgets2-module)
+
 Widget manager using twig templates
 
 Installation
