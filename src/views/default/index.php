@@ -19,7 +19,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
-                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widgets') . '</h3>
+                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Content') . '</h3>
                                     ' . \Yii::t('widgets', 'New') . '
                                     </div>',
                         'boxBg' => InfoBox::TYPE_AQUA,
@@ -35,8 +35,8 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
-                            <h3 style="white-space: normal;">' . WidgetContent::find()->count() . ' ' . \Yii::t('widgets', 'Widgets') . '</h3>
-                            List</div>',
+                            <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Contents') . '</h3>
+                            '.WidgetContent::find()->count().'</div>',
                         'boxBg' => InfoBox::TYPE_AQUA,
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-list'
                     ]
@@ -50,7 +50,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
-                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Templates') . '</h3>
+                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Template') . '</h3>
                                     ' . \Yii::t('widgets', 'New') . '
                                     </div>',
                         'boxBg' => InfoBox::TYPE_PURPLE,
@@ -64,10 +64,8 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
-                            <h3 style="white-space: normal;">' . WidgetTemplate::find()->count()
-                            . ' ' .  \Yii::t('widgets', 'Templates') . '</h3>
-                            ' . \Yii::t('widgets', 'List') . '
-                            </div>',
+                            <h3 style="white-space: normal;">' .  \Yii::t('widgets', 'Widget Templates') . '</h3>
+                            '.WidgetTemplate::find()->count().'</div>',
                         'boxBg' => InfoBox::TYPE_PURPLE,
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-list'
                     ]
@@ -86,7 +84,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
-                            . \Yii::t('widgets', 'Test page') . '</h3>Index</div>',
+                            . \Yii::t('widgets', 'Test page 1') . '</h3>Index</div>',
                         'boxBg' => InfoBox::TYPE_LBLUE,
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
                     ]
@@ -98,7 +96,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
-                            . \Yii::t('widgets', 'Test page') . '</h3>params</div>',
+                            . \Yii::t('widgets', 'Test page 2') . '</h3>params</div>',
                         'boxBg' => InfoBox::TYPE_LBLUE,
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
                     ]
@@ -110,7 +108,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center"><h3 style="white-space: normal;">'
-                            . \Yii::t('widgets', 'Test page 2') . '</h3>params</div>',
+                            . \Yii::t('widgets', 'Test page 3') . '</h3>params</div>',
                         'boxBg' => InfoBox::TYPE_LBLUE,
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
                     ]
