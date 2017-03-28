@@ -36,6 +36,13 @@ class Module extends \yii\base\Module
     const COPY_ACCESS_PERMISSION = 'widgets_copy';
 
     /**
+     * layout path for the /widgets/test playground actions
+     *
+     * @var string
+     */
+    public $playgroundLayout = '@app/views/layouts/main';
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool

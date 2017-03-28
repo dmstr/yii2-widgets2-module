@@ -34,6 +34,23 @@ docker-compose run phpfpm bash
 setup.sh
 ```
 
+Config
+---
+
+```
+...
+'modules => [
+	'widgets'          => [
+		'class'  			=> '\hrzg\widget\Module',
+		'layout' 			=> '@backend/views/layouts/main',
+		'playgroundLayout	=> '@frontend/views/layouts/main',
+	]
+]
+...
+```
+
+
+
 
 Settings
 ---
@@ -44,7 +61,7 @@ Settings
 Usage
 ---
 
-Once the extension is installed, simply use it in your code by  :
+Once the extension is installed, simply use it in your code by :
 
 ### Layout
 
