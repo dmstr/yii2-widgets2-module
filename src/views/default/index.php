@@ -45,7 +45,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                 ?>
             </div>
         <?php endif; ?>
-        <?php if (\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION)) : ?>
+        <?php if (\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION, ['route' => true])) : ?>
             <div class="col-xs-12 col-sm-4 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
@@ -77,7 +77,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
     </div>
 <?php Box::end() ?>
 
-<?php if (\Yii::$app->user->can(Module::TEST_ACCESS_PERMISSION)) : ?>
+<?php if (\Yii::$app->user->can(Module::TEST_ACCESS_PERMISSION, ['route' => true])) : ?>
     <?php Box::begin(['title' => \Yii::t('widgets', 'Playground')]) ?>
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-3">
