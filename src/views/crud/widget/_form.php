@@ -119,7 +119,7 @@ JS;
                     </div>
                     <div id="collapseAccess" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
-                            <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION)) : ?>
+                            <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) : ?>
                                 <?= $form->field($model, 'access_domain')->widget(
                                     Select2::classname(),
                                     [
