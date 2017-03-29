@@ -117,7 +117,7 @@ class WidgetContent extends BaseWidget
     public function validateAccessDomain($attribute)
     {
         if ($this->attributes[$attribute] !== \Yii::$app->language && php_sapi_name() !== 'cli') {
-            if (! \Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION)) {
+            if (! \Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) {
                 $errorMsg = \Yii::t('widgets', 'You are not allowed to copy widgets between languages');
                 \Yii::$app->session->setFlash('error', $errorMsg);
                 $this->addError($attribute, $errorMsg);
