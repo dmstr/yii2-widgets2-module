@@ -23,7 +23,10 @@ class TwigTemplate extends Widget
 
             return $output;
         } catch (\Exception $e) {
-            return $e->getMessage();
+            \Yii::error([$e->getMessage(), $this->_view, $this->_properties], __METHOD__);
+            if (\Yii::$app->user->can('widgets_crud_widget')) {
+                \Yii::$app->session->addFlash('error', $e->getMessage());
+            }
         }
     }
 
