@@ -123,7 +123,7 @@ class Cell extends Widget
             ->andWhere(
                 [
                     'container_id' => $this->id,
-                    'route' => [$this->getRoute(), self::GLOBAL_ROUTE],
+                    'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
                     'access_domain' => mb_strtolower(\Yii::$app->language),
                 ])
             ->all();
@@ -138,6 +138,22 @@ class Cell extends Widget
     {
         #return '/' . \Yii::$app->controller->getRoute();
         return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->controller->action->id;
+    }
+
+    /**
+     * @return string
+     */
+    private function getControllerRoute()
+    {
+        return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/';
+    }
+
+    /**
+     * @return string
+     */
+    private function getModuleRoute()
+    {
+        return \Yii::$app->controller->module->id.'/';
     }
 
     /**
