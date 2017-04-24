@@ -109,8 +109,6 @@ class WidgetController extends Controller
 
                 if (isset($_POST['apply'])) {
                     return $this->redirect(['update', 'id' => $model->id]);
-                } else if (Url::previous($model->route)) {
-                    return $this->redirect(Url::previous($model->route));
                 } else {
                     return $this->redirect(['view', 'id'=>$model->id]);
                 }
@@ -170,15 +168,10 @@ class WidgetController extends Controller
                 }
             }
 
-            switch (true) {
-                case isset($_POST['apply']):
-                    return $this->redirect(['update', 'id' => $model->id, 'language' => $model->access_domain]);
-
-                case Url::previous($model->route):
-                    return $this->redirect(Url::previous($model->route));
-
-                default:
-                    return $this->redirect(Url::previous());
+            if (isset($_POST['apply'])) {
+                return $this->redirect(['update', 'id' => $model->id]);
+            } else {
+                return $this->redirect(['view', 'id'=>$model->id]);
             }
         }
 

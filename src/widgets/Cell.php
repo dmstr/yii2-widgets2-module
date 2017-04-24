@@ -47,8 +47,8 @@ class Cell extends Widget
     public $showWidgetControls = true;
     public $showContainerControls = true;
 
-    public $positionWidgetControls = 'top';
-    public $positionContainerControls = 'top';
+    public $positionWidgetControls = 'top-right';
+    public $positionContainerControls = 'bottom-right';
 
     /**
      * @inheritdoc
@@ -91,6 +91,9 @@ class Cell extends Widget
                                 'access_domain' => \Yii::$app->language,
                             ],
                         ],
+                        'linkOptions' => [
+                            'target'=>\Yii::$app->params['backend.iframe.name']
+                        ]
                     ],
                     [
                         'label' => FA::icon(FA::_LIST).' List',
@@ -103,6 +106,10 @@ class Cell extends Widget
                                 'access_domain' => \Yii::$app->language,
                             ],
                         ],
+                        'linkOptions' => [
+                            'target'=>\Yii::$app->params['backend.iframe.name']
+                        ]
+
                     ],
                 ],
 
@@ -203,13 +210,16 @@ class Cell extends Widget
                         'widget_template_id' => $template->id,
                     ],
                 ],
+                'linkOptions' => [
+                    'target'=>\Yii::$app->params['backend.iframe.name']
+                ]
             ];
         }
 
         $html .= ButtonDropdown::widget([
-            'label' => FA::icon(FA::_PLUS_SQUARE),
+            'label' => FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
             'encodeLabel' => false,
-            'options' => ['class' => 'btn btn-success'],
+            'options' => ['class' => 'btn btn-xs btn-success'],
             'dropdown' =>  [
                 'options' => [
                     'class'=>'dropdown-menu-right'
@@ -233,12 +243,18 @@ class Cell extends Widget
         $html .= Html::a(
             FA::icon(FA::_FILE_O),
             ['/widgets/crud/widget/view', 'id' => $widget->id],
-            ['class' => 'btn btn-xs btn-default']
+            [
+                'class' => 'btn btn-xs btn-default',
+                'target'=>\Yii::$app->params['backend.iframe.name']
+            ]
         );
         $html .= Html::a(
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
-            ['class' => 'btn btn-xs btn-'.($widget->status ? 'primary' : 'default')]
+            [
+                'class' => 'btn btn-xs btn-'.($widget->status ? 'primary' : 'default'),
+                'target'=>\Yii::$app->params['backend.iframe.name']
+            ]
         );
         $html .= Html::a(
             FA::icon(FA::_TRASH_O),
