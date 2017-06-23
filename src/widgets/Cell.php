@@ -50,6 +50,8 @@ class Cell extends Widget
     public $positionWidgetControls = 'top-right';
     public $positionContainerControls = 'bottom-right';
 
+    public $rbacEditRole= 'widgets-cell-edit';
+
     /**
      * @inheritdoc
      */
@@ -177,7 +179,7 @@ class Cell extends Widget
             ]
         );
 
-        if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true]) && $this->showContainerControls) {
+        if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showContainerControls) {
             $html .= $this->generateContainerControls();
         }
 
@@ -191,10 +193,10 @@ class Cell extends Widget
             }
             $html .= Html::beginTag('div',
                 ['id' => 'widget-'.($widget->name_id ?: $widget->id), 'class' => 'hrzg-widget-widget']);
-            if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true]) && $this->showWidgetControls) {
+            if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
-            if (\Yii::$app->user->can('widgets_crud_widget_view', ['route' => true]) || $widget->status == 1) {
+            if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || $widget->status == 1) {
                 $html .= $class->run();
             }
             $html .= Html::endTag('div');
