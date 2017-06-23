@@ -9,17 +9,24 @@ class m160401_152910_add_widget_auth_item extends Migration
         $auth = Yii::$app->authManager;
 
         if ($auth instanceof \yii\rbac\DbManager) {
-            $permission = $auth->createPermission('widgets_crud_widget');
-            $permission->description = 'Widgets CRUD Content';
-            $auth->add($permission);
 
-            $permission = $auth->createPermission('widgets_crud_widget-template');
-            $permission->description = 'Widgets CRUD Template';
-            $auth->add($permission);
+            if (!$auth->getPermission('widgets_crud_widget')) {
+                $permission = $auth->createPermission('widgets_crud_widget');
+                $permission->description = 'Widgets CRUD Content';
+                $auth->add($permission);
+            }
 
-            $permission = $auth->createPermission('widgets');
-            $permission->description = 'Widgets Module';
-            $auth->add($permission);
+            if (!$auth->getPermission('widgets_crud_widget-template')) {
+                $permission = $auth->createPermission('widgets_crud_widget-template');
+                $permission->description = 'Widgets CRUD Template';
+                $auth->add($permission);
+            }
+
+            if (!$auth->getPermission('widgets')) {
+                $permission = $auth->createPermission('widgets');
+                $permission->description = 'Widgets Module';
+                $auth->add($permission);
+            }
         }
     }
 
