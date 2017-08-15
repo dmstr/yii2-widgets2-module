@@ -41,9 +41,10 @@ Config
 ...
 'modules => [
 	'widgets'          => [
-		'class'  			=> '\hrzg\widget\Module',
-		'layout' 			=> '@backend/views/layouts/main',
-		'playgroundLayout	=> '@frontend/views/layouts/main',
+		'class'  					=> '\hrzg\widget\Module',
+		'layout' 					=> '@backend/views/layouts/main',
+		'playgroundLayout'			=> '@frontend/views/layouts/main',
+		'dateBasedAccessControl'	=> true
 	]
 ]
 ...
