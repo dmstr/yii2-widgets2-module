@@ -54,6 +54,7 @@ JS;
                 <div class="panel-heading">
                     <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
                 </div>
+                <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
                 <div class="panel-heading">
                     <div class="row">
                         <div class="form-group col-sm-2">
@@ -80,6 +81,7 @@ JS;
                         </div>
                     </div>
                 </div>
+                <?php } ?>
             </div>
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
