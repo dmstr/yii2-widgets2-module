@@ -50,6 +50,14 @@ class WidgetContent extends BaseWidget
     {
         parent::afterFind();
         $this->setNameId($this->domain_id.'_'.$this->access_domain);
+
+        // convert date value for displaying
+        if($this->publish_at) {
+            $this->publish_at = \Yii::$app->formatter->asDatetime($this->publish_at, 'yyyy-MM-dd HH:mm');
+        }
+        if($this->expire_at) {
+            $this->expire_at = \Yii::$app->formatter->asDatetime($this->expire_at, 'yyyy-MM-dd HH:mm');
+        }
     }
 
     /**
@@ -104,6 +112,9 @@ class WidgetContent extends BaseWidget
                     'default',
                     'value' => self::$_all
                 ],
+                [['publish_at', 'expire_at'], 'default', 'value' => null],
+                [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
+                [ 'expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
             ]
         );
     }

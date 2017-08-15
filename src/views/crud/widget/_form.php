@@ -7,6 +7,7 @@
  */
 use hrzg\widget\Module;
 use kartik\select2\Select2;
+use zhuravljov\yii\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();
 ?>
@@ -52,6 +53,32 @@ JS;
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
+                </div>
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="form-group col-sm-2">
+                            <?= $form->field($model, 'publish_at')->widget(DateTimePicker::class, [
+                                'options' => [
+                                    'class' => 'form-control col-md-6',
+                                    'autocomplete' => 'off',
+                                ],
+                                'clientOptions' => [
+                                    'format' => 'yyyy-mm-dd hh:ii',
+                                    'autoclose' => true,
+                                ],
+                                'clientEvents' => [],
+                            ]) ?>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <?= $form->field($model, 'expire_at')->widget(DateTimePicker::class, [
+                                'clientOptions' => [
+                                    'format' => 'yyyy-mm-dd hh:ii',
+                                    'autoclose' => true,
+                                ],
+                                'clientEvents' => [],
+                            ]) ?>
+                        </div>
+                    </div>
                 </div>
             </div>
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
