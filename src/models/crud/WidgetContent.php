@@ -3,6 +3,7 @@
 namespace hrzg\widget\models\crud;
 
 use dmstr\db\traits\ActiveRecordAccessTrait;
+use Faker\Provider\DateTime;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
@@ -22,6 +23,8 @@ class WidgetContent extends BaseWidget
      * @var string
      */
     public $name_id;
+
+    public $timezone;
 
     /**
      * @inheritdoc
@@ -53,10 +56,10 @@ class WidgetContent extends BaseWidget
 
         // convert date value for displaying
         if($this->publish_at) {
-            $this->publish_at = \Yii::$app->formatter->asDatetime($this->publish_at, 'yyyy-MM-dd HH:mm');
+            $this->publish_at = \Yii::$app->formatter->asDatetime($this->publish_at, 'yyyy-MM-dd HH:mm ').date_default_timezone_get();
         }
         if($this->expire_at) {
-            $this->expire_at = \Yii::$app->formatter->asDatetime($this->expire_at, 'yyyy-MM-dd HH:mm');
+            $this->expire_at = \Yii::$app->formatter->asDatetime($this->expire_at, 'yyyy-MM-dd HH:mm ').date_default_timezone_get();
         }
     }
 
@@ -115,6 +118,7 @@ class WidgetContent extends BaseWidget
                 [['publish_at', 'expire_at'], 'default', 'value' => null],
                 [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
                 [ 'expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
+                ['timezone', 'safe'],
             ]
         );
     }
@@ -153,10 +157,37 @@ class WidgetContent extends BaseWidget
             // ensure lowercase language id
             $this->access_domain = mb_strtolower($this->access_domain);
 
+            // convert date input mysql friendly
+            if($this->publish_at != '') {
+                $publishAt = $this->datetimeStringToUTCDate($this->publish_at);
+                $this->publish_at = $publishAt;
+            }
+            if($this->expire_at != '') {
+                $expireAt = $this->datetimeStringToUTCDate($this->expire_at);
+                $this->expire_at = $expireAt;
+            }
+
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Converts local datetime string to utc if $this->timezone is set
+     * @param string $datetimeStr
+     * @return string
+     */
+    protected function datetimeStringToUTCDate($datetimeStr) {
+        if($this->timezone) {
+            $clientTimezone = new \DateTimeZone($this->timezone);
+            $publishAtWithTimezone = new \DateTime($datetimeStr, $clientTimezone);
+            $publishAt = \Yii::$app->formatter->asDatetime($publishAtWithTimezone, 'yyyy-MM-dd HH:mm');
+        } else {
+            $publishAt = \Yii::$app->formatter->asDatetime($this->publish_at, 'yyyy-MM-dd HH:mm');
+        }
+
+        return $publishAt;
     }
 
     /**

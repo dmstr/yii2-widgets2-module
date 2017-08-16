@@ -62,23 +62,27 @@ JS;
                                 'options' => [
                                     'class' => 'form-control col-md-6',
                                     'autocomplete' => 'off',
+
                                 ],
                                 'clientOptions' => [
                                     'format' => 'yyyy-mm-dd hh:ii',
                                     'autoclose' => true,
+                                    'todayHighlight' => true,
                                 ],
                                 'clientEvents' => [],
-                            ]) ?>
+                            ])->textInput(['style' => 'color:white;']) ?>
                         </div>
                         <div class="form-group col-sm-2">
                             <?= $form->field($model, 'expire_at')->widget(DateTimePicker::class, [
                                 'clientOptions' => [
                                     'format' => 'yyyy-mm-dd hh:ii',
                                     'autoclose' => true,
+                                    'todayHighlight' => true,
                                 ],
                                 'clientEvents' => [],
-                            ]) ?>
+                            ])->textInput(['style' => 'color:white;']) ?>
                         </div>
+                        <?= $form->field($model, 'timezone')->hiddenInput()->label(false) ?>
                     </div>
                 </div>
                 <?php } ?>
