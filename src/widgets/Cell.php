@@ -294,14 +294,24 @@ class Cell extends Widget
      * @return boolean
      */
     private function checkPublicationStatus($widget) {
-        return (
-            (
-                new \DateTime() >= new \DateTime($widget->publish_at)
-            )
-            &&
-            (
-                new \DateTime() <= new \DateTime($widget->expire_at)
-            )
-        );
+        $published = false;
+        if(!\Yii::$app->getModule('widgets')->dateBasedAccessControl) {
+            $published = true;
+        } else {
+            $published =
+                (
+                    !$widget->publish_at
+                    ||
+                    new \DateTime() >= new \DateTime($widget->publish_at)
+                )
+                &&
+                (
+                    !$widget->expire_at
+                    ||
+                    new \DateTime() <= new \DateTime($widget->expire_at)
+                );
+        }
+
+        return $published;
     }
 }
