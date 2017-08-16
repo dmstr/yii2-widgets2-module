@@ -40,11 +40,12 @@ Config
 ```
 ...
 'modules => [
-	'widgets'          => [
-		'class'  					=> '\hrzg\widget\Module',
-		'layout' 					=> '@backend/views/layouts/main',
+	'widgets' => [
+		'class'						=> '\hrzg\widget\Module',
+		'layout'					=> '@backend/views/layouts/main',
 		'playgroundLayout'			=> '@frontend/views/layouts/main',
-		'dateBasedAccessControl'	=> true
+		'dateBasedAccessControl'	=> true,
+		'datepickerMinutes'			=> false
 	]
 ]
 ...

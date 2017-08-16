@@ -68,6 +68,7 @@ JS;
                                     'format' => 'yyyy-mm-dd hh:ii',
                                     'autoclose' => true,
                                     'todayHighlight' => true,
+                                    'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
                                 ],
                                 'clientEvents' => [],
                             ])->textInput(['style' => 'color:white;']) ?>
@@ -78,6 +79,7 @@ JS;
                                     'format' => 'yyyy-mm-dd hh:ii',
                                     'autoclose' => true,
                                     'todayHighlight' => true,
+                                    'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
                                 ],
                                 'clientEvents' => [],
                             ])->textInput(['style' => 'color:white;']) ?>

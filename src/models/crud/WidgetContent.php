@@ -24,6 +24,11 @@ class WidgetContent extends BaseWidget
      */
     public $name_id;
 
+    /**
+     * Timezone field to calculate from client datetime to utc.
+     *
+     * @var string
+     */
     public $timezone;
 
     /**
