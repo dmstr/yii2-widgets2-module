@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
         <small><?= $model->name ?></small>
     </h1>
 
-    <div class="clearfix crud-navigation">
+    <div class="clearfix crud-navigation sticky-controls">
         <?= Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> ' .
             \Yii::t('widgets', 'Update'),

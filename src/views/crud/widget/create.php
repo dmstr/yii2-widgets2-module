@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $model->getAliasModel() ?>
         <small><?= $model->name_id ?></small>
     </h1>
-    <div class="clearfix crud-navigation">
+    <div class="clearfix crud-navigation sticky-controls">
         <?= Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> ' .
             \Yii::t('widgets', 'Create'),
