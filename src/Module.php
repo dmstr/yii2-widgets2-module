@@ -43,6 +43,18 @@ class Module extends \yii\base\Module
     public $playgroundLayout = '@app/views/layouts/main';
 
     /**
+     * Activate / deactivate date based access control
+     * @var bool
+     */
+    public $dateBasedAccessControl = false;
+
+    /**
+     * Datepicker minute steps
+     * @var bool
+     */
+    public $datepickerMinutes = false;
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool

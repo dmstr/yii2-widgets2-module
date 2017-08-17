@@ -10,21 +10,23 @@ use Yii;
 /**
  * This is the base-model class for table "app_hrzg_widget".
  *
- * @property int $id
+ * @property integer $id
  * @property string $status
- * @property string $widget_template_id
- * @property string $default_properties_json
  * @property string $domain_id
- * @property string $container_id
- * @property string $rank
+ * @property integer $widget_template_id
+ * @property string $default_properties_json
  * @property string $route
  * @property string $request_param
+ * @property string $container_id
+ * @property string $rank
  * @property string $access_owner
  * @property string $access_domain
  * @property string $access_read
  * @property string $access_update
  * @property string $access_delete
- * @property string $copied_from
+ * @property string $publish_at
+ * @property string $expire_at
+ * @property integer $copied_from
  * @property string $created_at
  * @property string $updated_at
  * @property string $aliasModel
@@ -79,6 +81,7 @@ abstract class Widget extends \yii\db\ActiveRecord
         return [
             [['status', 'widget_template_id', 'container_id', 'route'], 'required'],
             [['default_properties_json'], 'string'],
+            [['publish_at', 'expire_at'], 'safe'],
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'string', 'max' => 32],
             [['container_id', 'route'], 'string', 'max' => 128],
@@ -111,6 +114,8 @@ abstract class Widget extends \yii\db\ActiveRecord
             'access_read' => Yii::t('widgets', 'Access Read'),
             'access_update' => Yii::t('widgets', 'Access Update'),
             'access_delete' => Yii::t('widgets', 'Access Delete'),
+            'publish_at' => Yii::t('models', 'Publish At'),
+            'expire_at' => Yii::t('models', 'Expire At'),
             'copied_from' => Yii::t('widgets', 'Copied From'),
             'created_at' => Yii::t('widgets', 'Created At'),
             'updated_at' => Yii::t('widgets', 'Updated At'),

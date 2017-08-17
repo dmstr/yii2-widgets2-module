@@ -7,6 +7,7 @@
  */
 use hrzg\widget\Module;
 use kartik\select2\Select2;
+use zhuravljov\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();
 ?>
@@ -53,6 +54,40 @@ JS;
                 <div class="panel-heading">
                     <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
                 </div>
+                <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="form-group col-sm-2">
+                            <?= $form->field($model, 'publish_at')->widget(DateTimePicker::class, [
+                                'options' => [
+                                    'class' => 'form-control col-md-6',
+                                    'autocomplete' => 'off',
+
+                                ],
+                                'clientOptions' => [
+                                    'format' => 'yyyy-mm-dd hh:ii',
+                                    'autoclose' => true,
+                                    'todayHighlight' => true,
+                                    'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                ],
+                                'clientEvents' => [],
+                            ])->textInput(['style' => 'color:white;']) ?>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <?= $form->field($model, 'expire_at')->widget(DateTimePicker::class, [
+                                'clientOptions' => [
+                                    'format' => 'yyyy-mm-dd hh:ii',
+                                    'autoclose' => true,
+                                    'todayHighlight' => true,
+                                    'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                ],
+                                'clientEvents' => [],
+                            ])->textInput(['style' => 'color:white;']) ?>
+                        </div>
+                        <?= $form->field($model, 'timezone')->hiddenInput()->label(false) ?>
+                    </div>
+                </div>
+                <?php } ?>
             </div>
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)

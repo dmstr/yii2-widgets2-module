@@ -196,7 +196,8 @@ class Cell extends Widget
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
-            if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || $widget->status == 1) {
+            $published = $this->checkPublicationStatus($widget);
+            if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
                 $html .= $class->run();
             }
             $html .= Html::endTag('div');
@@ -266,11 +267,12 @@ class Cell extends Widget
                 'target'=>\Yii::$app->params['backend.iframe.name']
             ]
         );
+        $published = $this->checkPublicationStatus($widget);
         $html .= Html::a(
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/widgets/crud/widget/update', 'id' => $widget->id],
             [
-                'class' => 'btn btn-xs btn-'.($widget->status ? 'primary' : 'default'),
+                'class' => 'btn btn-xs btn-'.(($widget->status && $published) ? 'primary' : 'default'),
                 'target'=>\Yii::$app->params['backend.iframe.name']
             ]
         );
@@ -284,5 +286,32 @@ class Cell extends Widget
         );
         $html .= Html::endTag('div');
         return $html;
+    }
+
+    /**
+     * @param $widget
+     *
+     * @return boolean
+     */
+    private function checkPublicationStatus($widget) {
+        $published = false;
+        if(!\Yii::$app->getModule('widgets')->dateBasedAccessControl) {
+            $published = true;
+        } else {
+            $published =
+                (
+                    !$widget->publish_at
+                    ||
+                    new \DateTime() >= new \DateTime($widget->publish_at)
+                )
+                &&
+                (
+                    !$widget->expire_at
+                    ||
+                    new \DateTime() <= new \DateTime($widget->expire_at)
+                );
+        }
+
+        return $published;
     }
 }
