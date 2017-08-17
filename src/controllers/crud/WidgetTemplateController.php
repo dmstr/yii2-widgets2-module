@@ -2,6 +2,7 @@
 
 namespace hrzg\widget\controllers\crud;
 
+use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetTemplate;
 use yii\helpers\Url;
 
@@ -12,6 +13,12 @@ use yii\helpers\Url;
  */
 class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\WidgetTemplateController
 {
+    public function beforeAction($action)
+    {
+        WidgetAsset::register($this->view);
+        return parent::beforeAction($action);
+    }
+
     /**
      * Copy a single widget
      *

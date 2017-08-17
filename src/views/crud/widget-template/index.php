@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $searchModel->getAliasModel(true) ?>
         <small>List</small>
     </h1>
-    <div class="clearfix crud-navigation">
+    <div class="clearfix crud-navigation sticky-controls">
         <div class="pull-left">
             <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>

@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
     </h1>
 
 
-    <div class="clearfix crud-navigation">
+    <div class="clearfix crud-navigation sticky-controls">
         <!-- menu buttons -->
         <div class='pull-left'>
             <?= Html::a(

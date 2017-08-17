@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         <small><?= $model->name_id ?></small>
     </h1>
 
-    <div class="clearfix crud-navigation">
+    <div class="clearfix crud-navigation sticky-controls">
         <!-- menu buttons -->
         <div class='pull-left'>
             <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
