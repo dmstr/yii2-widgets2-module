@@ -153,12 +153,15 @@ $(document).on('ready', function() {
     }
 
     var publicationDate = new Date(publishAtInput.val());
-    var publicationDateWithTimezone = toLocalDate(publicationDate);
+    if(!isNaN(publicationDate.getTime())) {
+        var publicationDateWithTimezone = toLocalDate(publicationDate);
+        // the color change prevents input flickering of utc time
+        publishAtInput.val(publicationDateWithTimezone).css('color', '#555');
+    }
 
     var expirationDate = new Date(expireAtInput.val());
-    var expirationDateWithTimezone = toLocalDate(expirationDate);
-
-    // the color change prevents input flickering of utc time
-    publishAtInput.val(publicationDateWithTimezone).css('color', '#555');
-    expireAtInput.val(expirationDateWithTimezone).css('color', '#555');
+    if(!isNaN(expirationDate.getTime())) {
+        var expirationDateWithTimezone = toLocalDate(expirationDate);
+        expireAtInput.val(expirationDateWithTimezone).css('color', '#555');
+    }
 });
