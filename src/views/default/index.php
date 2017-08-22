@@ -11,6 +11,7 @@ use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 
 $this->title = \Yii::t('widgets', 'Widget Manager');
+$moduleId = $this->context->module->id;
 ?>
 <?php Box::begin(['title' => \Yii::t('widgets', 'General')]) ?>
     <div class="row">
@@ -26,7 +27,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-plus'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/crud/widget/create']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget/create']);
                 ?>
             </div>
         <?php endif; ?>
@@ -41,7 +42,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-list'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/crud/widget/index']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget/index']);
                 ?>
             </div>
         <?php endif; ?>
@@ -57,7 +58,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-plus'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/crud/widget-template/create']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget-template/create']);
                 ?>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-3">
@@ -70,7 +71,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-list'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/crud/widget-template/index']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget-template/index']);
                 ?>
             </div>
         <?php endif; ?>
@@ -89,7 +90,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/test/index'], ['target' => '_blank']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/test/index'], ['target' => '_blank']);
                 ?>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-3">
@@ -101,7 +102,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/test/with-param', 'pageId' => 'page-1'], ['target' => '_blank']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/test/with-param', 'pageId' => 'page-1'], ['target' => '_blank']);
                 ?>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-3">
@@ -113,7 +114,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                         'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-cubes'
                     ]
                 );
-                echo Html::a($infoBoxHtml, ['/widgets/test/with-param', 'pageId' => 'page-2'], ['target' => '_blank']);
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/test/with-param', 'pageId' => 'page-2'], ['target' => '_blank']);
                 ?>
             </div>
         </div>
@@ -132,7 +133,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
                     'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-copy'
                 ]
             );
-            echo Html::a($infoBoxHtml, ['/widgets/copy/language']);
+            echo Html::a($infoBoxHtml, ['/'.$moduleId.'/copy/language']);
             ?>
         </div>
     <?php endif; ?>
