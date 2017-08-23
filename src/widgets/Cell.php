@@ -94,7 +94,9 @@ class Cell extends Widget
                             ],
                         ],
                         'linkOptions' => [
-                            'target'=>\Yii::$app->params['backend.iframe.name']
+                            'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
+                                ? \Yii::$app->params['backend.iframe.name']
+                                : '_self'
                         ]
                     ],
                     [
@@ -109,7 +111,9 @@ class Cell extends Widget
                             ],
                         ],
                         'linkOptions' => [
-                            'target'=>\Yii::$app->params['backend.iframe.name']
+                            'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
+                                ? \Yii::$app->params['backend.iframe.name']
+                                : '_self'
                         ]
 
                     ],
@@ -230,7 +234,9 @@ class Cell extends Widget
                     ],
                 ],
                 'linkOptions' => [
-                    'target'=>\Yii::$app->params['backend.iframe.name']
+                    'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
+                        ? \Yii::$app->params['backend.iframe.name']
+                        : '_self'
                 ]
             ];
         }
@@ -264,7 +270,9 @@ class Cell extends Widget
             ['/widgets/crud/widget/view', 'id' => $widget->id],
             [
                 'class' => 'btn btn-xs btn-default',
-                'target'=>\Yii::$app->params['backend.iframe.name']
+                'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
+                    ? \Yii::$app->params['backend.iframe.name']
+                    : '_self'
             ]
         );
         $published = $this->checkPublicationStatus($widget);
@@ -273,7 +281,9 @@ class Cell extends Widget
             ['/widgets/crud/widget/update', 'id' => $widget->id],
             [
                 'class' => 'btn btn-xs btn-'.(($widget->status && $published) ? 'primary' : 'default'),
-                'target'=>\Yii::$app->params['backend.iframe.name']
+                'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
+                    ? \Yii::$app->params['backend.iframe.name']
+                    : '_self'
             ]
         );
         $html .= Html::a(
