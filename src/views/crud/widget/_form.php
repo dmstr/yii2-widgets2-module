@@ -7,7 +7,7 @@
  */
 use hrzg\widget\Module;
 use kartik\select2\Select2;
-use zhuravljov\widgets\DateTimePicker;
+use zhuravljov\yii\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();
 ?>
