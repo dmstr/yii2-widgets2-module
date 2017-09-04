@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Copy');
         <small><?= $model->name_id ?></small>
     </h1>
 
-    <div class="clearfix crud-navigation sticky-controls">
+    <div class="clearfix crud-navigation">
         <?= Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> ' .
             \Yii::t('widgets', 'Copy'),

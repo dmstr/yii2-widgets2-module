@@ -18,6 +18,55 @@ $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' 
 $this->params['breadcrumbs'][] = ['label' => (string) $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 ?>
+
+<?php $this->beginBlock('crud-navigation') ?>
+<div class="clearfix crud-navigation">
+    <!-- menu buttons -->
+    <div class='pull-left'>
+        <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'),
+                ['create'],
+                ['class' => 'btn btn-success']
+            ) ?>
+
+            <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
+                <?= Html::a(
+                    '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
+                    ['copy', 'id' => $model->id],
+                    ['class' => 'btn btn-default']
+                ) ?>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
+                ['update', 'id' => $model->id],
+                ['class' => 'btn btn-info']
+            ) ?>
+        <?php endif; ?>
+
+        <?php if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),
+                ['delete', 'id' => $model->id],
+                [
+                    'class'        => 'btn btn-danger',
+                    'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
+                    'data-method'  => 'post',
+                ]
+            ); ?>
+        <?php endif; ?>
+
+    </div>
+    <div class="pull-right">
+        <?= Html::a('<span class="glyphicon glyphicon-list"></span> '.\Yii::t('widgets', 'Full list'), ['index'],
+            ['class' => 'btn btn-default']) ?>
+    </div>
+</div>
+<?php $this->endBlock() ?>
+
 <div class="giiant-crud widget-view">
 
     <?php Box::begin() ?>
@@ -26,55 +75,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         <small><?= $model->name_id ?></small>
     </h1>
 
-    <div class="clearfix crud-navigation sticky-controls">
-        <!-- menu buttons -->
-        <div class='pull-left'>
-            <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
-                <?= Html::a(
-                    '<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'),
-                    ['create'],
-                    ['class' => 'btn btn-success']
-                ) ?>
-
-                <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
-                    <?= Html::a(
-                        '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
-                        ['copy', 'id' => $model->id],
-                        ['class' => 'btn btn-default']
-                    ) ?>
-                <?php endif; ?>
-            <?php endif; ?>
-
-            <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
-                <?= Html::a(
-                    '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
-                    ['update', 'id' => $model->id],
-                    ['class' => 'btn btn-info']
-                ) ?>
-            <?php endif; ?>
-
-            <?php if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
-                <?= Html::a(
-                    '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),
-                    ['delete', 'id' => $model->id],
-                    [
-                        'class'        => 'btn btn-danger',
-                        'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
-                        'data-method'  => 'post',
-                    ]
-                ); ?>
-            <?php endif; ?>
-
-        </div>
-        <div class="pull-right">
-            <?= Html::a('<span class="glyphicon glyphicon-list"></span> '.\Yii::t('widgets', 'Full list'), ['index'],
-                ['class' => 'btn btn-default']) ?>
-        </div>
-
-    </div>
-
-    <h2>Data</h2>
-    <?php $this->beginBlock('hrzg\widget\models\crud\Widget'); ?>
+    <?= $this->blocks['crud-navigation'] ?>
 
     <?php
     $hl = new Highlighter();
@@ -129,27 +130,8 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             'updated_at',
         ],
     ]); ?>
-    <?php $this->endBlock(); ?>
-    <?= Tabs::widget(
-        [
-            'id' => 'relation-tabs',
-            'encodeLabels' => false,
-            'items' => [
-                [
-                    'label' => '<b class=""># '.$model->id.'</b>',
-                    'content' => $this->blocks['hrzg\widget\models\crud\Widget'],
-                    'active' => true,
-                ],
-                [
-                    'label' => '<b class=""><i class="fa fa-photo"></i> '.\Yii::t('widgets', 'Preview').'</b>',
-                    'content' => CellPreview::widget(['widget_id'=>$model->id]),
-                    'options' => [
-                        'class' => 'crud-widget-preview'
-                    ]
-                ],
-            ],
-        ]
-    );
-    ?>
+
+    <?= $this->blocks['crud-navigation'] ?>
+
     <?php Box::end() ?>
 </div>

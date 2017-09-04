@@ -63,7 +63,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     </h1>
 
     <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
-        <div class="clearfix crud-navigation sticky-controls">
+        <div class="clearfix crud-navigation">
             <div class="pull-left">
                     <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.Yii::t('widgets', 'New'), ['create'],
                         ['class' => 'btn btn-success']) ?>

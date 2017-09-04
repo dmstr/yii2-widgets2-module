@@ -13,6 +13,46 @@ $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' 
 $this->params['breadcrumbs'][] = ['label' => (string)$model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
 ?>
+
+<?php $this->beginBlock('crud-navigation') ?>
+<div class="clearfix crud-navigation">
+    <!-- menu buttons -->
+    <div class='pull-left'>
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('widgets', 'New'),
+            ['create'],
+            ['class' => 'btn btn-success']
+        ) ?>
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-copy"></span> ' . Yii::t('widgets', 'Copy'),
+            ['copy', 'id' => $model->id],
+            ['class' => 'btn btn-default']
+        ) ?>
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-pencil"></span> ' . Yii::t('widgets', 'Edit'),
+            ['update', 'id' => $model->id],
+            ['class' => 'btn btn-info']
+        ) ?>
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('widgets', 'Delete'),
+            ['delete', 'id' => $model->id],
+            [
+                'class'        => 'btn btn-danger',
+                'data-confirm' => '' . Yii::t('widgets', 'Are you sure to delete this item?') . '',
+                'data-method'  => 'post',
+            ]
+        ); ?>
+    </div>
+    <div class="pull-right">
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-list"></span> ' . Yii::t('widgets', 'Full list'),
+            ['index'],
+            ['class' => 'btn btn-default']
+        ) ?>
+    </div>
+</div>
+<?php $this->endBlock() ?>
+
 <div class="giiant-crud widget-template-view">
 
     <?php Box::begin() ?>
@@ -23,42 +63,8 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
     </h1>
 
 
-    <div class="clearfix crud-navigation sticky-controls">
-        <!-- menu buttons -->
-        <div class='pull-left'>
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('widgets', 'New'),
-                ['create'],
-                ['class' => 'btn btn-success']
-            ) ?>
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-copy"></span> ' . Yii::t('widgets', 'Copy'),
-                ['copy', 'id' => $model->id],
-                ['class' => 'btn btn-default']
-            ) ?>
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-pencil"></span> ' . Yii::t('widgets', 'Edit'),
-                ['update', 'id' => $model->id],
-                ['class' => 'btn btn-info']
-            ) ?>
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('widgets', 'Delete'),
-                ['delete', 'id' => $model->id],
-                [
-                    'class'        => 'btn btn-danger',
-                    'data-confirm' => '' . Yii::t('widgets', 'Are you sure to delete this item?') . '',
-                    'data-method'  => 'post',
-                ]
-            ); ?>
-        </div>
-        <div class="pull-right">
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-list"></span> ' . Yii::t('widgets', 'Full list'),
-                ['index'],
-                ['class' => 'btn btn-default']
-            ) ?>
-        </div>
-    </div>
+
+    <?= $this->blocks['crud-navigation'] ?>
     <hr />
     <?php $this->beginBlock('hrzg\widget\models\crud\WidgetTemplate'); ?>
     <?= DetailView::widget(
@@ -83,6 +89,7 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
             ],
         ]
     ); ?>
+    <?= $this->blocks['crud-navigation'] ?>
     <?php $this->endBlock(); ?>
     <?= Tabs::widget(
         [

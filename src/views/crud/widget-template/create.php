@@ -11,6 +11,38 @@ $this->title                   = Yii::t('widgets', 'Create');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php $this->beginBlock('crud-navigation') ?>
+<div class="clearfix crud-navigation">
+    <?= Html::submitButton(
+        '<span class="glyphicon glyphicon-check"></span> ' .
+        \Yii::t('widgets', 'Create'),
+        [
+            'id'    => 'create-' . $model->formName(),
+            'class' => 'btn btn-success',
+        ]
+    );
+    ?>
+    <?= Html::submitButton(
+        '<span class="glyphicon glyphicon-refresh"></span> ' .
+        \Yii::t('widgets', 'Apply'),
+        [
+            'id'    => 'apply-' . $model->formName(),
+            'name' => 'apply',
+            'class' => 'btn btn-warning',
+        ]
+    );
+    ?>
+    <div class="pull-right">
+        <?= Html::a(
+            '<span class="glyphicon glyphicon-file"></span> ' . Yii::t('widgets', 'Cancel'),
+            ['/widgets/crud/widget-template/index'],
+            ['class' => 'btn btn-default']
+        ) ?>
+    </div>
+</div>
+<?php $this->endBlock() ?>
+
 <div class="giiant-crud widget-create">
     <?php $form = ActiveForm::begin(
         [
@@ -34,36 +66,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $model->getAliasModel() ?>
         <small><?= $model->name ?></small>
     </h1>
-    <div class="clearfix crud-navigation sticky-controls">
-        <?= Html::submitButton(
-            '<span class="glyphicon glyphicon-check"></span> ' .
-            \Yii::t('widgets', 'Create'),
-            [
-                'id'    => 'create-' . $model->formName(),
-                'class' => 'btn btn-success',
-            ]
-        );
-        ?>
-        <?= Html::submitButton(
-            '<span class="glyphicon glyphicon-refresh"></span> ' .
-            \Yii::t('widgets', 'Apply'),
-            [
-                'id'    => 'apply-' . $model->formName(),
-                'name' => 'apply',
-                'class' => 'btn btn-warning',
-            ]
-        );
-        ?>
-        <div class="pull-right">
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-file"></span> ' . Yii::t('widgets', 'Cancel'),
-                ['/widgets/crud/widget-template/index'],
-                ['class' => 'btn btn-default']
-            ) ?>
-        </div>
-    </div>
+
+    <?php $this->blocks['crud-navigation'] ?>
     <hr/>
     <?= $this->render('_form', ['model' => $model, 'form' => $form]); ?>
+    <?php $this->blocks['crud-navigation'] ?>
     <?php Box::end() ?>
     <?php ActiveForm::end(); ?>
 </div>
