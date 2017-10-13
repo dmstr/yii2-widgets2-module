@@ -61,11 +61,29 @@ class WidgetContent extends BaseWidget
 
         // convert date value for displaying
         if($this->publish_at) {
-            $this->publish_at = \Yii::$app->formatter->asDatetime($this->publish_at, 'yyyy-MM-dd HH:mm ').date_default_timezone_get();
+            $publishAtWithTimezone = $this->applyTimezone($this->publish_at);
+            $this->publish_at = \Yii::$app->formatter->asDatetime($publishAtWithTimezone, 'yyyy-MM-dd HH:mm');
         }
         if($this->expire_at) {
-            $this->expire_at = \Yii::$app->formatter->asDatetime($this->expire_at, 'yyyy-MM-dd HH:mm ').date_default_timezone_get();
+            $expireAtWithTimezone = $this->applyTimezone($this->expire_at);
+            $this->expire_at = \Yii::$app->formatter->asDatetime($expireAtWithTimezone, 'yyyy-MM-dd HH:mm');
         }
+    }
+
+    protected function applyTimezone($sourceDate, $mode = 'add') {
+        if(gettype($sourceDate) === 'string') {
+            $sourceDate = new \DateTime($sourceDate);
+        }
+        $clientTimezone = new \DateTimeZone(date_default_timezone_get());
+        $offset = $clientTimezone->getOffset($sourceDate);
+        $offsetInterval = new \DateInterval('PT'.$offset.'S');
+        if($mode === 'add') {
+            $resultDate = $sourceDate->add($offsetInterval);
+        } else {
+            $resultDate = $sourceDate->sub($offsetInterval);
+        }
+
+        return $resultDate;
     }
 
     /**
@@ -179,20 +197,15 @@ class WidgetContent extends BaseWidget
     }
 
     /**
-     * Converts local datetime string to utc if $this->timezone is set
+     * Converts local datetime string to utc
      * @param string $datetimeStr
      * @return string
      */
     protected function datetimeStringToUTCDate($datetimeStr) {
-        if($this->timezone) {
-            $clientTimezone = new \DateTimeZone($this->timezone);
-            $publishAtWithTimezone = new \DateTime($datetimeStr, $clientTimezone);
-            $publishAt = \Yii::$app->formatter->asDatetime($publishAtWithTimezone, 'yyyy-MM-dd HH:mm');
-        } else {
-            $publishAt = \Yii::$app->formatter->asDatetime($this->publish_at, 'yyyy-MM-dd HH:mm');
-        }
+        $dateWithTimezone = $this->applyTimezone($datetimeStr, 'sub');
+        $publicationDate = \Yii::$app->formatter->asDatetime($dateWithTimezone, 'yyyy-MM-dd HH:mm');
 
-        return $publishAt;
+        return $publicationDate;
     }
 
     /**
