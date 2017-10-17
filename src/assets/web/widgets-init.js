@@ -152,14 +152,14 @@ $(document).on('ready', function() {
         return dateWithoutOffset.toISOString().substr(0, 16).replace('T', ' ')
     }
 
-    var publicationDate = new Date(publishAtInput.val());
+    var publicationDate = new Date(publishAtInput.val() + ' UTC');
     if(!isNaN(publicationDate.getTime())) {
         var publicationDateWithTimezone = toLocalDate(publicationDate);
         // the color change prevents input flickering of utc time
         publishAtInput.val(publicationDateWithTimezone).css('color', '#555');
     }
 
-    var expirationDate = new Date(expireAtInput.val());
+    var expirationDate = new Date(expireAtInput.val() + ' UTC');
     if(!isNaN(expirationDate.getTime())) {
         var expirationDateWithTimezone = toLocalDate(expirationDate);
         expireAtInput.val(expirationDateWithTimezone).css('color', '#555');

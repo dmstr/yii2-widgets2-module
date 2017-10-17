@@ -314,13 +314,13 @@ class Cell extends Widget
                 (
                     !$widget->publish_at
                     ||
-                    new \DateTime() >= new \DateTime($widget->publish_at)
+                    new \DateTime() >= new \DateTime($widget->publish_at.' UTC')
                 )
                 &&
                 (
                     !$widget->expire_at
                     ||
-                    new \DateTime() <= new \DateTime($widget->expire_at)
+                    new \DateTime() <= new \DateTime($widget->expire_at.' UTC')
                 );
         }
 

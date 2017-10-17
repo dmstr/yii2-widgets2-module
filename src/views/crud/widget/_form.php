@@ -59,11 +59,6 @@ JS;
                     <div class="row">
                         <div class="form-group col-sm-2">
                             <?= $form->field($model, 'publish_at')->widget(DateTimePicker::class, [
-                                'options' => [
-                                    'class' => 'form-control col-md-6',
-                                    'autocomplete' => 'off',
-
-                                ],
                                 'clientOptions' => [
                                     'format' => 'yyyy-mm-dd hh:ii',
                                     'autoclose' => true,
