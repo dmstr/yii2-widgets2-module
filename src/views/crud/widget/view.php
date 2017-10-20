@@ -22,29 +22,15 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
 <?php $this->beginBlock('crud-navigation') ?>
 <div class="clearfix crud-navigation">
     <!-- menu buttons -->
-    <div class='pull-left'>
+    <div class='pull-right'>
         <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) :?>
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'),
-                ['create'],
-                ['class' => 'btn btn-success']
-            ) ?>
-
             <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
                 <?= Html::a(
                     '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
                     ['copy', 'id' => $model->id],
-                    ['class' => 'btn btn-default']
+                    ['class' => 'btn btn-primary']
                 ) ?>
             <?php endif; ?>
-        <?php endif; ?>
-
-        <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
-            <?= Html::a(
-                '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
-                ['update', 'id' => $model->id],
-                ['class' => 'btn btn-info']
-            ) ?>
         <?php endif; ?>
 
         <?php if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
@@ -60,9 +46,14 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         <?php endif; ?>
 
     </div>
-    <div class="pull-right">
-        <?= Html::a('<span class="glyphicon glyphicon-list"></span> '.\Yii::t('widgets', 'Full list'), ['index'],
-            ['class' => 'btn btn-default']) ?>
+    <div class="pull-left">
+        <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
+                ['update', 'id' => $model->id],
+                ['class' => 'btn btn-success']
+            ) ?>
+        <?php endif; ?>
     </div>
 </div>
 <?php $this->endBlock() ?>

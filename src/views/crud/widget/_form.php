@@ -48,7 +48,7 @@ JS;
     <p>
 
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-md-9">
 
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -105,7 +105,7 @@ JS;
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
         </div>
-        <div class="col-sm-3">
+        <div class="col-md-3">
 
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">

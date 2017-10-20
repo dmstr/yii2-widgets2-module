@@ -69,7 +69,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                         ['class' => 'btn btn-success']) ?>
             </div>
         </div>
-    <hr />
     <?php endif; ?>
 
     <div class="table-responsive">

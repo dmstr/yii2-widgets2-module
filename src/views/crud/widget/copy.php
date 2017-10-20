@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Copy');
     <div class="clearfix crud-navigation">
         <?= Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> ' .
-            \Yii::t('widgets', 'Copy'),
+            \Yii::t('widgets', 'Create'),
             [
                 'id'    => 'copy-' . $model->formName(),
                 'class' => 'btn btn-success',

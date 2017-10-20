@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
 
 <?php $this->beginBlock('crud-navigation') ?>
 <div class="clearfix crud-navigation">
+
+    <div class="btn-group" role="group">
     <?= Html::submitButton(
         '<span class="glyphicon glyphicon-check"></span> ' .
         \Yii::t('widgets', 'Update'),
@@ -26,27 +28,24 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
     );
     ?>
     <?= Html::submitButton(
-        '<span class="glyphicon glyphicon-refresh"></span> ' .
+        '<span class="glyphicon glyphicon-floppy-disk"></span> ' .
         \Yii::t('widgets', 'Apply'),
         [
             'id'    => 'apply-' . $model->formName(),
             'name' => 'apply',
-            'class' => 'btn btn-warning',
+            'class' => 'btn btn-success',
         ]
     );
     ?>
-    <?= Html::a(
-        '<span class="glyphicon glyphicon-file"></span> ' . \Yii::t('widgets', 'View'),
-        ['view', 'id' => $model->id],
-        ['class' => 'btn btn-default']
-    );
-    ?>
+    </div>
+
     <div class="pull-right">
         <?= Html::a(
-            '<span class="glyphicon glyphicon-file"></span> ' . \Yii::t('widgets', 'Cancel'),
-            ['/widgets/crud/widget/index'],
+            '<span class="glyphicon glyphicon-eye-open"></span> ' . \Yii::t('widgets', 'View'),
+            ['view', 'id' => $model->id],
             ['class' => 'btn btn-default']
-        ) ?>
+        );
+        ?>
     </div>
 </div>
 <?php $this->endBlock() ?>

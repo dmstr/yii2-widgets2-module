@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
         [
             'id'    => 'apply-' . $model->formName(),
             'name' => 'apply',
-            'class' => 'btn btn-warning',
+            'class' => 'btn btn-success',
         ]
     );
     ?>

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'id'    => 'apply-' . $model->formName(),
             'name' => 'apply',
-            'class' => 'btn btn-warning',
+            'class' => 'btn btn-success',
         ]
     );
     ?>
