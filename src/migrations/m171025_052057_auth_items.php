@@ -12,10 +12,6 @@ class m171025_052057_auth_items extends Migration
             $permission = $auth->createPermission('widgets-cell-edit');
             $permission->description = 'Widgets frontend buttons';
             $auth->add($permission);
-
-            $permission = $auth->createPermission('widgets_crud_widget-template');
-            $permission->description = 'Widget templates';
-            $auth->add($permission);
         }
     }
 
