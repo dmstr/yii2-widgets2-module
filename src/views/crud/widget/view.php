@@ -3,11 +3,10 @@
  * @var \yii\web\View $this
  * @var \hrzg\widget\models\crud\WidgetContent $model
  */
+
 use devgroup\jsoneditor\Jsoneditor;
-use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
 use hrzg\widget\Module;
-use hrzg\widget\widgets\CellPreview;
 use insolita\wgadminlte\Box;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
@@ -85,10 +84,19 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'widget_template_id',
                 'format' => 'raw',
-                'value' => (\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION))
-                    ? Html::a($model->template->name, ['crud/widget-template/view', 'id'=>$model->widget_template_id])
-                    .' '.Html::a(FA::icon(FA::_EDIT), ['crud/widget-template/update', 'id'=>$model->widget_template_id])
-                    : $model->template->name
+                'value' => (
+                \Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION))
+                    ?
+                    Html::a(
+                        FA::icon(FA::_EDIT),
+                        ['crud/widget-template/update', 'id' => $model->widget_template_id],
+                        ['class' => 'btn btn-primary btn-sm'])
+                    .' '.
+                    Html::a(
+                        $model->template->name,
+                        ['crud/widget-template/view', 'id' => $model->widget_template_id])
+                    :
+                    $model->template->name,
             ],
             [
                 'attribute' => 'default_properties_json',
