@@ -246,7 +246,7 @@ class Cell extends Widget
         $html .= ButtonDropdown::widget([
             'label' => FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
             'encodeLabel' => false,
-            'options' => ['class' => 'btn btn-xs btn-success'],
+            'options' => ['class' => 'btn btn-xs btn-primary'],
             'dropdown' =>  [
                 'options' => [
                     'class'=>'dropdown-menu-right'
@@ -268,7 +268,15 @@ class Cell extends Widget
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group pos-'.$this->positionWidgetControls, 'role' => 'group']);
         $html .= Html::a(
-            FA::icon(FA::_FILE_O),
+            FA::icon(FA::_TRASH_O),
+            ['/'.$this->moduleName.'/crud/widget/delete', 'id' => $widget->id],
+            [
+                'class' => 'btn btn-xs btn-danger',
+                'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').'',
+            ]
+        );
+        $html .= Html::a(
+            FA::icon(FA::_EYE),
             ['/'.$this->moduleName.'/crud/widget/view', 'id' => $widget->id],
             [
                 'class' => 'btn btn-xs btn-default',
@@ -282,18 +290,10 @@ class Cell extends Widget
             FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
             ['/'.$this->moduleName.'/crud/widget/update', 'id' => $widget->id],
             [
-                'class' => 'btn btn-xs btn-'.(($widget->status && $published) ? 'primary' : 'default'),
+                'class' => 'btn btn-xs btn-'.(($widget->status && $published) ? 'success' : 'warning'),
                 'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
                     ? \Yii::$app->params['backend.iframe.name']
                     : '_self'
-            ]
-        );
-        $html .= Html::a(
-            FA::icon(FA::_TRASH_O),
-            ['/'.$this->moduleName.'/crud/widget/delete', 'id' => $widget->id],
-            [
-                'class' => 'btn btn-xs btn-danger',
-                'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').'',
             ]
         );
         $html .= Html::endTag('div');
