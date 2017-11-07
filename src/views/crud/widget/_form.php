@@ -53,6 +53,7 @@ JS;
         Select2::classname(),
         [
             'data' => $model::optsWidgetTemplateId(),
+            'disabled' => !$model->isNewRecord && !Yii::$app->user->can('Admin'),
             'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
             'pluginOptions' => ['allowClear' => true],
             'pluginEvents' => [
@@ -198,8 +199,8 @@ JS;
                     [
                         'label' => \Yii::t('widgets', 'Meta Data'),
                         'content' => $this->blocks['meta-data'],
-                        // open its content by default
-                        'contentOptions' => ['class' => ''],
+                        // open content by default, if it is a new record
+                        'contentOptions' => ['class' => ($model->isNewRecord ? 'in':'')],
                     ],
                     // another group item
                     [
