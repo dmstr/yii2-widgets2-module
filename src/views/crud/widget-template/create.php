@@ -67,10 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <small><?= $model->name ?></small>
     </h1>
 
-    <?php $this->blocks['crud-navigation'] ?>
+    <?= $this->blocks['crud-navigation'] ?>
     <hr/>
     <?= $this->render('_form', ['model' => $model, 'form' => $form]); ?>
-    <?php $this->blocks['crud-navigation'] ?>
+    <?= $this->blocks['crud-navigation'] ?>
     <?php Box::end() ?>
     <?php ActiveForm::end(); ?>
 </div>
