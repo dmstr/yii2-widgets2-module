@@ -136,7 +136,7 @@ class CopyController extends \yii\console\Controller
                  */
                 if ($this->pagesModule && \Yii::$app->getModule('pages') !== null) {
 
-                    if ($sourceWidget->request_param) {
+                    if (! empty($sourceWidget->request_param)) {
                         $targetPage = (new \dmstr\modules\pages\models\Tree())->sibling($destinationLanguage, $sourceWidget->request_param, $sourceWidget->route);
 
                         if ($targetPage !== null) {
