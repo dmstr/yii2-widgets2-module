@@ -81,44 +81,37 @@ class Cell extends Widget
         AssetBundle::register($this->view);
         return [
             [
-                'label' => ' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
-                'url' => null,
-                'items' => [
-                    [
-                        'label' => FA::icon(FA::_PLUS_SQUARE).' Add',
-                        'url' => [
-                            '/'.$this->moduleName.'/crud/widget/create',
-                            'WidgetContent' => [
-                                'route' => $this->getRoute(),
-                                'container_id' => $this->id,
-                                'request_param' => \Yii::$app->request->get($this->requestParam),
-                                'access_domain' => \Yii::$app->language,
-                            ],
-                        ],
-                        'linkOptions' => [
-                            'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                                ? \Yii::$app->params['backend.iframe.name']
-                                : '_self'
-                        ]
+                'label' => FA::icon(FA::_PLUS_SQUARE).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
+                'url' => [
+                    '/'.$this->moduleName.'/crud/widget/create',
+                    'WidgetContent' => [
+                        'route' => $this->getRoute(),
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get($this->requestParam),
+                        'access_domain' => \Yii::$app->language,
                     ],
-                    [
-                        'label' => FA::icon(FA::_LIST).' List',
-                        'url' => [
-                            '/'.$this->moduleName.'/crud/widget/index',
-                            'WidgetContent' => [
-                                'route' => $this->getRoute(),
-                                'container_id' => $this->id,
-                                'request_param' => \Yii::$app->request->get('id'),
-                                'access_domain' => \Yii::$app->language,
-                            ],
-                        ],
-                        'linkOptions' => [
-                            'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                                ? \Yii::$app->params['backend.iframe.name']
-                                : '_self'
-                        ]
-
+                ],
+                'linkOptions' => [
+                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
+                        ? \Yii::$app->params['backend.iframe.name']
+                        : '_self',
+                ],
+            ],
+            [
+                'label' => FA::icon(FA::_LIST).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
+                'url' => [
+                    '/'.$this->moduleName.'/crud/widget/index',
+                    'WidgetContent' => [
+                        'route' => $this->getRoute(),
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get('id'),
+                        'access_domain' => \Yii::$app->language,
                     ],
+                ],
+                'linkOptions' => [
+                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
+                        ? \Yii::$app->params['backend.iframe.name']
+                        : '_self',
                 ],
 
             ],
