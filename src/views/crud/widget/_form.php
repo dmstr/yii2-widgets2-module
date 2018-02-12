@@ -140,13 +140,14 @@ JS;
                 <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
 
                     <?php
-                        // sets $startday with the current date by timezone.
-                        // the timezone can be configured in the widgets module.
-                        // the default timezone is "UTC"
-                        $timezone = \Yii::$app->getModule('widgets')->timezone;
-                        $dateByTimeZone = new \DateTime(null, new \DateTimeZone($timezone));
-                        $dateByTimeZone->add(new DateInterval('PT5M')); // add 5 extra minutes
-                        $startDate = $dateByTimeZone->format('Y-m-d H:i');
+                    // sets $startday with the current date by timezone.
+                    // the timezone can be configured in the widgets module.
+                    // the default timezone is "UTC"
+                    $timezone = \Yii::$app->getModule('widgets')->timezone;
+                    $dateByTimeZone = new \DateTime(null, new \DateTimeZone($timezone));
+                    // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
+                    $dateByTimeZone->add(new DateInterval('PT1M'));
+                    $startDate = $dateByTimeZone->format('Y-m-d H:i');
                     ?>
 
                 <div class="panel-heading">
