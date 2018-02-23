@@ -55,6 +55,13 @@ class Cell extends Widget
     public $moduleName = 'widgets';
 
     /**
+     * Timezone that will be used to correct dates.
+     *
+     * @var string
+     */
+    public $timezone;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -62,6 +69,10 @@ class Cell extends Widget
         if (\Yii::$app->user->can('widgets_crud_widget', ['route' => true])) {
             \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
             WidgetAsset::register(\Yii::$app->view);
+        }
+
+        if ($this->timezone === null) {
+            $this->timezone = \Yii::$app->getModule('widgets')->timezone;
         }
     }
 
@@ -307,13 +318,13 @@ class Cell extends Widget
                 (
                     !$widget->publish_at
                     ||
-                    new \DateTime() >= new \DateTime($widget->publish_at)
+                    new \DateTime(null, new \DateTimeZone($this->timezone)) >= new \DateTime($widget->publish_at, new \DateTimeZone($this->timezone))
                 )
                 &&
                 (
                     !$widget->expire_at
                     ||
-                    new \DateTime() <= new \DateTime($widget->expire_at)
+                    new \DateTime(null, new \DateTimeZone($this->timezone)) <= new \DateTime($widget->expire_at, new \DateTimeZone($this->timezone))
                 );
         }
 
