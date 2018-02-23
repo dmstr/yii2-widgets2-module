@@ -143,7 +143,7 @@ JS;
                     // sets $startday with the current date by timezone.
                     // the timezone can be configured in the widgets module.
                     // the default timezone is "UTC"
-                    $timezone = \Yii::$app->getModule('widgets')->timezone;
+                    $timezone = Module::getInstance()->timezone;
                     $dateByTimeZone = new \DateTime(null, new \DateTimeZone($timezone));
                     // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
                     $dateByTimeZone->add(new DateInterval('PT1M'));

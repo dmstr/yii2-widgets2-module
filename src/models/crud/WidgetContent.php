@@ -56,7 +56,7 @@ class WidgetContent extends BaseWidget
         parent::init();
 
         if ($this->timezone === null) {
-            $this->timezone = \Yii::$app->getModule('widgets')->timezone;
+            $this->timezone = Module::getInstance()->timezone;
         }
     }
 

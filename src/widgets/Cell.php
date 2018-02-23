@@ -12,6 +12,7 @@ namespace hrzg\widget\widgets;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
+use hrzg\widget\Module;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
@@ -72,7 +73,7 @@ class Cell extends Widget
         }
 
         if ($this->timezone === null) {
-            $this->timezone = \Yii::$app->getModule('widgets')->timezone;
+            $this->timezone = Module::getInstance()->timezone;
         }
     }
 
