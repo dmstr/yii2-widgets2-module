@@ -148,6 +148,7 @@ JS;
                     // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
                     $dateByTimeZone->add(new DateInterval('PT1M'));
                     $startDate = $dateByTimeZone->format('Y-m-d H:i');
+                    $langCode = explode("-",$language)[0];
                     ?>
 
                 <div class="panel-heading">
@@ -164,7 +165,8 @@ JS;
                                     'autoclose' => true,
                                     'todayHighlight' => true,
                                     'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
-                                    'startDate' => $startDate
+                                    'startDate' => $startDate,
+                                    'language' => $langCode,
                                 ],
                                 'clientEvents' => [],
                             ])->textInput() ?>
@@ -176,7 +178,8 @@ JS;
                                     'autoclose' => true,
                                     'todayHighlight' => true,
                                     'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
-                                    'startDate' => $startDate
+                                    'startDate' => $startDate,
+                                    'language' => $langCode,
                                 ],
                                 'clientEvents' => [],
                             ])->textInput() ?>
