@@ -53,6 +53,18 @@ class Cell extends Widget
 
     public $rbacEditRole= 'widgets-cell-edit';
 
+    /**
+     *
+     * You can overwrite module Name for all Cell Objects without module context if module is not configured as "widget"
+     * Yii::$container->set(
+     *     \hrzg\widget\widgets\Cell::className(),
+     *     [
+     *        'moduleName' => 'widgets',
+     *     ]
+     * );
+     *
+     * @var string
+     */
     public $moduleName = 'widgets';
 
     /**
@@ -73,7 +85,7 @@ class Cell extends Widget
         }
 
         if ($this->timezone === null) {
-            $this->timezone = Module::getInstance()->timezone;
+            $this->timezone = \Yii::$app->getModule($this->moduleName)->timezone;
         }
     }
 
