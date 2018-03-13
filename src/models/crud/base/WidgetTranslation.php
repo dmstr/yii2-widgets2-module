@@ -33,6 +33,11 @@ use yii\db\Expression;
  * @property string $language
  * @property integer $widget_content_id
  * @property string $default_properties_json
+ * @property string $access_owner
+ * @property string $access_read
+ * @property string $access_update
+ * @property string $access_delete
+ * @property string $access_domain
  * @property string $created_at
  * @property string $updated_at
  */
@@ -53,6 +58,21 @@ abstract class WidgetTranslation extends \yii\db\ActiveRecord
             'delete' => 'access_delete',
             'domain' => 'access_domain',
         ];
+    }
+
+    /**
+     * Alias name of table for crud viewsLists all Area models.
+     * Change the alias name manual if needed later.
+     *
+     * @return string
+     */
+    public function getAliasModel($plural = false)
+    {
+        if ($plural) {
+            return Yii::t('widgets', 'Widget Translations');
+        } else {
+            return Yii::t('widgets', 'Widget Translation');
+        }
     }
 
     public function behaviors()
