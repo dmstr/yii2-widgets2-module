@@ -5,6 +5,8 @@
 namespace hrzg\widget\models\crud\base;
 
 use dmstr\db\traits\ActiveRecordAccessTrait;
+use dosamigos\translateable\TranslateableBehavior;
+use hrzg\widget\models\crud\WidgetContentTranslation;
 use Yii;
 
 /**
@@ -42,12 +44,38 @@ abstract class Widget extends \yii\db\ActiveRecord
     public static function accessColumnAttributes()
     {
         return [
-            'owner'  => 'access_owner',
-            'read'   => 'access_read',
+            'owner' => 'access_owner',
+            'read' => 'access_read',
             'update' => 'access_update',
             'delete' => 'access_delete',
             'domain' => 'access_domain',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['translatable'] = [
+            'class' => TranslateableBehavior::className(),
+            'languageField' => 'language',
+            'translationAttributes' => [
+                'default_properties_json'
+            ]
+        ];
+
+        return $behaviors;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslations()
+    {
+        return $this->hasMany(WidgetContentTranslation::className(), ['widget_content_id' => 'id']);
     }
 
     /**
