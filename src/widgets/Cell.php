@@ -12,6 +12,7 @@ namespace hrzg\widget\widgets;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
+use hrzg\widget\Module;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
@@ -52,7 +53,26 @@ class Cell extends Widget
 
     public $rbacEditRole= 'widgets-cell-edit';
 
+    /**
+     *
+     * You can overwrite module Name for all Cell Objects without module context if module is not configured as "widget"
+     * Yii::$container->set(
+     *     \hrzg\widget\widgets\Cell::className(),
+     *     [
+     *        'moduleName' => 'widgets',
+     *     ]
+     * );
+     *
+     * @var string
+     */
     public $moduleName = 'widgets';
+
+    /**
+     * Timezone that will be used to correct dates.
+     *
+     * @var string
+     */
+    public $timezone;
 
     /**
      * @inheritdoc
@@ -62,6 +82,10 @@ class Cell extends Widget
         if (\Yii::$app->user->can('widgets_crud_widget', ['route' => true])) {
             \Yii::$app->trigger('registerMenuItems', new Event(['sender' => $this]));
             WidgetAsset::register(\Yii::$app->view);
+        }
+
+        if ($this->timezone === null) {
+            $this->timezone = \Yii::$app->getModule($this->moduleName)->timezone;
         }
     }
 
@@ -81,44 +105,37 @@ class Cell extends Widget
         AssetBundle::register($this->view);
         return [
             [
-                'label' => ' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
-                'url' => null,
-                'items' => [
-                    [
-                        'label' => FA::icon(FA::_PLUS_SQUARE).' Add',
-                        'url' => [
-                            '/'.$this->moduleName.'/crud/widget/create',
-                            'WidgetContent' => [
-                                'route' => $this->getRoute(),
-                                'container_id' => $this->id,
-                                'request_param' => \Yii::$app->request->get($this->requestParam),
-                                'access_domain' => \Yii::$app->language,
-                            ],
-                        ],
-                        'linkOptions' => [
-                            'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                                ? \Yii::$app->params['backend.iframe.name']
-                                : '_self'
-                        ]
+                'label' => FA::icon(FA::_PLUS_SQUARE).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
+                'url' => [
+                    '/'.$this->moduleName.'/crud/widget/create',
+                    'WidgetContent' => [
+                        'route' => $this->getRoute(),
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get($this->requestParam),
+                        'access_domain' => \Yii::$app->language,
                     ],
-                    [
-                        'label' => FA::icon(FA::_LIST).' List',
-                        'url' => [
-                            '/'.$this->moduleName.'/crud/widget/index',
-                            'WidgetContent' => [
-                                'route' => $this->getRoute(),
-                                'container_id' => $this->id,
-                                'request_param' => \Yii::$app->request->get('id'),
-                                'access_domain' => \Yii::$app->language,
-                            ],
-                        ],
-                        'linkOptions' => [
-                            'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                                ? \Yii::$app->params['backend.iframe.name']
-                                : '_self'
-                        ]
-
+                ],
+                'linkOptions' => [
+                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
+                        ? \Yii::$app->params['backend.iframe.name']
+                        : '_self',
+                ],
+            ],
+            [
+                'label' => FA::icon(FA::_LIST).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
+                'url' => [
+                    '/'.$this->moduleName.'/crud/widget/index',
+                    'WidgetContent' => [
+                        'route' => $this->getRoute(),
+                        'container_id' => $this->id,
+                        'request_param' => \Yii::$app->request->get('id'),
+                        'access_domain' => \Yii::$app->language,
                     ],
+                ],
+                'linkOptions' => [
+                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
+                        ? \Yii::$app->params['backend.iframe.name']
+                        : '_self',
                 ],
 
             ],
@@ -314,13 +331,13 @@ class Cell extends Widget
                 (
                     !$widget->publish_at
                     ||
-                    new \DateTime() >= new \DateTime($widget->publish_at)
+                    new \DateTime(null, new \DateTimeZone($this->timezone)) >= new \DateTime($widget->publish_at, new \DateTimeZone($this->timezone))
                 )
                 &&
                 (
                     !$widget->expire_at
                     ||
-                    new \DateTime() <= new \DateTime($widget->expire_at)
+                    new \DateTime(null, new \DateTimeZone($this->timezone)) <= new \DateTime($widget->expire_at, new \DateTimeZone($this->timezone))
                 );
         }
 

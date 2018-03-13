@@ -176,7 +176,7 @@ class WidgetController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'schema' => $this->getJsonSchema($model),
         ]);
     }

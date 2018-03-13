@@ -60,6 +60,12 @@ class Module extends \yii\base\Module
     public $datepickerMinutes = false;
 
     /**
+     * timezone for DateTime objects
+     * @var 'string
+     */
+    public $timezone = 'UTC';
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool

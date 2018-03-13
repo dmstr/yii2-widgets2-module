@@ -138,9 +138,22 @@ JS;
                     <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
                 </div>
                 <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
+
+                    <?php
+                    // sets $startday with the current date by timezone.
+                    // the timezone can be configured in the widgets module.
+                    // the default timezone is "UTC"
+                    $timezone = Module::getInstance()->timezone;
+                    $dateByTimeZone = new \DateTime(null, new \DateTimeZone($timezone));
+                    // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
+                    $dateByTimeZone->add(new DateInterval('PT1M'));
+                    $startDate = $dateByTimeZone->format('Y-m-d H:i');
+                    $langCode = explode("-",$language)[0];
+                    ?>
+
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-xs-12 col-md-6">
                             <?= $form->field($model, 'publish_at')->widget(DateTimePicker::class, [
                                 'options' => [
                                     'class' => 'form-control col-md-6',
@@ -152,22 +165,25 @@ JS;
                                     'autoclose' => true,
                                     'todayHighlight' => true,
                                     'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                    'startDate' => $startDate,
+                                    'language' => $langCode,
                                 ],
                                 'clientEvents' => [],
-                            ])->textInput(['style' => 'color:white;']) ?>
+                            ])->textInput() ?>
                         </div>
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-xs-12 col-md-6">
                             <?= $form->field($model, 'expire_at')->widget(DateTimePicker::class, [
                                 'clientOptions' => [
                                     'format' => 'yyyy-mm-dd hh:ii',
                                     'autoclose' => true,
                                     'todayHighlight' => true,
                                     'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                    'startDate' => $startDate,
+                                    'language' => $langCode,
                                 ],
                                 'clientEvents' => [],
-                            ])->textInput(['style' => 'color:white;']) ?>
+                            ])->textInput() ?>
                         </div>
-                        <?= $form->field($model, 'timezone')->hiddenInput()->label(false) ?>
                     </div>
                 </div>
                 <?php } ?>

@@ -132,36 +132,7 @@ editor.on('change', function () {
 
 });
 
-
 $(document).on('pjax:complete', function () {
     console.log('template: reload success');
     editor.trigger('change');
-});
-
-$(document).on('ready', function() {
-    // set timezone in hidden input
-    var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    $('#widgetcontent-timezone').val(timezone);
-
-    // Calculate utc time from db into client local time
-    var publishAtInput = $('#widgetcontent-publish_at');
-    var expireAtInput = $('#widgetcontent-expire_at');
-
-    function toLocalDate(utcDate) {
-        var dateWithoutOffset = new Date(utcDate.getTime() - utcDate.getTimezoneOffset()*60*1000);
-        return dateWithoutOffset.toISOString().substr(0, 16).replace('T', ' ')
-    }
-
-    var publicationDate = new Date(publishAtInput.val());
-    if(!isNaN(publicationDate.getTime())) {
-        var publicationDateWithTimezone = toLocalDate(publicationDate);
-        // the color change prevents input flickering of utc time
-        publishAtInput.val(publicationDateWithTimezone).css('color', '#555');
-    }
-
-    var expirationDate = new Date(expireAtInput.val());
-    if(!isNaN(expirationDate.getTime())) {
-        var expirationDateWithTimezone = toLocalDate(expirationDate);
-        expireAtInput.val(expirationDateWithTimezone).css('color', '#555');
-    }
 });
