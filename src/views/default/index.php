@@ -14,7 +14,7 @@ $this->title = \Yii::t('widgets', 'Widget Manager');
 $moduleId = $this->context->module->id;
 ?>
 <?php Box::begin(['title' => \Yii::t('widgets', 'General')]) ?>
-    <div class="row">
+<div class="row">
         <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) : ?>
             <div class="col-xs-12 col-sm-4 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
@@ -31,8 +31,8 @@ $moduleId = $this->context->module->id;
                 ?>
             </div>
         <?php endif; ?>
-        <?php if (\Yii::$app->user->can('widgets_crud_widget_index', ['route' => true])) : ?>
-            <div class="col-xs-12 col-sm-8 col-md-3">
+    <?php if (\Yii::$app->user->can('widgets_crud_widget_index', ['route' => true])) : ?>
+        <div class="col-xs-12 col-sm-8 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
@@ -45,9 +45,9 @@ $moduleId = $this->context->module->id;
                 echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget/index']);
                 ?>
             </div>
-        <?php endif; ?>
-        <?php if (\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION, ['route' => true])) : ?>
-            <div class="col-xs-12 col-sm-4 col-md-3">
+    <?php endif; ?>
+    <?php if (\Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION, ['route' => true])) : ?>
+        <div class="col-xs-12 col-sm-4 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
@@ -61,7 +61,7 @@ $moduleId = $this->context->module->id;
                 echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget-template/create']);
                 ?>
             </div>
-            <div class="col-xs-12 col-sm-8 col-md-3">
+        <div class="col-xs-12 col-sm-8 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
@@ -74,13 +74,44 @@ $moduleId = $this->context->module->id;
                 echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget-template/index']);
                 ?>
             </div>
-        <?php endif; ?>
+    <?php endif; ?>
+    <?php if (\Yii::$app->user->can('widgets_crud_widget_translation_create', ['route' => true])) : ?>
+        <div class="col-xs-12 col-sm-4 col-md-3">
+                <?php $infoBoxHtml = InfoBox::widget(
+                    [
+                        'text'  => '<div class="text-center">
+                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Content') . '</h3>
+                                    ' . \Yii::t('widgets', 'New') . '
+                                    </div>',
+                        'boxBg' => InfoBox::TYPE_NAVY,
+                        'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-plus'
+                    ]
+                );
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget-translation/create']);
+                ?>
+            </div>
+    <?php endif; ?>
+    <?php if (\Yii::$app->user->can('widgets_crud_widget_translation_index', ['route' => true])) : ?>
+        <div class="col-xs-12 col-sm-8 col-md-3">
+                <?php $infoBoxHtml = InfoBox::widget(
+                    [
+                        'text'  => '<div class="text-center">
+                            <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Translations') . '</h3>
+                            '.\hrzg\widget\models\crud\WidgetContentTranslation ::find()->where(['language' => Yii::$app->language])->count().'</div>',
+                        'boxBg' => InfoBox::TYPE_NAVY,
+                        'icon'  => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-list'
+                    ]
+                );
+                echo Html::a($infoBoxHtml, ['/'.$moduleId.'/crud/widget-translation/index']);
+                ?>
+            </div>
+    <?php endif; ?>
     </div>
 <?php Box::end() ?>
 
 <?php if (\Yii::$app->user->can(Module::TEST_ACCESS_PERMISSION, ['route' => true])) : ?>
     <?php Box::begin(['title' => \Yii::t('widgets', 'Playground')]) ?>
-        <div class="row">
+    <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-3">
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
