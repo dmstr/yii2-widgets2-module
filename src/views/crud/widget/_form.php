@@ -17,6 +17,7 @@ $userAuthItems = $model::getUsersAuthItems();
 <div class="widget-form">
     <?php
     $language = Yii::$app->language;
+    $module = $this->context->module->id;
     $js = <<<JS
 var lastTemplateId = '{$model->widget_template_id}';
 var widgets = {
@@ -26,7 +27,7 @@ var widgets = {
 		if (!lastTemplateId || confirm('Reset values and update template?')) {
 		    console.log('template: reload');
 		    lastTemplateId = $(elem).val(); 
-			url = '/{$language}/widgets/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
+			url = '/{$language}/{$module}/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
 			//alert(url);
 			
 			
