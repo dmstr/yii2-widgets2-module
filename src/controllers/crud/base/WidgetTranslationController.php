@@ -28,6 +28,7 @@ class WidgetTranslationController extends Controller
     {
         $schema = [];
 
+
         /**@var $model WidgetContent*/
         $model = $model->getWidgetContent()->one();
 
@@ -111,25 +112,31 @@ class WidgetTranslationController extends Controller
     {
         $model = $this->findModel($id);
 
+
         // remember old model
         $oldAccessDomain = $model->oldAttributes['access_domain'];
 
         if ($model->load($_POST) && $model->save()) {
 
+
+
             // detect cross side domain update
             if (\Yii::$app->getModule('pages') !== null && $oldAccessDomain !== $model->access_domain) {
 
                 $widgetContent = $model->getWidgetContent()->one();
+
+                $widgetContent->access_domain = $model->access_domain;
+
                 if ($widgetContent !== null) {
                     $targetPage = (new \dmstr\modules\pages\models\Tree())->sibling(
-                        $model->access_domain,
+                        $widgetContent->access_domain,
                         $widgetContent->request_param,
                         $widgetContent->route
                     );
 
                     if ($targetPage !== null) {
-                        $model->request_param = (string)$targetPage->id;
-                        $model->save();
+                        $widgetContent->request_param = (string)$targetPage->id;
+                        $widgetContent->save();
                         $newPageSuccessMsg = \Yii::t(
                             'widgets',
                             'Placed widget on page "{PAGE} #{ID}" in language "{LANGUAGE}"',
@@ -140,7 +147,7 @@ class WidgetTranslationController extends Controller
                         $newPageInfoMsg = \Yii::t(
                             'widgets',
                             'No sibling page found for page "#{PAGE_ID}" in language "{LANGUAGE}"',
-                            ['PAGE_ID' => $model->request_param, 'LANGUAGE' => $model->access_domain]
+                            ['PAGE_ID' => $widgetContent->request_param, 'LANGUAGE' => $widgetContent->access_domain]
                         );
                         \Yii::$app->session->setFlash('info', $newPageInfoMsg);
                     }
@@ -160,6 +167,8 @@ class WidgetTranslationController extends Controller
                 return $this->redirect(['view', 'id'=>$model->id]);
             }
         }
+
+        var_dump($model->getErrors());
 
         return $this->render('update', [
             'model' => $model,

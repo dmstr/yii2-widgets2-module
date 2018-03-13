@@ -156,7 +156,7 @@ class Cell extends Widget
                 [
                     'container_id' => $this->id,
                     'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
-                    'access_domain' => mb_strtolower(\Yii::$app->language),
+                    'access_domain' => [mb_strtolower(\Yii::$app->language), '*'],
                 ])
             ->all();
 

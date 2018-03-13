@@ -183,7 +183,7 @@ class WidgetContent extends BaseWidget
      */
     public static function optsAccessDomain()
     {
-        $availableLanguages = [];
+        $availableLanguages['*'] = '*';
         foreach (\Yii::$app->urlManager->languages as $availablelanguage) {
             $availableLanguages[mb_strtolower($availablelanguage)] = mb_strtolower($availablelanguage);
         }
