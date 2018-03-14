@@ -80,7 +80,7 @@ $moduleId = $this->context->module->id;
                 <?php $infoBoxHtml = InfoBox::widget(
                     [
                         'text'  => '<div class="text-center">
-                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Content') . '</h3>
+                                    <h3 style="white-space: normal;">' . \Yii::t('widgets', 'Widget Translation') . '</h3>
                                     ' . \Yii::t('widgets', 'New') . '
                                     </div>',
                         'boxBg' => InfoBox::TYPE_NAVY,
