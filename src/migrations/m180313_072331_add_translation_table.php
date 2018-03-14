@@ -32,8 +32,8 @@ class m180313_072331_add_translation_table extends Migration
             'widget_content_id',
             '{{%hrzg_widget_content}}',
             'id',
-            'RESTRICT',
-            'RESTRICT');
+            'CASCADE',
+            'CASCADE');
 
 
         // select all contents to insert them into the translation table
