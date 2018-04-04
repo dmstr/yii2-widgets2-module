@@ -61,10 +61,9 @@ class Module extends \yii\base\Module
      */
     public function beforeAction($action)
     {
-        parent::beforeAction($action);
         $moduleUrl = '/'.$this->id;
         \Yii::$app->controller->view->params['breadcrumbs'][] = ['label' => 'Widgets module', 'url' => [$moduleUrl]];
 
-        return true;
+        return parent::beforeAction($action);
     }
 }
