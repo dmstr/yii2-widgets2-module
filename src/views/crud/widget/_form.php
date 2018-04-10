@@ -133,7 +133,7 @@ JS;
 
     <div class="row">
         <div class="col-md-9">
-
+            <?= $form->errorSummary($model) ?>
             <div class="panel panel-<?= $model->status ? 'success' : 'warning' ?>">
                 <div class="panel-heading">
                     <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>

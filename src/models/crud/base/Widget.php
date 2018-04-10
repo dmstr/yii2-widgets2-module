@@ -38,21 +38,6 @@ abstract class Widget extends \yii\db\ActiveRecord
     use ActiveRecordAccessTrait;
 
     /**
-     * Enable access_domain access checks in ActiveRecordAccessTrait
-     * @return array with access field names
-     */
-    public static function accessColumnAttributes()
-    {
-        return [
-            'owner' => 'access_owner',
-            'read' => 'access_read',
-            'update' => 'access_update',
-            'delete' => 'access_delete',
-            'domain' => 'access_domain',
-        ];
-    }
-
-    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -148,5 +133,10 @@ abstract class Widget extends \yii\db\ActiveRecord
             'created_at' => Yii::t('widgets', 'Created At'),
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
+    }
+
+    public function isVisibleFrontend()
+    {
+        return (!$this->getTranslation(Yii::$app->language)->id || !$this->status) ? false : true;
     }
 }

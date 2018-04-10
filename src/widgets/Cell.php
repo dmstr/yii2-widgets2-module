@@ -10,6 +10,7 @@
 
 namespace hrzg\widget\widgets;
 
+use dmstr\web\traits\AccessBehaviorTrait;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
@@ -149,7 +150,7 @@ class Cell extends Widget
     protected function queryWidgets()
     {
         \Yii::trace(\Yii::$app->requestedRoute, __METHOD__);
-        $models = WidgetContent::find()
+        $query = WidgetContent::find()
             ->orderBy('rank ASC')
             ->andFilterWhere(
                 [
@@ -160,10 +161,15 @@ class Cell extends Widget
                 [
                     'container_id' => $this->id,
                     'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
-                    'access_domain' => [mb_strtolower(\Yii::$app->language), '*'],
-                ])
-            ->all();
-
+                    '{{%hrzg_widget_content}}.access_domain' => [mb_strtolower(\Yii::$app->language), '*'],
+                ]);
+        if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true])) {
+            // editors see all widgets, also untranslated ones
+        } else {
+            $query->joinWith('translations');
+            $query->andWhere(['language'=>\Yii::$app->language]);
+        }
+        $models = $query->all();
         return $models;
     }
 
@@ -218,10 +224,11 @@ class Cell extends Widget
             if ($properties) {
                 $class->setProperties($properties);
             }
+            $visbility = $widget->isVisibleFrontend()?'':'hrzg-widget-widget-invisible-frontend';
             $html .= Html::beginTag('div',
                 [
                     'id' => 'widget-' . ($widget->name_id ?: $widget->id),
-                    'class' => 'hrzg-widget-widget',
+                    'class' => 'hrzg-widget-widget ',
                     'data-toggle' => 'tooltip',
                     'data-placement' => 'left',
                     'title' => \Yii::$app->user->can($this->rbacEditRole, ['route' => true]) ?
@@ -233,7 +240,9 @@ class Cell extends Widget
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
+                $html .= Html::beginTag('div',['class' => $visbility,]);
                 $html .= $class->run();
+                $html .= Html::endTag('div');
             }
             $html .= Html::endTag('div');
         }
@@ -300,6 +309,9 @@ class Cell extends Widget
             [
                 'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
             ]);
+
+        $html .= '<span class="pull-left label '.($widget->access_domain == '*' ? 'label-info' : 'label-default').'">'.FA::icon(FA::_GLOBE).' '.$widget->access_domain.'</span>';
+
         $html .= Html::a(
             FA::icon(FA::_TRASH_O),
             ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
@@ -329,6 +341,8 @@ class Cell extends Widget
                     : '_self'
             ]
         );
+
+
         $html .= Html::endTag('div');
         return $html;
     }

@@ -118,6 +118,7 @@ class WidgetController extends Controller
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             $model->addError('_exception', $msg);
+            \Yii::error($msg, __METHOD__);
         }
 
         return $this->render('create', ['model' => $model, 'schema' => $this->getJsonSchema($model)]);
