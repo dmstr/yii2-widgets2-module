@@ -20,6 +20,7 @@ use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -260,7 +261,12 @@ class Cell extends Widget
             ['label' => $this->id]
         ];
 
-        foreach (WidgetTemplate::find()->orderBy('name')->all() as $template) {
+        $availableFrontendPhpClasses = array_unique(ArrayHelper::merge(
+            [TwigTemplate::class],
+            explode("\n", \Yii::$app->settings->get('availableFrontendPhpClasses', 'widgets'))
+        ));
+
+        foreach (WidgetTemplate::find()->where(['php_class' => $availableFrontendPhpClasses])->orderBy('name')->all() as $template) {
             $items[] = [
                 'label' => $template->name,
                 'url' => [

@@ -59,6 +59,7 @@ Settings
 ---
 
 `availablePhpClasses`
+`availableFrontendPhpClasses` - Templates with one of the listed classes in this setting will be outputed in cell widgets dropdown for available templates (default: hrzg\widget\widgets\TwigTemplate)
 
 
 Usage
