@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \yii\web\View $this
- * @var \hrzg\widget\models\crud\WidgetContent $model
+ * @var \hrzg\widget\models\crud\WidgetContentTranslation $model
  */
 
 use devgroup\jsoneditor\Jsoneditor;
@@ -16,6 +16,7 @@ $this->title = $model->getAliasModel().$model->id;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string) $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
+
 ?>
 
 <?php $this->beginBlock('crud-navigation') ?>
@@ -62,7 +63,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
     <?php Box::begin() ?>
     <h1>
         <?= $model->getAliasModel() ?>
-        <small><?= $model->name_id ?></small>
+        <small><?= $model->id ?></small>
     </h1>
 
     <?= $this->blocks['crud-navigation'] ?>
@@ -77,26 +78,21 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'status',
-                'format' => 'raw',
-                'value' => $model::optsStatus()[$model->status]
-            ],
-            [
-                'attribute' => 'widget_template_id',
+                'attribute' => 'widget_content_id',
                 'format' => 'raw',
                 'value' => (
-                \Yii::$app->user->can(Module::TEMPLATE_ACCESS_PERMISSION))
+                \Yii::$app->user->can(Module::CONTENT_ACCESS_PERMISSION))
                     ?
                     Html::a(
                         FA::icon(FA::_EDIT),
-                        ['crud/widget-template/update', 'id' => $model->widget_template_id],
+                        ['crud/widget-content/update', 'id' => $model->widget_content_id],
                         ['class' => 'btn btn-primary btn-sm'])
                     .' '.
                     Html::a(
-                        $model->template->name,
-                        ['crud/widget-template/view', 'id' => $model->widget_template_id])
+                        $model->getWidgetContent()->one()->id,
+                        ['crud/widget-content/view', 'id' => $model->widget_content_id])
                     :
-                    $model->template->name,
+                    $model->getWidgetContent()->one()->id,
             ],
             [
                 'attribute' => 'default_properties_json',
@@ -113,18 +109,11 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
                     ]
                 ]),
             ],
-            'domain_id',
-            'name_id',
-            'container_id',
-            'rank',
-            'route',
-            'request_param',
             'access_owner',
             'access_domain',
             'access_read',
             'access_update',
             'access_delete',
-            'copied_from',
             'created_at',
             'updated_at',
         ],

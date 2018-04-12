@@ -89,7 +89,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
 
         // set new auto generated defaults
         $newWidget->domain_id = uniqid();
-        $newWidget->rank = 'a-'.dechex(date('U'));
+        $newWidget->rank = 'a-' . dechex(date('U'));
 
         // render copy form
         return $this->render('copy', ['model' => $newWidget, 'schema' => $this->getJsonSchema($newWidget)]);

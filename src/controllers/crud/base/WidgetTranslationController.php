@@ -29,7 +29,7 @@ class WidgetTranslationController extends Controller
         $schema = [];
 
 
-        /**@var $model WidgetContent*/
+        /**@var $model WidgetContent */
         $model = $model->getWidgetContent()->one();
 
 
@@ -38,14 +38,14 @@ class WidgetTranslationController extends Controller
             case !empty($model->widget_template_id):
 
                 $template = WidgetTemplate::findOne($model->widget_template_id);
-                if(empty($template)) {
+                if (empty($template)) {
                     throw new HttpException(404, \Yii::t('widgets', 'Template not found'));
                 }
 
                 break;
             case \Yii::$app->request->get('Widget'):
                 $template = WidgetTemplate::findOne(\Yii::$app->request->get('Widget')['widget_template_id']);
-                if(empty($template)) {
+                if (empty($template)) {
                     throw new HttpException(404, \Yii::t('widgets', 'Template not found'));
                 }
                 break;
@@ -119,7 +119,6 @@ class WidgetTranslationController extends Controller
         if ($model->load($_POST) && $model->save()) {
 
 
-
             // detect cross side domain update
             if (\Yii::$app->getModule('pages') !== null && $oldAccessDomain !== $model->access_domain) {
 
@@ -164,11 +163,9 @@ class WidgetTranslationController extends Controller
             if (isset($_POST['apply'])) {
                 return $this->redirect(['update', 'id' => $model->id]);
             } else {
-                return $this->redirect(['view', 'id'=>$model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         }
-
-        var_dump($model->getErrors());
 
         return $this->render('update', [
             'model' => $model,
@@ -188,20 +185,15 @@ class WidgetTranslationController extends Controller
     {
         try {
             $model = $this->findModel($id);
-            $redirectUrl = $model->route;
             $model->delete();
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             \Yii::$app->getSession()->addFlash('error', $msg);
 
-            return $this->redirect(Url::previous());
         }
 
-        if (Url::previous($redirectUrl)) {
-            return $this->redirect(Url::previous($redirectUrl));
-        } else {
-            return $this->redirect(['index']);
-        }
+        return $this->redirect(Url::previous());
+
     }
 
     /**
