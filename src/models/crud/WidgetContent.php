@@ -105,10 +105,12 @@ class WidgetContent extends BaseWidget
      */
     public function rules()
     {
+        $rawRank = dechex(date('U'));
+        $rank = 'a-'.substr($rawRank, 0, 4).'-'.substr($rawRank, 5);
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['rank', 'default', 'value' => 'a-'.dechex(date('U'))],
+                ['rank', 'default', 'value' => $rank],
                 [
                     'domain_id',
                     'default',

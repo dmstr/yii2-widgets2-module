@@ -316,7 +316,11 @@ class Cell extends Widget
                 'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
             ]);
 
-        $html .= '<span class="pull-left label '.($widget->access_domain == '*' ? 'label-info' : 'label-default').'">'.FA::icon(FA::_GLOBE).' '.$widget->access_domain.'</span>';
+        $html .= '<span class="pull-left label '.
+            ($widget->access_domain == '*' ? 'label-info' : 'label-default').'">'.
+            FA::icon(FA::_GLOBE).' '.$widget->access_domain.
+            ($widget->isFallback ? 'FALLBACK' : '').
+            '</span>';
 
         $html .= Html::a(
             FA::icon(FA::_TRASH_O),
