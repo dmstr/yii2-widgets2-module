@@ -319,7 +319,7 @@ class Cell extends Widget
         $html .= '<span class="pull-left label '.
             ($widget->access_domain == '*' ? 'label-info' : 'label-default').'">'.
             FA::icon(FA::_GLOBE).' '.$widget->access_domain.
-            ($widget->isFallback ? 'FALLBACK' : '').
+            ($widget->isFallbackTranslation ? 'FALLBACK' : '').
             '</span>';
 
         $html .= Html::a(
