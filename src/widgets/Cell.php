@@ -308,7 +308,7 @@ class Cell extends Widget
      *
      * @return string
      */
-    private function generateWidgetControls($widget)
+    private function generateWidgetControls(WidgetContent $widget)
     {
         $html = Html::beginTag(
             'div',
