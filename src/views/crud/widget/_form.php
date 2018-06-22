@@ -136,7 +136,7 @@ JS;
             <?= $form->errorSummary($model) ?>
             <div class="panel panel-<?= $model->status ? 'success' : 'warning' ?>">
                 <div class="panel-heading">
-                    <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
+                    <?= $form->field($model, 'status')->dropDownList($model::optsStatus()) ?>
                 </div>
                 <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
 
