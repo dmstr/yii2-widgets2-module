@@ -20,6 +20,15 @@ $this->title = $model->getAliasModel() . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
+
+// enable bootstrap tooltips
+$this->registerJs(<<<JS
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+JS
+);
+
 ?>
 
 <?php $this->beginBlock('crud-navigation') ?>
@@ -84,7 +93,10 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'status',
                 'format' => 'raw',
-                'value' => $model::optsStatus()[$model->status]
+                'value' => Html::encode($model::optsStatus()[$model->status])
+                    . ($model->getBehavior('translation_meta')->isFallbackTranslation ?
+                        ' <span class="label label-warning" title="' . \Yii::t('widgets', 'Uses the same value as the fallback language. Edit and save to override the default.') . '" data-toggle="tooltip" data-placement="top">fallback</span>'
+                        : ''),
             ],
             [
                 'attribute' => 'widget_template_id',

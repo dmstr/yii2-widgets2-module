@@ -50,6 +50,11 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
 </div>
 <?php $this->endBlock() ?>
 
+<?php if ($model->getBehavior('translatable')->isFallbackTranslation) {
+    echo ' <div class="alert alert-info">' . \Yii::t('widgets', 'The currently displayed values are taken from the fallback language. If you change translated values a new translation will be stored for this widget. Changing the status does not affect the translation.') . '</div>';
+}
+?>
+
 <div class="giiant-crud widget-update">
     <?php $form = ActiveForm::begin(
         [
