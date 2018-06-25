@@ -157,6 +157,6 @@ abstract class Widget extends \yii\db\ActiveRecord
 
     public function isVisibleFrontend()
     {
-        return (!$this->getTranslation(Yii::$app->language)->id || !$this->status) ? false : true;
+        return $this->status;
     }
 }
