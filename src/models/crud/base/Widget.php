@@ -57,6 +57,7 @@ abstract class Widget extends \yii\db\ActiveRecord
             'class' => TranslateableBehavior::className(),
             'relation' => 'translationsMeta',
             'languageField' => 'language',
+            'fallbackLanguage' => false,
             'skipSavingDuplicateTranslation' => false,
             'translationAttributes' => [
                 'status'
