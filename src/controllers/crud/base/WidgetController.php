@@ -61,13 +61,10 @@ class WidgetController extends Controller
      */
     public function actionIndex()
     {
-        Url::remember();
         $searchModel = new WidgetSearch();
         $dataProvider = $searchModel->search($_GET);
 
         Tabs::clearLocalStorage();
-
-        \Yii::$app->session['__crudReturnUrl'] = null;
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -84,9 +81,6 @@ class WidgetController extends Controller
      */
     public function actionView($id)
     {
-        Url::remember();
-        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
-
         Tabs::rememberActiveState();
 
         return $this->render('view', [
@@ -200,14 +194,10 @@ class WidgetController extends Controller
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             \Yii::$app->getSession()->addFlash('error', $msg);
 
-            return $this->redirect(Url::previous());
+            return $this->redirect(['view', 'id'=>$id]);
         }
 
-        if (Url::previous($redirectUrl)) {
-            return $this->redirect(Url::previous($redirectUrl));
-        } else {
-            return $this->redirect(['index']);
-        }
+        return $this->redirect(['index']);
     }
 
     /**

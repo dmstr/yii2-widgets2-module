@@ -67,13 +67,10 @@ class WidgetTranslationController extends Controller
      */
     public function actionIndex()
     {
-        Url::remember();
         $searchModel = new WidgetTranslationSearch();
         $dataProvider = $searchModel->search($_GET);
 
         Tabs::clearLocalStorage();
-
-        \Yii::$app->session['__crudReturnUrl'] = null;
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -90,9 +87,6 @@ class WidgetTranslationController extends Controller
      */
     public function actionView($id)
     {
-        Url::remember();
-        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
-
         Tabs::rememberActiveState();
 
         return $this->render('view', [
