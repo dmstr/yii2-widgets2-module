@@ -3,11 +3,11 @@
 namespace hrzg\widget\models\crud\query;
 
 /**
- * Class WidgetContentTranslationQuery
+ * Class WidgetContentTranslationMetaQuery
  * @package hrzg\widget\models\crud
- * @author Elias Luhr <e.luhr@herzogkommunikation.de>
+ * @author Carsten Brandt <mail@cebe.cc>
  */
-class WidgetTranslationQuery extends \yii\db\ActiveQuery
+class WidgetTranslationMetaQuery extends \yii\db\ActiveQuery
 {
 
     public function all($db = null)

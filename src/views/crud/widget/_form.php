@@ -12,6 +12,15 @@ use yii\bootstrap\Collapse;
 use zhuravljov\yii\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();
+
+// enable bootstrap tooltips
+$this->registerJs(<<<JS
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+JS
+);
+
 ?>
 
 <div class="widget-form">
@@ -136,7 +145,14 @@ JS;
             <?= $form->errorSummary($model) ?>
             <div class="panel panel-<?= $model->status ? 'success' : 'warning' ?>">
                 <div class="panel-heading">
-                    <?= $form->field($model, 'status')->checkbox($model::optsStatus()) ?>
+                    <?= $form->field($model, 'status')
+                        ->dropDownList($model::optsStatus())
+                        ->label($model->getAttributeLabel('status')
+                            . ($model->getBehavior('translation_meta')->isFallbackTranslation ?
+                               ' <span class="label label-warning" title="' . \Yii::t('widgets', 'Uses the same value as the fallback language. Saving this widget will override the default.') . '" data-toggle="tooltip" data-placement="top">fallback</span>'
+                               : '')
+                        );
+                    ?>
                 </div>
                 <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
 

@@ -7,6 +7,7 @@ namespace hrzg\widget\models\crud\base;
 use dmstr\db\traits\ActiveRecordAccessTrait;
 use dosamigos\translateable\TranslateableBehavior;
 use hrzg\widget\models\crud\WidgetContentTranslation;
+use hrzg\widget\models\crud\WidgetContentTranslationMeta;
 use Yii;
 
 /**
@@ -47,8 +48,18 @@ abstract class Widget extends \yii\db\ActiveRecord
         $behaviors['translatable'] = [
             'class' => TranslateableBehavior::className(),
             'languageField' => 'language',
+            'skipSavingDuplicateTranslation' => true,
             'translationAttributes' => [
                 'default_properties_json'
+            ]
+        ];
+        $behaviors['translation_meta'] = [
+            'class' => TranslateableBehavior::className(),
+            'relation' => 'translationsMeta',
+            'languageField' => 'language',
+            'skipSavingDuplicateTranslation' => false,
+            'translationAttributes' => [
+                'status'
             ]
         ];
 
@@ -61,6 +72,14 @@ abstract class Widget extends \yii\db\ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(WidgetContentTranslation::className(), ['widget_content_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslationsMeta()
+    {
+        return $this->hasMany(WidgetContentTranslationMeta::className(), ['widget_content_id' => 'id']);
     }
 
     /**

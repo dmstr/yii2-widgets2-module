@@ -83,6 +83,8 @@ class WidgetContent extends WidgetModel
                 }
             ]
         );
+        // join for status field
+        $query->joinWith('translationsMeta');
 
         $this->load($params);
 
