@@ -180,8 +180,8 @@ class WidgetContent extends BaseWidget
     public static function optsStatus()
     {
         return [
-            1 => \Yii::t('widgets', 'Online'),
             0 => \Yii::t('widgets', 'Offline'),
+            1 => \Yii::t('widgets', 'Online'),
         ];
     }
 

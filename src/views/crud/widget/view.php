@@ -35,6 +35,9 @@ JS
 <div class="clearfix crud-navigation">
     <!-- menu buttons -->
     <div class='pull-right'>
+        <?php #TODO: need to check correct request param, currently not stored in database ?>
+        <?= Html::a('View in Frontend', ['/'.$model->route, 'pageId'=>$model->request_param], ['class'=>'btn btn-default']) ?>
+
         <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) : ?>
             <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
                 <?= Html::a(
