@@ -123,7 +123,6 @@ class WidgetContent extends BaseWidget
                         return mb_strtolower(\Yii::$app->language);
                     }
                 ],
-                ['access_domain', 'validateAccessDomain'],
                 [
                     [
                         'access_read',
@@ -138,23 +137,6 @@ class WidgetContent extends BaseWidget
                 [ 'expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
             ]
         );
-    }
-
-    /**
-     * Check if user tries to save / update records to another language
-     * 'widget_copy' permission required
-     *
-     * @param $attribute
-     */
-    public function validateAccessDomain($attribute)
-    {
-        if ($this->attributes[$attribute] !== \Yii::$app->language && php_sapi_name() !== 'cli') {
-            if (! \Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) {
-                $errorMsg = \Yii::t('widgets', 'You are not allowed to copy widgets between languages');
-                \Yii::$app->session->setFlash('error', $errorMsg);
-                $this->addError($attribute, $errorMsg);
-            }
-        }
     }
 
     /**

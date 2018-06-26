@@ -20,18 +20,6 @@ use hrzg\widget\models\crud\base\WidgetTranslation;
 class WidgetContentTranslation extends WidgetTranslation
 {
     /**
-     *  Check if user can language & application mode not is cli
-     *
-     * @param $attribute
-     *
-     * @return boolean
-     */
-    public function validateAccessDomain($attribute)
-    {
-        return $this->attributes[$attribute] !== \Yii::$app->language && php_sapi_name() !== 'cli';
-    }
-
-    /**
      * Global route needs empty request param
      * @param bool $insert
      *

@@ -103,7 +103,6 @@ abstract class WidgetTranslation extends \yii\db\ActiveRecord
                     return mb_strtolower(\Yii::$app->language);
                 }
             ],
-            ['access_domain', 'validateAccessDomain'],
             [
                 [
                     'access_read',
