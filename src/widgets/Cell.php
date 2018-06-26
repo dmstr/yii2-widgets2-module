@@ -168,7 +168,6 @@ class Cell extends Widget
             // editors see all widgets, also untranslated ones
         } else {
             $query->joinWith('translations');
-            $query->andWhere(['language'=>\Yii::$app->language]);
         }
         $models = $query->all();
         return $models;
