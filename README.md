@@ -206,3 +206,38 @@ widgets_crud_widget-template | Widgets CRUD Template
 widgets_test | Widgets TEST Playground
 widgets_copy | Widgets Language Copy
 widgets | Widgets Module
+
+
+Settings
+---
+
+<table>
+    <thead>
+        <tr>
+            <th>Section</th>
+            <th>Key</th>
+            <th>Value</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>widgets</td>
+            <td>ckeditor.config</td>
+            <td>
+<pre>
+    {
+      "height": "4000px",
+      "toolbar": [
+        ["Format"],
+        ["Link", "Image", "Table", "-", "NumberedList", "BulletedList", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
+        ["Source"],
+        "/", ["Bold", "Italic", "Underline", "StrikeThrough", "-", "RemoveFormat", "-", "Undo", "Redo", "-", "Paste", "PasteText", "PasteFromWord", "-", "Cut", "Copy", "Find", "Replace", "-", "Outdent", "Indent", "-", "Print"]
+      ]
+    }
+</pre>
+            </td>
+            <td>OBJECT/JSON</td>
+        </tr>
+    </tbody>
+</table>
