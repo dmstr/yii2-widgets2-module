@@ -89,19 +89,9 @@ editor.theme.afterInputReady = function (input) {
 };
 
 editor.on('ready', function () {
-        // initialize CKeditor
-        CKEDITOR.config.height = '400px';
-        CKEDITOR.config.toolbar = [
-            ['Format'], ['Link', 'Image', 'Table', '-', 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], ['Source'],
-            '/',
-            ['Bold', 'Italic', 'Underline', 'StrikeThrough', '-', 'RemoveFormat', '-', 'Undo', 'Redo', '-', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Cut', 'Copy', 'Find', 'Replace', '-', 'Outdent', 'Indent', '-', 'Print']
-        ];
-
-        initSelectize();
-
-        console.log('jsoneditor: ready');
-    }
-);
+    initSelectize();
+    console.log('jsoneditor: ready');
+});
 
 // TODO: notice is a workaround for broken editor display on move, delete
 // TODO: replace/refresh CKeditor instances after change
