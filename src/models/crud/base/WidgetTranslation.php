@@ -106,11 +106,17 @@ abstract class WidgetTranslation extends \yii\db\ActiveRecord
             [
                 [
                     'access_read',
+                ],
+                'default',
+                'value' => self::$_all
+            ],
+            [
+                [
                     'access_update',
                     'access_delete',
                 ],
                 'default',
-                'value' => self::$_all
+                'value' => null
             ],
             [
                 ['widget_content_id'],

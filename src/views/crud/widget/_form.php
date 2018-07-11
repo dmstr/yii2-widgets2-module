@@ -72,7 +72,7 @@ JS;
         ]
     );
     ?>
-    <?= $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'route')->textInput(['maxlength' => true, 'disabled' => !$model->hasPermission('access_update')]) ?>
     <?= $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
@@ -82,54 +82,19 @@ JS;
             'maxlength' => true
         ]
     ); ?>
-    <?= $form->field($model, 'copied_from')->hiddenInput()->label(false); ?>
+
+
     <?php $this->endBlock() ?>
 
 
     <?php $this->beginBlock('access') ?>
-    <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) : ?>
-        <?= $form->field($model, 'access_domain')->widget(
-            Select2::classname(),
-            [
-                'data' => $model::optsAccessDomain(),
-                'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
-                'pluginOptions' => ['allowClear' => true],
-            ]
-        );
-        ?>
-    <?php endif; ?>
-    <?= $form->field($model, 'access_read')->widget(
-        Select2::classname(),
+
+    <?= \dmstr\widgets\AccessInput::widget(
         [
-            'data' => $userAuthItems,
-            'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
-            'pluginOptions' => ['allowClear' => true],
-        ]
-    );
-    ?>
-    <?php if ($model->hasPermission('access_update') || $model->isNewRecord) : ?>
-        <?= $form->field($model, 'access_update')->widget(
-            Select2::classname(),
-            [
-                'data' => $userAuthItems,
-                'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
-                'pluginOptions' => ['allowClear' => true],
-            ]
-        );
-        ?>
-    <?php endif; ?>
-    <?php if ($model->hasPermission('access_delete') || $model->isNewRecord) : ?>
-        <?= $form->field($model, 'access_delete')->widget(
-            Select2::classname(),
-            [
-                'data' => $userAuthItems,
-                'options' => ['placeholder' => Yii::t('pages', 'Select ...')],
-                'pluginOptions' => ['allowClear' => true],
-            ]
-        );
-        ?>
-    <?php endif; ?>
-    <?= $form->field($model, 'access_owner')->hiddenInput()->label(false) ?>
+            'form' => $form,
+            'model' => $model
+        ]) ?>
+
     <?php $this->endBlock() ?>
 
 
@@ -143,68 +108,7 @@ JS;
     <div class="row">
         <div class="col-md-9">
             <?= $form->errorSummary($model) ?>
-            <div class="panel panel-<?= $model->status ? 'success' : 'warning' ?>">
-                <div class="panel-heading">
-                    <?= $form->field($model, 'status')
-                        ->dropDownList($model::optsStatus())
-                        ->label($model->getAttributeLabel('status')
-                            . ($model->getBehavior('translation_meta')->isFallbackTranslation ?
-                               ' <span class="label label-warning" title="' . \Yii::t('widgets', 'Uses the same value as the fallback language. Saving this widget will override the default.') . '" data-toggle="tooltip" data-placement="top">fallback</span>'
-                               : '')
-                        );
-                    ?>
-                </div>
-                <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
 
-                    <?php
-                    // sets $startday with the current date by timezone.
-                    // the timezone can be configured in the widgets module.
-                    // the default timezone is "UTC"
-                    $timezone = Module::getInstance()->timezone;
-                    $dateByTimeZone = new \DateTime(null, new \DateTimeZone($timezone));
-                    // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
-                    $dateByTimeZone->add(new DateInterval('PT1M'));
-                    $startDate = $dateByTimeZone->format('Y-m-d H:i');
-                    $langCode = explode("-",$language)[0];
-                    ?>
-
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="form-group col-xs-12 col-md-6">
-                            <?= $form->field($model, 'publish_at')->widget(DateTimePicker::class, [
-                                'options' => [
-                                    'class' => 'form-control col-md-6',
-                                    'autocomplete' => 'off',
-
-                                ],
-                                'clientOptions' => [
-                                    'format' => 'yyyy-mm-dd hh:ii',
-                                    'autoclose' => true,
-                                    'todayHighlight' => true,
-                                    'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
-                                    'startDate' => $startDate,
-                                    'language' => $langCode,
-                                ],
-                                'clientEvents' => [],
-                            ])->textInput() ?>
-                        </div>
-                        <div class="form-group col-xs-12 col-md-6">
-                            <?= $form->field($model, 'expire_at')->widget(DateTimePicker::class, [
-                                'clientOptions' => [
-                                    'format' => 'yyyy-mm-dd hh:ii',
-                                    'autoclose' => true,
-                                    'todayHighlight' => true,
-                                    'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
-                                    'startDate' => $startDate,
-                                    'language' => $langCode,
-                                ],
-                                'clientEvents' => [],
-                            ])->textInput() ?>
-                        </div>
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
@@ -226,19 +130,87 @@ JS;
 
 
         <div class="col-md-3">
+
+            <div class="panel panel-<?= $model->status ? 'success' : 'warning' ?>">
+                <div class="panel-heading">
+                    <?= $form->field($model, 'status')
+                        ->dropDownList($model::optsStatus())
+                        ->label($model->getAttributeLabel('status')
+                                . ($model->getBehavior('translation_meta')->isFallbackTranslation ?
+                                    ' <span class="label label-warning" title="' . \Yii::t('widgets', 'Uses the same value as the fallback language. Saving this widget will override the default.') . '" data-toggle="tooltip" data-placement="top">fallback</span>'
+                                    : '')
+                        );
+                    ?>
+                </div>
+                <?php if(\Yii::$app->controller->module->dateBasedAccessControl) { ?>
+
+                    <?php
+                    // sets $startday with the current date by timezone.
+                    // the timezone can be configured in the widgets module.
+                    // the default timezone is "UTC"
+                    $timezone = Module::getInstance()->timezone;
+                    $dateByTimeZone = new \DateTime(null, new \DateTimeZone($timezone));
+                    // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
+                    $dateByTimeZone->add(new DateInterval('PT1M'));
+                    $startDate = $dateByTimeZone->format('Y-m-d H:i');
+                    $langCode = explode("-",$language)[0];
+                    ?>
+
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <?= $form->field($model, 'publish_at')->widget(DateTimePicker::class, [
+                                    'options' => [
+                                        'class' => 'form-control col-md-6',
+                                        'autocomplete' => 'off',
+
+                                    ],
+                                    'clientOptions' => [
+                                        'format' => 'yyyy-mm-dd hh:ii',
+                                        'autoclose' => true,
+                                        'todayHighlight' => true,
+                                        'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                        'startDate' => $startDate,
+                                        'language' => $langCode,
+                                    ],
+                                    'clientEvents' => [],
+                                ])->textInput() ?>
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <?= $form->field($model, 'expire_at')->widget(DateTimePicker::class, [
+                                    'clientOptions' => [
+                                        'format' => 'yyyy-mm-dd hh:ii',
+                                        'autoclose' => true,
+                                        'todayHighlight' => true,
+                                        'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                        'startDate' => $startDate,
+                                        'language' => $langCode,
+                                    ],
+                                    'clientEvents' => [],
+                                ])->textInput() ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <?= $this->blocks['meta-data'] ?>
+
+            <?= $this->blocks['access'] ?>
+
             <?= Collapse::widget([
                 'items' => [
                     // equivalent to the above
                     [
                         'label' => \Yii::t('widgets', 'Meta Data'),
-                        'content' => $this->blocks['meta-data'],
+                        'content' => "xxxx",
                         // open content by default, if it is a new record
                         'contentOptions' => ['class' => ($model->isNewRecord ? 'in':'')],
                     ],
                     // another group item
                     [
                         'label' => \Yii::t('widgets', 'Access'),
-                        'content' => $this->blocks['access'],
+                        'content' => "xxxx",
 
                     ],
 

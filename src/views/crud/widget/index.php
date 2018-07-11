@@ -47,7 +47,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 
 <div class="giiant-crud widget-index">
 
-    <?php Box::begin() ?>
+    <?php Box::begin(['type'=>'solid']) ?>
 
     <?php Pjax::begin([
         'id' => 'pjax-main',

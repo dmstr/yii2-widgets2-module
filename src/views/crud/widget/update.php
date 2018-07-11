@@ -8,7 +8,7 @@ use insolita\wgadminlte\Box;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-$this->title                   = $model->getAliasModel() . $model->id . ', ' . \Yii::t('widgets', 'Edit');
+$this->title                   = $model->getAliasModel() . ' ' . $model->id . ', ' . \Yii::t('widgets', 'Edit');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
         ]
     );
     ?>
-    <?php Box::begin() ?>
+    <?php Box::begin(['type'=>'solid']) ?>
     <h1>
         <?= $model->getAliasModel() ?>
         <small><?= $model->name_id ?></small>

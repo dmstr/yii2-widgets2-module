@@ -227,7 +227,7 @@ class Cell extends Widget
             $visbility = $widget->isVisibleFrontend()?'':'hrzg-widget-widget-invisible-frontend';
             $html .= Html::beginTag('div',
                 [
-                    'id' => 'widget-' . ($widget->name_id ?: $widget->id),
+                    'id' => 'widget-' . $widget->domain_id,
                     'class' => 'hrzg-widget-widget ',
                     'data-toggle' => 'tooltip',
                     'data-placement' => 'left',
@@ -309,36 +309,27 @@ class Cell extends Widget
      */
     private function generateWidgetControls(WidgetContent $widget)
     {
+
+        $icon = ($widget->access_domain == '*') ? FA::_GLOBE : FA::_FLAG_O;
+        $color = ($widget->getBehavior('translatable')->isFallbackTranslation) ? 'info' : 'default';
+
         $html = Html::beginTag(
             'div',
             [
                 'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
             ]);
 
-        $html .= '<span class="pull-left label '.
-            ($widget->access_domain == '*' ? 'label-info' : 'label-default').'">'.
-            FA::icon(FA::_GLOBE).' '.$widget->access_domain.
-            ($widget->getBehavior('translatable')->isFallbackTranslation ? 'FALLBACK' : '').
-            '</span>';
-
+        if ($widget->getTranslation()->id) {
         $html .= Html::a(
             FA::icon(FA::_TRASH_O),
-            ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
+            ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
             [
                 'class' => 'btn btn-xs btn-danger',
                 'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
             ]
         );
-        $html .= Html::a(
-            FA::icon(FA::_EYE),
-            ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
-            [
-                'class' => 'btn btn-xs btn-default',
-                'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                    ? \Yii::$app->params['backend.iframe.name']
-                    : '_self'
-            ]
-        );
+        }
+
         $published = $this->checkPublicationStatus($widget);
         $html .= Html::a(
             FA::icon(FA::_PENCIL) . '',
@@ -351,6 +342,16 @@ class Cell extends Widget
             ]
         );
 
+        $html .= Html::a(
+            FA::icon($icon),
+            ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
+            [
+                'class' => 'btn btn-xs btn-'.$color,
+                'target' => (isset(\Yii::$app->params['backend.iframe.name']))
+                    ? \Yii::$app->params['backend.iframe.name']
+                    : '_self'
+            ]
+        );
 
         $html .= Html::endTag('div');
         return $html;

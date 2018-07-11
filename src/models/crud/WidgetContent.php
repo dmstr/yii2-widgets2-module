@@ -126,11 +126,17 @@ class WidgetContent extends BaseWidget
                 [
                     [
                         'access_read',
+                    ],
+                    'default',
+                    'value' => self::$_all
+                ],
+                [
+                    [
                         'access_update',
                         'access_delete',
                     ],
                     'default',
-                    'value' => self::$_all
+                    'value' => null
                 ],
                 [['publish_at', 'expire_at'], 'default', 'value' => null],
                 [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
@@ -162,17 +168,7 @@ class WidgetContent extends BaseWidget
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function optsAccessDomain()
-    {
-        $availableLanguages['*'] = '*';
-        foreach (\Yii::$app->urlManager->languages as $availablelanguage) {
-            $availableLanguages[mb_strtolower($availablelanguage)] = mb_strtolower($availablelanguage);
-        }
-        return $availableLanguages;
-    }
+
 
     /**
      * @return array

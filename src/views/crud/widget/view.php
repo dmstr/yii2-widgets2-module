@@ -36,7 +36,7 @@ JS
     <!-- menu buttons -->
     <div class='pull-right'>
         <?php #TODO: need to check correct request param, currently not stored in database ?>
-        <?= Html::a('View in Frontend', ['/'.$model->route, 'pageId'=>$model->request_param], ['class'=>'btn btn-default']) ?>
+        <?= Html::a('View in Frontend', ['/'.$model->route, 'pageId'=>$model->request_param, '#'=>'widget-'.$model->domain_id], ['class'=>'btn btn-default']) ?>
 
         <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) : ?>
             <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
@@ -48,7 +48,7 @@ JS
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
+        <?php #if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
             <?= Html::a(
                 '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),
                 ['delete', 'id' => $model->id],
@@ -58,24 +58,24 @@ JS
                     'data-method' => 'post',
                 ]
             ); ?>
-        <?php endif; ?>
+        <?php #endif; ?>
 
     </div>
     <div class="pull-left">
-        <?php if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
+        <?php #if ($model->hasPermission('access_update') && \Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) : ?>
             <?= Html::a(
                 '<span class="glyphicon glyphicon-pencil"></span> ' . \Yii::t('widgets', 'Edit'),
                 ['update', 'id' => $model->id],
                 ['class' => 'btn btn-success']
             ) ?>
-        <?php endif; ?>
+        <?php #endif; ?>
     </div>
 </div>
 <?php $this->endBlock() ?>
 
 <div class="giiant-crud widget-view">
 
-    <?php Box::begin() ?>
+    <?php Box::begin(['type'=>'solid']) ?>
     <h1>
         <?= $model->getAliasModel() ?>
         <small><?= $model->name_id ?></small>
