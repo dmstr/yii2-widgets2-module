@@ -12,6 +12,7 @@ use yii\bootstrap\Collapse;
 use zhuravljov\yii\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();
+$disabled =  (!$model->isNewRecord && !$model->hasPermission('access_update'));
 
 // enable bootstrap tooltips
 $this->registerJs(<<<JS
@@ -72,7 +73,7 @@ JS;
         ]
     );
     ?>
-    <?= $form->field($model, 'route')->textInput(['maxlength' => true, 'disabled' => !$model->hasPermission('access_update')]) ?>
+    <?= $form->field($model, 'route')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
     <?= $form->field($model, 'request_param')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'container_id')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
