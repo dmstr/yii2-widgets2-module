@@ -79,7 +79,7 @@ editor.theme.afterInputReady = function (input) {
     if ($(input).prop('tagName') == 'TEXTAREA' && $(input).attr('data-schemaformat') == 'html') {
         console.log('input ready', $(input).prop('tagName'), input);
 
-        CKEDITOR.replace(input);
+        CKEDITOR.replace(input, CKCONFIG);
 
         CKEDITOR.instances[$(input).prop('name')].on('change', function () {
             this.updateElement();

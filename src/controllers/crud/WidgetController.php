@@ -20,9 +20,8 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
         // if set use CKEditor configurations from settings module else use default configuration.
         $json = \Yii::$app->settings->get('ckeditor.config', 'widgets');
         $ckeditorConfiguration = isset($json->scalar) ? $json->scalar : "{}";
-        $script = "var CKCONFIG = {$ckeditorConfiguration};";
-        $script .= "for (prop in CKCONFIG) {CKEDITOR.config[prop] = CKCONFIG[prop];}";
-        \Yii::$app->view->registerJs($script, \yii\web\View::POS_LOAD);
+        $script = "window.CKCONFIG = {$ckeditorConfiguration};";
+        \Yii::$app->view->registerJs($script, \yii\web\View::POS_HEAD);
         return parent::beforeAction($action);
     }
 
