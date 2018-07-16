@@ -157,7 +157,7 @@ abstract class WidgetTranslation extends \yii\db\ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\modules\crud\models\query\EventTranslationQuery the active query used by this AR class.
+     * @return WidgetTranslationQuery the active query used by this AR class.
      */
     public static function find()
     {
