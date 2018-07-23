@@ -18,8 +18,18 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
     {
         WidgetAsset::register($this->view);
         // if set use CKEditor configurations from settings module else use default configuration.
-        $json = \Yii::$app->settings->get('ckeditor.config', 'widgets');
-        $ckeditorConfiguration = isset($json->scalar) ? $json->scalar : "{}";
+        $defaultConfig = '{
+          "height": "400px",
+          "toolbar": [
+            ["Format"],
+            ["Link", "Image", "Table", "-", "NumberedList", "BulletedList", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
+            ["Source"],
+            "/",
+            ["Bold", "Italic", "Underline", "StrikeThrough", "-", "RemoveFormat", "-", "Undo", "Redo", "-", "Paste", "PasteText", "PasteFromWord", "-", "Cut", "Copy", "Find", "Replace", "-", "Outdent", "Indent", "-", "Print"]
+          ]
+        }';
+        $json = \Yii::$app->settings->getOrSet('ckeditor.config', $defaultConfig, 'widgets', 'object');
+        $ckeditorConfiguration = isset($json->scalar) ? $json->scalar : $defaultConfig;
         $script = "window.CKCONFIG = {$ckeditorConfiguration};";
         \Yii::$app->view->registerJs($script, \yii\web\View::POS_HEAD);
         return parent::beforeAction($action);
