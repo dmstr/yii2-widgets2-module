@@ -108,7 +108,7 @@ class Cell extends Widget
         AssetBundle::register($this->view);
         return [
             [
-                'label' => ' <b>' . $this->id . '</b> <span class="label label-info">widget</span>',
+                'label' => ' ' . $this->id . ' <span class="label label-info">Cell</span>',
                 'items' => [[
                     'label' => FA::icon(FA::_PLUS),
                     'url' => [
