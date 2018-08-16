@@ -52,7 +52,8 @@ var widgets = {
             editor.trigger('ready');
 		}
 		return false;
-	}
+	},
+	language: '{$language}'
 }
 JS;
     ?>
