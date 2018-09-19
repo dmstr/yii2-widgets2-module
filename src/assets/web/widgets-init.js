@@ -42,7 +42,6 @@ function initSelectize() {
                 },
                 error: function (e) {
                     console.log(e);
-                    alert('Your request could not be processed, see log for details.');
                 },
                 success: function (data) {
                     console.log('selectize: success');
