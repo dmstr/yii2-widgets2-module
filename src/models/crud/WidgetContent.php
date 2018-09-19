@@ -4,6 +4,7 @@ namespace hrzg\widget\models\crud;
 
 use dmstr\db\traits\ActiveRecordAccessTrait;
 use Faker\Provider\DateTime;
+use hrzg\filemanager\helpers\Url;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
@@ -66,14 +67,14 @@ class WidgetContent extends BaseWidget
     public function afterFind()
     {
         parent::afterFind();
-        $this->setNameId($this->domain_id.'_'.$this->access_domain);
+        $this->setNameId($this->domain_id . '_' . $this->access_domain);
 
         // correct dates by timezone
-        if($this->publish_at) {
+        if ($this->publish_at) {
             $dateByTimeZone = new \DateTime($this->publish_at, new \DateTimeZone($this->timezone));
             $this->publish_at = $dateByTimeZone->format('Y-m-d H:i');
         }
-        if($this->expire_at) {
+        if ($this->expire_at) {
             $dateByTimeZone = new \DateTime($this->expire_at, new \DateTimeZone($this->timezone));
             $this->expire_at = $dateByTimeZone->format('Y-m-d H:i');
         }
@@ -106,7 +107,7 @@ class WidgetContent extends BaseWidget
     public function rules()
     {
         $rawRank = dechex(date('U'));
-        $rank = 'a-'.substr($rawRank, 0, 4).'-'.substr($rawRank, 5);
+        $rank = 'a-' . substr($rawRank, 0, 4) . '-' . substr($rawRank, 5);
         return ArrayHelper::merge(
             parent::rules(),
             [
@@ -140,7 +141,7 @@ class WidgetContent extends BaseWidget
                 ],
                 [['publish_at', 'expire_at'], 'default', 'value' => null],
                 [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
-                [ 'expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
+                ['expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
             ]
         );
     }
@@ -167,7 +168,6 @@ class WidgetContent extends BaseWidget
             return false;
         }
     }
-
 
 
     /**
@@ -202,9 +202,25 @@ class WidgetContent extends BaseWidget
      */
     public function getViewFile()
     {
-        $file = '/'.\Yii::getAlias('@runtime').'/'.md5($this->template->twig_template).'.twig';
+        $file = '/' . \Yii::getAlias('@runtime') . '/' . md5($this->template->twig_template) . '.twig';
         file_put_contents($file, $this->template->twig_template);
 
         return $file;
+    }
+
+    public function getFrontendRoute()
+    {
+        $mapping = \Yii::$app->controller->module->frontendRouteMap[$this->route] ?? false;
+
+        if ($mapping) {
+            return \yii\helpers\Url::to(
+                [
+                    '/' . $mapping,
+                    'pageId' => $this->request_param,
+                    '#' => 'widget-' . $this->domain_id
+                ]);
+        } else {
+            return false;
+        }
     }
 }

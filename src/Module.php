@@ -66,6 +66,13 @@ class Module extends \yii\base\Module
     public $timezone = 'UTC';
 
     /**
+     * @var array mappings for links
+     */
+    public $frontendRouteMap = [
+        'app/site/index' => '/',
+    ];
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool

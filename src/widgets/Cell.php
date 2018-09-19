@@ -213,7 +213,7 @@ class Cell extends Widget
         );
 
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showContainerControls) {
-            $html .= $this->generateContainerControls();
+            $html .= $this->generateCellControls();
         }
 
         foreach ($this->queryWidgets() as $widget) {
@@ -229,11 +229,6 @@ class Cell extends Widget
                 [
                     'id' => 'widget-' . $widget->domain_id,
                     'class' => 'hrzg-widget-widget ',
-                    'data-toggle' => 'tooltip',
-                    'data-placement' => 'left',
-                    'title' => \Yii::$app->user->can($this->rbacEditRole, ['route' => true]) ?
-                        ' #' . $widget->id . ' ' . $widget->template->name . ' §' . $widget->rank . '' :
-                        null,
                 ]);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
@@ -253,7 +248,7 @@ class Cell extends Widget
     /**
      * @return string
      */
-    private function generateContainerControls()
+    private function generateCellControls()
     {
         $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pos-' . $this->positionContainerControls]);
         $items = [
@@ -289,7 +284,7 @@ class Cell extends Widget
         $html .= ButtonDropdown::widget([
             'label' => FA::icon(FA::_PLUS_SQUARE) . ' ' . $this->id,
             'encodeLabel' => false,
-            'options' => ['class' => 'btn btn-xs btn-primary'],
+            'options' => ['class' => 'btn btn-primary'],
             'dropdown' => [
                 'options' => [
                     'class' => 'dropdown-menu-right'
@@ -313,7 +308,14 @@ class Cell extends Widget
         $icon = ($widget->access_domain == '*') ? FA::_GLOBE : FA::_FLAG_O;
         $color = ($widget->getBehavior('translatable')->isFallbackTranslation) ? 'info' : 'default';
 
-        $html = Html::beginTag(
+        $html = '';
+
+        $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget-info']);
+        $html .= ' <span class="label label-info">' . $widget->rank . '</span>';
+        $html .= ' <span class="label label-default">#' . $widget->id . ' ' .$widget->template->name. '</span> ';
+        $html .= Html::endTag('div');
+
+        $html .= Html::beginTag(
             'div',
             [
                 'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
@@ -324,21 +326,31 @@ class Cell extends Widget
             FA::icon(FA::_TRASH_O),
             ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
             [
-                'class' => 'btn btn-xs btn-danger',
+                'class' => 'btn  btn-danger',
                 'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
             ]
         );
         }
 
-        $published = $this->checkPublicationStatus($widget);
+        ##$published = $this->checkPublicationStatus($widget);
         $html .= Html::a(
             FA::icon(FA::_PENCIL) . '',
             ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
             [
-                'class' => 'btn btn-xs btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+                'class' => 'btn  btn-primary',
                 'target' => (isset(\Yii::$app->params['backend.iframe.name']))
                     ? \Yii::$app->params['backend.iframe.name']
                     : '_self'
+            ]
+        );
+        $published = $this->checkPublicationStatus($widget);
+        $html .= Html::a(
+            FA::icon(FA::_EXCLAMATION) . '',
+            ['/' . $this->moduleName . '/crud/api/widget-translation-meta/update', 'id' => '__NOT_IMPLEMENTED__', 'status' => 1],
+            [
+                'data-method' => 'PUT',
+                'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+                'target' => '_debug' // TODO
             ]
         );
 
@@ -346,7 +358,7 @@ class Cell extends Widget
             FA::icon($icon),
             ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
             [
-                'class' => 'btn btn-xs btn-'.$color,
+                'class' => 'btn  btn-'.$color,
                 'target' => (isset(\Yii::$app->params['backend.iframe.name']))
                     ? \Yii::$app->params['backend.iframe.name']
                     : '_self'
