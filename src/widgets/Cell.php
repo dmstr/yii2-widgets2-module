@@ -345,11 +345,11 @@ class Cell extends Widget
         );
         $published = $this->checkPublicationStatus($widget);
         $html .= Html::a(
-            FA::icon(FA::_EXCLAMATION) . '',
+            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
             ['/' . $this->moduleName . '/crud/api/widget-translation-meta/update', 'id' => '__NOT_IMPLEMENTED__', 'status' => 1],
             [
                 'data-method' => 'PUT',
-                'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
                 'target' => '_debug' // TODO
             ]
         );
