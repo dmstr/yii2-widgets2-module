@@ -106,8 +106,9 @@ class WidgetContent extends BaseWidget
      */
     public function rules()
     {
-        $rawRank = dechex(date('U'));
-        $rank = 'a-' . substr($rawRank, 0, 4) . '-' . substr($rawRank, 5);
+        // generate auto-rank, this is not meant to be unique in all cases
+        $rank = 'a-'.str_pad(self::find()->max('id'), 5, "0", STR_PAD_LEFT);
+
         return ArrayHelper::merge(
             parent::rules(),
             [
