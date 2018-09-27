@@ -195,23 +195,19 @@ JS;
                 <?php } ?>
             </div>
 
-            <?= $this->blocks['meta-data'] ?>
-
-            <?= $this->blocks['access'] ?>
-
             <?= Collapse::widget([
                 'items' => [
                     // equivalent to the above
                     [
                         'label' => \Yii::t('widgets', 'Meta Data'),
-                        'content' => "xxxx",
+                        'content' =>  $this->blocks['meta-data'],
                         // open content by default, if it is a new record
                         'contentOptions' => ['class' => ($model->isNewRecord ? 'in':'')],
                     ],
                     // another group item
                     [
                         'label' => \Yii::t('widgets', 'Access'),
-                        'content' => "xxxx",
+                        'content' => $this->blocks['access'],
 
                     ],
 
