@@ -344,13 +344,14 @@ class Cell extends Widget
             ]
         );
         $published = $this->checkPublicationStatus($widget);
+        $newStatus = (int)!$widget->status;
         $html .= Html::a(
             FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
-            ['/' . $this->moduleName . '/crud/api/widget-translation-meta/update', 'id' => '__NOT_IMPLEMENTED__', 'status' => 1],
+            ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
             [
-                'data-method' => 'PUT',
+                'data-method' => 'put',
+                'data-params' => ['status' => $newStatus],
                 'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
-                'target' => '_debug' // TODO
             ]
         );
 
