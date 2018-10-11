@@ -10,11 +10,9 @@
 
 namespace hrzg\widget\widgets;
 
-use dmstr\web\traits\AccessBehaviorTrait;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
-use hrzg\widget\Module;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
@@ -24,6 +22,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\web\JsExpression;
 
 class Cell extends Widget
 {
@@ -224,7 +223,7 @@ class Cell extends Widget
             if ($properties) {
                 $class->setProperties($properties);
             }
-            $visbility = $widget->isVisibleFrontend()?'':'hrzg-widget-widget-invisible-frontend';
+            $visbility = $widget->isVisibleFrontend() ? '' : 'hrzg-widget-widget-invisible-frontend';
             $html .= Html::beginTag('div',
                 [
                     'id' => 'widget-' . $widget->domain_id,
@@ -235,7 +234,7 @@ class Cell extends Widget
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
-                $html .= Html::beginTag('div',['class' => $visbility,]);
+                $html .= Html::beginTag('div', ['class' => $visbility,]);
                 $html .= $class->run();
                 $html .= Html::endTag('div');
             }
@@ -312,7 +311,7 @@ class Cell extends Widget
 
         $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget-info']);
         $html .= ' <span class="label label-info">' . $widget->rank . '</span>';
-        $html .= ' <span class="label label-default">#' . $widget->id . ' ' .$widget->template->name. '</span> ';
+        $html .= ' <span class="label label-default">#' . $widget->id . ' ' . $widget->template->name . '</span> ';
         $html .= Html::endTag('div');
 
         $html .= Html::beginTag(
@@ -322,14 +321,14 @@ class Cell extends Widget
             ]);
 
         if ($widget->getTranslation()->id) {
-        $html .= Html::a(
-            FA::icon(FA::_TRASH_O),
-            ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
-            [
-                'class' => 'btn  btn-danger',
-                'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
-            ]
-        );
+            $html .= Html::a(
+                FA::icon(FA::_TRASH_O),
+                ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
+                [
+                    'class' => 'btn  btn-danger',
+                    'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
+                ]
+            );
         }
 
         ##$published = $this->checkPublicationStatus($widget);
@@ -345,21 +344,32 @@ class Cell extends Widget
         );
         $published = $this->checkPublicationStatus($widget);
         $newStatus = (int)!$widget->status;
-        $html .= Html::a(
-            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
-            ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
-            [
-                'data-method' => 'put',
-                'data-params' => ['status' => $newStatus],
-                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
+//        $html .= Html::a(
+//            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
+//            ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
+//            [
+//                'data-method' => 'put',
+//                'data-params' => ['status' => $newStatus],
+//                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
+//            ]
+//        );
+        $html .= AjaxButton::widget([
+            'buttonText' => FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)),
+            'successCallback' => new JsExpression('function(resp,status,xhr) {if (xhr.status === 200) {button.toggleClass("btn-warning")}}'),
+            'method' => 'put',
+            'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
+            'params' => ['status' => $newStatus],
+            'options' => [
+                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning')
             ]
-        );
+        ]);
+
 
         $html .= Html::a(
             FA::icon($icon),
             ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
             [
-                'class' => 'btn  btn-'.$color,
+                'class' => 'btn  btn-' . $color,
                 'target' => (isset(\Yii::$app->params['backend.iframe.name']))
                     ? \Yii::$app->params['backend.iframe.name']
                     : '_self'
