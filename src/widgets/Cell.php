@@ -355,8 +355,27 @@ class Cell extends Widget
 //        );
         $html .= AjaxButton::widget([
             'content' => FA::icon((($widget->status && $published) ? FA::_CHECK : FA::_CLOSE)),
-            'successExpression' => new JsExpression('function(resp,status,xhr) {if (xhr.status === 200) {var params = button.data("ajax-button-params");params.status = !params.status | 0;button.attr("data-ajax-button-params",JSON.stringify(params));button.toggleClass("btn-warning");button.find("i").toggleClass("fa-close fa-check")}}'),
-            'errorExpression' => new JsExpression('function(xhr) {if (xhr.status === 404) {button.addClass("btn-danger").html("Error");console.error(xhr.responseJSON)}}'),
+            'successExpression' => <<<JS
+function(resp,status,xhr) {
+  if (xhr.status === 200) {
+    var params = button.data("ajax-button-params");
+    params.status = !params.status | 0;
+    button.attr("data-ajax-button-params",JSON.stringify(params));
+    button.toggleClass("btn-warning");
+    button.find("i").toggleClass("fa-close fa-check")
+  }
+}
+JS
+,
+            'errorExpression' => <<<JS
+function(xhr) {
+  if (xhr.status === 404) {
+    button.addClass("btn-danger").html("Error");
+    console.error(xhr.responseJSON)
+  }
+}
+JS
+,
             'method' => 'put',
             'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
             'params' => ['status' => $newStatus],

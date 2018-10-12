@@ -36,12 +36,14 @@ use yii\web\JsExpression;
  * Url creating via Url::to [[yii\helpers\BaseUrl]]
  * @property array|string url
  *
- * Can be either string or array. If property is an array, items will be exploded and merged together as a string with ',' as a separator
+ * Can be either string or array.
+ * If property is an array, items will be exploded and merged together as a string with ',' as a separator
  * @property array|string ajaxSettings
  *
- * In JS callbacks the 'button' variable can be used to reference to the ajax button itself
- * @property JsExpression successExpression
- * @property JsExpression errorExpression
+ * In JS callbacks the 'button' variable can be used to reference to the ajax button itself.
+ * For more informations visit https://api.jquery.com/jQuery.ajax
+ * @property string|JsExpression successExpression
+ * @property string|JsExpression errorExpression
  *
  * --- USAGE ---
  *
@@ -137,7 +139,7 @@ JS
      * @param $type string
      * @return string
      *
-     * For more informations on callbacks visit https://api.jquery.com/jQuery.ajax/
+     * For more informations on ajax callbacks visit https://api.jquery.com/jQuery.ajax
      */
     protected function jsCallback($callbackString, $type)
     {
