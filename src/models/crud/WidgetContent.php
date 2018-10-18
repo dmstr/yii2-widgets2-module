@@ -138,7 +138,7 @@ class WidgetContent extends BaseWidget
                         'access_delete',
                     ],
                     'default',
-                    'value' => null
+                    'value' => self::getDefaultAccessUpdateDelete()
                 ],
                 [['publish_at', 'expire_at'], 'default', 'value' => null],
                 [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
