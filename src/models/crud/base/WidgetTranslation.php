@@ -116,7 +116,7 @@ abstract class WidgetTranslation extends \yii\db\ActiveRecord
                     'access_delete',
                 ],
                 'default',
-                'value' => null
+                'value' => self::getDefaultAccessUpdateDelete()
             ],
             [
                 ['widget_content_id'],
