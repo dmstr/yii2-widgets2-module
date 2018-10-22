@@ -121,9 +121,7 @@ class WidgetContent extends BaseWidget
                 [
                     'access_domain',
                     'default',
-                    'value' => function () {
-                        return mb_strtolower(\Yii::$app->language);
-                    }
+                    'value' => self::getDefaultAccessDomain()
                 ],
                 [
                     [

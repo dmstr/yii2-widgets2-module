@@ -116,7 +116,6 @@ class Cell extends Widget
                             'route' => $this->getRoute(),
                             'container_id' => $this->id,
                             'request_param' => \Yii::$app->request->get($this->requestParam),
-                            'access_domain' => \Yii::$app->language,
                         ],
                     ],
                     'linkOptions' => [
@@ -161,7 +160,7 @@ class Cell extends Widget
                 [
                     'container_id' => $this->id,
                     'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
-                    '{{%hrzg_widget_content}}.access_domain' => [mb_strtolower(\Yii::$app->language), '*'],
+                    '{{%hrzg_widget_content}}.access_domain' => [mb_strtolower(\Yii::$app->language), WidgetContent::$_all],
                 ]);
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true])) {
             // editors see all widgets, also untranslated ones
@@ -268,7 +267,6 @@ class Cell extends Widget
                         'route' => $this->getRoute(),
                         'container_id' => $this->id,
                         'request_param' => \Yii::$app->request->get($this->requestParam),
-                        'access_domain' => \Yii::$app->language,
                         'widget_template_id' => $template->id,
                     ],
                 ],
@@ -304,11 +302,10 @@ class Cell extends Widget
     private function generateWidgetControls(WidgetContent $widget)
     {
 
-        $icon = ($widget->access_domain == '*') ? FA::_GLOBE : FA::_FLAG_O;
+        $icon = ($widget->access_domain == WidgetContent::$_all) ? FA::_GLOBE : FA::_FLAG_O;
         $color = ($widget->getBehavior('translatable')->isFallbackTranslation) ? 'info' : 'default';
 
         $html = '';
-
         $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget-info']);
         $html .= ' <span class="label label-info">' . $widget->rank . '</span>';
         $html .= ' <span class="label label-default">#' . $widget->id . ' ' . $widget->template->name . '</span> ';
