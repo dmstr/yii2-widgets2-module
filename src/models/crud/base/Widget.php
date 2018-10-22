@@ -9,6 +9,7 @@ use dosamigos\translateable\TranslateableBehavior;
 use hrzg\widget\models\crud\WidgetContentTranslation;
 use hrzg\widget\models\crud\WidgetContentTranslationMeta;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the base-model class for table "app_hrzg_widget".
@@ -34,7 +35,7 @@ use Yii;
  * @property string $updated_at
  * @property string $aliasModel
  */
-abstract class Widget extends \yii\db\ActiveRecord
+abstract class Widget extends ActiveRecord
 {
     use ActiveRecordAccessTrait;
 
@@ -51,7 +52,9 @@ abstract class Widget extends \yii\db\ActiveRecord
             'skipSavingDuplicateTranslation' => true,
             'translationAttributes' => [
                 'default_properties_json'
-            ]
+            ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
+            'restrictDeletion' => TranslateableBehavior::DELETE_LAST,
         ];
         $behaviors['translation_meta'] = [
             'class' => TranslateableBehavior::className(),
@@ -61,10 +64,19 @@ abstract class Widget extends \yii\db\ActiveRecord
             'skipSavingDuplicateTranslation' => false,
             'translationAttributes' => [
                 'status'
-            ]
+            ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
         ];
 
         return $behaviors;
+    }
+
+    public function transactions()
+    {
+        return [
+            // enable transactions in delete case, to remove translations in the same transaction as the record
+            self::SCENARIO_DEFAULT => self::OP_DELETE,
+        ];
     }
 
     /**
