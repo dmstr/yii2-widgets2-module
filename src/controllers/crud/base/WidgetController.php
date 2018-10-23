@@ -6,6 +6,7 @@ use dmstr\bootstrap\Tabs;
 use hrzg\widget\models\crud\search\WidgetContent as WidgetSearch;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
+use yii\base\UserException;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -195,7 +196,9 @@ class WidgetController extends Controller
         try {
             $model = $this->findModel($id);
             $redirectUrl = $model->route;
-            $model->delete();
+            if (!$model->delete()) {
+                throw new UserException(\Yii::t('widgets', 'Can not delete Widget.'));
+            }
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             \Yii::$app->getSession()->addFlash('error', $msg);
