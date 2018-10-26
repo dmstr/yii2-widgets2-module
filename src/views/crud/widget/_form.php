@@ -79,7 +79,6 @@ JS;
     <?= $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'domain_id')->textInput(
         [
-            'disabled' => (!\Yii::$app->user->isGuest && \Yii::$app->user->can(Module::DOMAIN_ID_ACCESS_PERMISSION)) ? false : true,
             'maxlength' => true
         ]
     ); ?>
