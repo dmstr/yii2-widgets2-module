@@ -93,7 +93,7 @@ $userAuthItems = $model::getUsersAuthItems();
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
-                ->widget(\dmstr\JsonEditor\JsonEditorWidget::class, [
+                ->widget(\dmstr\jsoneditor\JsonEditorWidget::class, [
                     'id' => 'editor',
                     'schema' => $schema,
                     'clientOptions' => [
