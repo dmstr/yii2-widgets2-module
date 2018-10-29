@@ -93,16 +93,13 @@ $userAuthItems = $model::getUsersAuthItems();
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
-                ->widget(\beowulfenator\JsonEditor\JsonEditorWidget::class, [
+                ->widget(\dmstr\JsonEditor\JsonEditorWidget::class, [
                     'id' => 'editor',
                     'schema' => $schema,
-                    'enableSelectize' => true,
                     'clientOptions' => [
                         'theme' => 'bootstrap3',
                         'disable_collapse' => true,
-                        #'disable_edit_json' => true,
                         'disable_properties' => true,
-                        #'no_additional_properties' => true,
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
@@ -134,8 +131,3 @@ $userAuthItems = $model::getUsersAuthItems();
     <?php $this->endBlock(); ?>
     <?= $this->blocks['main'] ?>
 </div>
-
-<?php
-// TODO: this is just a positioning workaround
-$js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/widgets-init.js'));
-$this->registerJs($js);
