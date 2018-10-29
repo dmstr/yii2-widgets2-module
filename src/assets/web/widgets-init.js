@@ -1,9 +1,7 @@
 var trigger = function (event, element) {
-  setTimeout(function () {
-    var e = document.createEvent("HTMLEvents");
-    e.initEvent(event, false, true);
-    element.dispatchEvent(e);
-  }, 0);
+  var e = document.createEvent("HTMLEvents");
+  e.initEvent(event, false, true);
+  element.dispatchEvent(e);
 };
 
 var initCKEditor = function (input) {
@@ -56,17 +54,19 @@ var initSelectizeEditor = function (input) {
           callback(data);
         }
       });
+    },
+    onItemAdd: function () {
+      trigger('change', input);
+    },
+    onItemRemove: function () {
+      trigger('change', input);
     }
-  });
-
-  $(this).on('change', function () {
-    trigger('change', this);
   });
 
 };
 
 window.jsonEditors.forEach(function (jsonEditor) {
-  editor.theme.afterInputReady = function (input) {
+  jsonEditor.theme.afterInputReady = function (input) {
     var dataAttribute = input.getAttribute('data-schemaformat');
     switch(dataAttribute) {
       case 'html':
