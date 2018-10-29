@@ -1,7 +1,9 @@
 var trigger = function (event, element) {
-  var e = document.createEvent("HTMLEvents");
-  e.initEvent(event, false, true);
-  element.dispatchEvent(e);
+  setTimeout(function () {
+    var e = document.createEvent("HTMLEvents");
+    e.initEvent(event, false, true);
+    element.dispatchEvent(e);
+  }, 0);
 };
 
 var initCKEditor = function (input) {
@@ -62,7 +64,6 @@ var initSelectizeEditor = function (input) {
       trigger('change', input);
     }
   });
-
 };
 
 window.jsonEditors.forEach(function (jsonEditor) {
