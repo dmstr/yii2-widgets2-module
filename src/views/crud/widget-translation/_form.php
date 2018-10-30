@@ -100,6 +100,7 @@ $userAuthItems = $model::getUsersAuthItems();
                         'theme' => 'bootstrap3',
                         'disable_collapse' => true,
                         'disable_properties' => true,
+                        'keep_oneof_values' => false
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
