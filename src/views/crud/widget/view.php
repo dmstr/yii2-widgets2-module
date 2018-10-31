@@ -174,6 +174,7 @@ JS
                 },
                 'contentOptions' => ['nowrap' => 'nowrap'],
             ],
+            'language',
             'id',
             [
                 'attribute' => 'default_properties_json',
@@ -199,6 +200,7 @@ JS
                 },
             ],
             'access_domain',
+            'access_owner',
             'access_read',
             'access_update',
             'access_delete',

@@ -304,6 +304,8 @@ class Cell extends Widget
 
         $icon = ($widget->access_domain == WidgetContent::$_all) ? FA::_GLOBE : FA::_FLAG_O;
         $color = ($widget->getBehavior('translatable')->isFallbackTranslation) ? 'info' : 'default';
+        $published = $this->checkPublicationStatus($widget);
+        $newStatus = (int)!$widget->status;
 
         $html = '';
         $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget-info']);
@@ -311,21 +313,67 @@ class Cell extends Widget
         $html .= ' <span class="label label-default">#' . $widget->id . ' ' . $widget->template->name . '</span> ';
         $html .= Html::endTag('div');
 
+
         $html .= Html::beginTag(
             'div',
             [
                 'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
             ]);
 
+
+
+        $html .= AjaxButton::widget([
+                                        'content' => FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)),
+                                        'successExpression' => <<<JS
+function(resp,status,xhr) {
+  if (xhr.status === 200) {
+    var params = button.data("ajax-button-params");
+    params.status = !params.status | 0;
+    button.attr("data-ajax-button-params",JSON.stringify(params));
+    button.toggleClass("btn-success btn-warning");
+    button.find("i").toggleClass("fa-eye fa-eye-slash")
+  }
+}
+JS
+                                        ,
+                                        'errorExpression' => <<<JS
+function(xhr) {
+  if (xhr.status === 404) {
+    button.addClass("btn-danger").html("Error");
+    console.error(xhr.responseJSON)
+  }
+}
+JS
+                                        ,
+                                        'method' => 'put',
+                                        'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
+                                        'params' => ['status' => $newStatus],
+                                        'options' => [
+                                            'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+                                        ]
+                                    ]);
+
+
         if ($widget->getTranslation()->id) {
             $html .= Html::a(
-                FA::icon(FA::_TRASH_O),
+                FA::icon(FA::_REMOVE),
                 ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
                 [
                     'class' => 'btn  btn-danger',
-                    'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this item?') . '',
+                    'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this translation?') . '',
                 ]
             );
+        } else {
+            if ($widget->hasPermission('access_delete')) {
+                $html .= Html::a(
+                    FA::icon(FA::_TRASH),
+                    ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
+                    [
+                        'class' => 'btn  btn-danger',
+                        'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this base-item?') . '',
+                    ]
+                );
+            }
         }
 
         ##$published = $this->checkPublicationStatus($widget);
@@ -339,8 +387,7 @@ class Cell extends Widget
                     : '_self'
             ]
         );
-        $published = $this->checkPublicationStatus($widget);
-        $newStatus = (int)!$widget->status;
+
 //        $html .= Html::a(
 //            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
 //            ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
@@ -350,36 +397,7 @@ class Cell extends Widget
 //                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
 //            ]
 //        );
-        $html .= AjaxButton::widget([
-            'content' => FA::icon((($widget->status && $published) ? FA::_CHECK : FA::_CLOSE)),
-            'successExpression' => <<<JS
-function(resp,status,xhr) {
-  if (xhr.status === 200) {
-    var params = button.data("ajax-button-params");
-    params.status = !params.status | 0;
-    button.attr("data-ajax-button-params",JSON.stringify(params));
-    button.toggleClass("btn-warning");
-    button.find("i").toggleClass("fa-close fa-check")
-  }
-}
-JS
-,
-            'errorExpression' => <<<JS
-function(xhr) {
-  if (xhr.status === 404) {
-    button.addClass("btn-danger").html("Error");
-    console.error(xhr.responseJSON)
-  }
-}
-JS
-,
-            'method' => 'put',
-            'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
-            'params' => ['status' => $newStatus],
-            'options' => [
-                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
-            ]
-        ]);
+
 
         $html .= Html::a(
             FA::icon($icon),

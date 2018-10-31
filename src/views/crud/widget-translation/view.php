@@ -85,12 +85,12 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
                     ?
                     Html::a(
                         FA::icon(FA::_EDIT),
-                        ['crud/widget-content/update', 'id' => $model->widget_content_id],
+                        ['crud/widget/update', 'id' => $model->widget_content_id],
                         ['class' => 'btn btn-primary btn-sm'])
                     .' '.
                     Html::a(
                         $model->getWidgetContent()->one()->id,
-                        ['crud/widget-content/view', 'id' => $model->widget_content_id])
+                        ['crud/widget/view', 'id' => $model->widget_content_id])
                     :
                     $model->getWidgetContent()->one()->id,
             ],
