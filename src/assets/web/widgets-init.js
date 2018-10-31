@@ -18,6 +18,15 @@ window.addEventListener('load', function () {
   };
 
   var initSelectizeEditor = function (input) {
+
+    // build the image paths by moduleID (default: filefly => /filefly/api )
+    var moduleId = input.getAttribute('module-id');
+    if (typeof moduleId === 'undefined' || !moduleId) {
+      console.log('no "module-id" attribute Found. Defaulting to "filefly"');
+      moduleId = 'filefly';
+    }
+    var path = '/' + moduleId + '/api';
+
     $(input).selectize({
       valueField: 'path',
       labelField: 'path',
@@ -30,20 +39,20 @@ window.addEventListener('load', function () {
       render: {
         item: function (item, escape) {
           return '<div class="" style="height: 70px">' +
-            '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="/filefly/api?action=stream&path=' + (item.path) + '" />' +
+            '<img class="pull-left img-responsive" style="max-width: 100px; max-height: 70px" src="' + path + '?action=stream&path=' + (item.path) + '" />' +
             '<span class="">' + escape(item.path) + '</span><br/>' +
             '</div>';
         },
         option: function (item, escape) {
           return '<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="height: 150px">' +
-            '<img class="img-responsive" style="max-height: 100px" src="/filefly/api?action=stream&path=' + (item.path) + '" />' +
+            '<img class="img-responsive" style="max-height: 100px" src="' + path + '?action=stream&path=' + (item.path) + '" />' +
             '<span class="">' + escape(item.path) + '</span>' +
             '</div>';
         }
       },
       load: function (query, callback) {
         $.ajax({
-          url: '/filefly/api',
+          url: path,
           type: 'GET',
           dataType: 'json',
           data: {
@@ -68,6 +77,18 @@ window.addEventListener('load', function () {
     });
   };
 
+  // init editors when the page is loaded.
+  var selectizeEditors = [].slice.call(document.querySelectorAll('[data-schemaformat="filefly"]'));
+  selectizeEditors.forEach(function (input) {
+    initSelectizeEditor(input);
+  });
+
+  var CKEditors = [].slice.call(document.querySelectorAll('[data-schemaformat="html"]'));
+  CKEditors.forEach(function (input) {
+    initCKEditor(input);
+  });
+
+  // Init editors as they are added.
   window.jsonEditors.forEach(function (jsonEditor) {
     jsonEditor.theme.afterInputReady = function (input) {
       var dataAttribute = input.getAttribute('data-schemaformat');
