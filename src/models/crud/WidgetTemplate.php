@@ -6,6 +6,7 @@ use hrzg\widget\models\crud\base\WidgetTemplate as BaseWidgetTemplate;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\TagDependency;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -85,5 +86,17 @@ class WidgetTemplate extends BaseWidgetTemplate
         $data = json_decode($this->json_schema);
         $this->json_schema = json_encode($data, JSON_PRETTY_PRINT);
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
     }
 }

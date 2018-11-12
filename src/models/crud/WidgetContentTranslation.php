@@ -10,6 +10,7 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\WidgetTranslation;
+use yii\caching\TagDependency;
 
 
 /**
@@ -35,6 +36,18 @@ class WidgetContentTranslation extends WidgetTranslation
         } else {
             return false;
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
     }
 
     /**

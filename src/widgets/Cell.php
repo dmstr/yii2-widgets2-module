@@ -19,6 +19,7 @@ use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
+use yii\caching\TagDependency;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -148,9 +149,18 @@ class Cell extends Widget
 
     protected function queryWidgets()
     {
+        $cache = \Yii::$app->cache;
+        $cacheKey = Json::encode([self::class,\Yii::$app->language,\Yii::$app->requestedRoute,\Yii::$app->request->get($this->requestParam),$this->id]);
+        $data = $cache->get($cacheKey);
+
+        if ($data !== false && \Yii::$app->user->isGuest) {
+            return $data;
+        }
+
         \Yii::trace(\Yii::$app->requestedRoute, __METHOD__);
         $query = WidgetContent::find()
             ->orderBy('rank ASC')
+            ->joinWith('template')
             ->andFilterWhere(
                 [
                     'request_param' => [\Yii::$app->request->get($this->requestParam), self::EMPTY_REQUEST_PARAM],
@@ -167,8 +177,14 @@ class Cell extends Widget
         } else {
             $query->joinWith('translations');
         }
-        $models = $query->all();
-        return $models;
+        $data = $query->all();
+
+        if (\Yii::$app->user->isGuest) {
+            $cacheDependency = new TagDependency(['tags' => 'widgets']);
+            $cache->set($cacheKey, $data, 3600, $cacheDependency);
+        }
+
+        return $data;
     }
 
     /**

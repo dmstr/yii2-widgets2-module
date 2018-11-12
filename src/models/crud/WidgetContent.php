@@ -9,6 +9,7 @@ use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\TagDependency;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
@@ -78,6 +79,18 @@ class WidgetContent extends BaseWidget
             $dateByTimeZone = new \DateTime($this->expire_at, new \DateTimeZone($this->timezone));
             $this->expire_at = $dateByTimeZone->format('Y-m-d H:i');
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
     }
 
     /**

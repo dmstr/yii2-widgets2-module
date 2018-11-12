@@ -10,6 +10,7 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\WidgetTranslationMeta;
+use yii\caching\TagDependency;
 
 
 /**
@@ -19,5 +20,15 @@ use hrzg\widget\models\crud\base\WidgetTranslationMeta;
  */
 class WidgetContentTranslationMeta extends WidgetTranslationMeta
 {
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+    }
 
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+    }
 }
