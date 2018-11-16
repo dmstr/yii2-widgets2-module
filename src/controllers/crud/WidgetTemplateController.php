@@ -29,7 +29,6 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
      */
     public function actionCopy($id)
     {
-        Url::remember();
 
         // save new widget
         $newWidgetTemplate = new WidgetTemplate();
@@ -44,7 +43,7 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
                 \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . implode('<br>', $newWidgetTemplate->getFirstErrors()));
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidgetTemplate->getErrors(), __METHOD__);
-                return $this->redirect(Url::previous());
+                return $this->redirect(['view', 'id' => $newWidgetTemplate->id]);
             }
         }
 

@@ -68,8 +68,6 @@ class WidgetController extends Controller
 
         Tabs::clearLocalStorage();
 
-        \Yii::$app->session['__crudReturnUrl'] = null;
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -86,7 +84,6 @@ class WidgetController extends Controller
     public function actionView($id)
     {
         Url::remember();
-        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
 
         Tabs::rememberActiveState();
 
@@ -195,22 +192,15 @@ class WidgetController extends Controller
     {
         try {
             $model = $this->findModel($id);
-            $redirectUrl = $model->route;
             if (!$model->delete()) {
                 throw new UserException(\Yii::t('widgets', 'Can not delete Widget.'));
             }
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             \Yii::$app->getSession()->addFlash('error', $msg);
-
-            return $this->redirect(Url::previous());
         }
 
-        if (Url::previous($redirectUrl)) {
-            return $this->redirect(Url::previous($redirectUrl));
-        } else {
-            return $this->redirect(['index']);
-        }
+        return $this->redirect(['index']);
     }
 
     /**

@@ -37,7 +37,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
 
         try {
             if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
+                return $this->redirect(['view','id' => $model->id]);
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -59,8 +59,6 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
      */
     public function actionCopy($id)
     {
-        Url::remember();
-
         // save new widget
         $newWidget = new WidgetContent();
         if ($newWidget->load(\Yii::$app->request->post())) {
@@ -75,7 +73,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
                 \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . implode('<br>', $newWidget->getFirstErrors()));
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidget->getErrors(), __METHOD__);
-                return $this->redirect(Url::previous());
+                return $this->redirect(['view', 'id' => $newWidget->id]);
             }
         }
 

@@ -28,7 +28,6 @@ class WidgetTranslationController extends Controller
     {
         $schema = [];
 
-
         /**@var $model WidgetContent */
         $model = $model->getWidgetContent()->one();
 
@@ -73,8 +72,6 @@ class WidgetTranslationController extends Controller
 
         Tabs::clearLocalStorage();
 
-        \Yii::$app->session['__crudReturnUrl'] = null;
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -91,7 +88,6 @@ class WidgetTranslationController extends Controller
     public function actionView($id)
     {
         Url::remember();
-        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
 
         Tabs::rememberActiveState();
 
@@ -192,7 +188,7 @@ class WidgetTranslationController extends Controller
 
         }
 
-        return $this->redirect(Url::previous());
+        return $this->redirect(['index']);
 
     }
 
