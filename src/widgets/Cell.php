@@ -269,12 +269,7 @@ class Cell extends Widget
             ['label' => $this->id]
         ];
 
-        $availableFrontendPhpClasses = array_unique(ArrayHelper::merge(
-            [TwigTemplate::class],
-            explode("\n", \Yii::$app->settings->get('availableFrontendPhpClasses', 'widgets'))
-        ));
-
-        foreach (WidgetTemplate::find()->where(['php_class' => $availableFrontendPhpClasses])->orderBy('name')->all() as $template) {
+        foreach (WidgetTemplate::find()->where(['php_class' => TwigTemplate::class])->orderBy('name')->all() as $template) {
             $items[] = [
                 'label' => $template->name,
                 'url' => [
