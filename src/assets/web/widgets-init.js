@@ -1,4 +1,6 @@
-window.addEventListener('load', function () {
+var initJSONEditorsPlugins = function () {
+
+  // ------------------------------------------------------------- trigger event
 
   var trigger = function (event, element) {
     setTimeout(function () {
@@ -8,8 +10,9 @@ window.addEventListener('load', function () {
     }, 0);
   };
 
-  var initCKEditor = function (input) {
-    // CKCONFIG is defined in crud/WidgetController
+  // --------------------------------------------------------------- to ckeditor
+
+  var toCKEditor = function (input) {
     var instance = CKEDITOR.replace(input, window.CKCONFIG);
     instance.on('change', function () {
       this.updateElement();
@@ -17,7 +20,11 @@ window.addEventListener('load', function () {
     });
   };
 
-  var initSelectizeEditor = function (input) {
+  // -------------------------------------------------------------- to selectize
+
+  var selectizeInstances = [];
+
+  var toSelectize = function (input) {
 
     // build the image paths by moduleID (default: filefly => /filefly/api )
     var moduleId = input.getAttribute('module-id');
@@ -27,7 +34,7 @@ window.addEventListener('load', function () {
     }
     var path = '/' + moduleId + '/api';
 
-    $(input).selectize({
+    var selectizeInstance = $(input).selectize({
       valueField: 'path',
       labelField: 'path',
       searchField: 'path',
@@ -75,32 +82,126 @@ window.addEventListener('load', function () {
         trigger('change', input);
       }
     });
+    selectizeInstances.push(selectizeInstance[0].selectize);
   };
 
-  // init editors when the page is loaded.
-  var selectizeEditors = [].slice.call(document.querySelectorAll('[data-schemaformat="filefly"]'));
-  selectizeEditors.forEach(function (input) {
-    initSelectizeEditor(input);
-  });
+  // ------------------------------------------------------- init all selectizes
 
-  var CKEditors = [].slice.call(document.querySelectorAll('[data-schemaformat="html"]'));
-  CKEditors.forEach(function (input) {
-    initCKEditor(input);
-  });
+  var initSelectizes = function () {
+    var selectizes = [].slice.call(document.querySelectorAll('[data-schemaformat="filefly"]'));
+    selectizes.forEach(function (selectize) {
+      toSelectize(selectize);
+    });
+  };
 
-  // Init editors as they are added.
+  // -------------------------------------------------------- init all ckeditors
+
+  var initCKEditors = function () {
+    var ckeditors = [].slice.call(document.querySelectorAll('[data-schemaformat="html"]'));
+    ckeditors.forEach(function (ckeditor) {
+      toCKEditor(ckeditor);
+    });
+  };
+
+  // ----------------------------------------------------- get editor from input
+
+  var getEditorFromInput = function (input) {
+    var editor = null;
+    var name = input.getAttribute('name');
+    if (name) {
+      var path = name.replace(/\[/g, '.').replace(/]/g, '');
+      window.jsonEditors.forEach(function (jsonEditor) {
+        editor = typeof jsonEditor.getEditor(path) !== 'undefined' ? jsonEditor.getEditor(path) : null;
+      });
+    }
+    return editor;
+  };
+
+  // ---------------------------------------------------------- refresh ckeditor
+
+  var refreshCKEditors = function () {
+    for (var i in CKEDITOR.instances) {
+      if (CKEDITOR.instances.hasOwnProperty(i)) {
+        var ckinstance = CKEDITOR.instances[i];
+        var input = ckinstance.element.$;
+        var editor = getEditorFromInput(input);
+        if (editor) {
+          ckinstance.setData(editor.getValue());
+        }
+      }
+    }
+  };
+
+  // -------------------------------------------------------- refresh selectizes
+
+  var refreshSelectizes = function () {
+    selectizeInstances.forEach(function (selectize) {
+      selectize.destroy();
+      selectizeInstances = [];
+    });
+    var selectizes = [].slice.call(document.querySelectorAll('[data-schemaformat="filefly"]'));
+    selectizes.forEach(function (selectize) {
+      toSelectize(selectize);
+    });
+  };
+
+  // ----------------- refresh ckeditors and selectizes when moved into an array
+
+  var onArrayItemMoved = function () {
+    refreshCKEditors();
+    refreshSelectizes();
+  };
+
+  // ----------------------- add events to delete, move up and move down buttons
+
+  var arrayMovementButtons = [];
+
+  var initArrayMovementEvents = function () {
+    var moveUpButtons = [].slice.call(document.querySelectorAll('.json-editor-btn-moveup'));
+    var moveDownButtons = [].slice.call(document.querySelectorAll('.json-editor-btn-movedown'));
+    var deleteButtons = [].slice.call(document.querySelectorAll('.json-editor-btn-delete'));
+    arrayMovementButtons = [].concat(moveUpButtons).concat(moveDownButtons).concat(deleteButtons);
+    arrayMovementButtons.forEach(function (button) {
+      button.addEventListener('click', onArrayItemMoved)
+    });
+  };
+
+  // --------------------------------- init ckeditors and selectizes at creation
+
   window.jsonEditors.forEach(function (jsonEditor) {
     jsonEditor.theme.afterInputReady = function (input) {
       var dataAttribute = input.getAttribute('data-schemaformat');
       switch(dataAttribute) {
         case 'html':
-          initCKEditor(input);
+          toCKEditor(input);
           break;
         case 'filefly':
-          initSelectizeEditor(input);
+          toSelectize(input);
           break;
       }
     };
+
+    // --------------- init events to array movement buttons when editor changes
+
+    jsonEditor.on('change', function () {
+      initArrayMovementEvents();
+    });
   });
 
+  initSelectizes();
+  initCKEditors();
+  initArrayMovementEvents();
+
+};
+
+// --------------------------------------- init JSONEditors Plugins on page load
+
+window.addEventListener('load', function () {
+  initJSONEditorsPlugins()
+});
+
+// --------------------- init JSONEditors Plugins when switching widget template
+
+$(document).on('pjax:complete', function () {
+  initJSONEditorsPlugins()
 });
