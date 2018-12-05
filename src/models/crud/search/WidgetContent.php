@@ -95,7 +95,7 @@ class WidgetContent extends WidgetModel
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            WidgetModel::tableName() . '.id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
