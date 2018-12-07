@@ -52,7 +52,7 @@ class Cell extends Widget
     public $showContainerControls = true;
 
     public $positionWidgetControls = 'top-right';
-    public $positionContainerControls = 'bottom-right';
+    public $positionContainerControls = 'bottom-left';
 
     public $rbacEditRole = 'widgets-cell-edit';
 
@@ -289,13 +289,14 @@ class Cell extends Widget
             ];
         }
 
+        $dropdownClass = $this->positionContainerControls === 'bottom-left' ? 'dropdown-menu-left' : 'dropdown-menu-right';
         $html .= ButtonDropdown::widget([
             'label' => FA::icon(FA::_PLUS_SQUARE) . ' ' . $this->id,
             'encodeLabel' => false,
             'options' => ['class' => 'btn btn-primary'],
             'dropdown' => [
                 'options' => [
-                    'class' => 'dropdown-menu-right'
+                    'class' => $dropdownClass
                 ],
                 'items' => $items,
             ],
@@ -321,7 +322,7 @@ class Cell extends Widget
         $html = '';
         $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget-info']);
         $html .= ' <span class="label label-info">' . $widget->rank . '</span>';
-        $html .= ' <span class="label label-default">#' . $widget->id . ' ' . $widget->template->name . '</span> ';
+        $html .= ' <span class="hidden-xs label label-default">#' . $widget->id . ' ' . $widget->template->name . '</span> ';
         $html .= Html::endTag('div');
 
 

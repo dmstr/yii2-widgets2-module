@@ -119,7 +119,8 @@ JS;
                         'theme' => 'bootstrap3',
                         'disable_collapse' => true,
                         'disable_properties' => true,
-                        'keep_oneof_values' => false
+                        'keep_oneof_values' => false,
+                        'expand_height' => true,
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
