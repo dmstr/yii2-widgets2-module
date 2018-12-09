@@ -41,7 +41,7 @@ class m180621_124412_add_translation_meta_table extends Migration
         foreach ($contents as $content) {
             $this->insert('{{%hrzg_widget_content_translation_meta}}', [
                 'widget_content_id' => $content['id'],
-                'language' => 'en',
+                'language' => Yii::$app->language,
                 'status' => $content['status'],
             ]);
         }
