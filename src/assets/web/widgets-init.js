@@ -200,6 +200,12 @@ window.addEventListener('load', function () {
   initJSONEditorsPlugins()
 });
 
+// --------------------- Quick-Fix: init JSONEditors Plugins on document ready
+
+$( document ).ready(function () {
+    initJSONEditorsPlugins()
+});
+
 // --------------------- init JSONEditors Plugins when switching widget template
 
 $(document).on('pjax:complete', function () {
