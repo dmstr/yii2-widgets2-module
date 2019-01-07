@@ -58,6 +58,7 @@ var initJSONEditorsPlugins = function () {
         }
       },
       load: function (query, callback) {
+        if (!query.length) return callback();
         $.ajax({
           url: path,
           type: 'GET',
