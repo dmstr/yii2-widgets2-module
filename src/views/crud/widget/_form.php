@@ -118,7 +118,8 @@ JS;
                     'clientOptions' => [
                         'theme' => 'bootstrap3',
                         'disable_collapse' => true,
-                        'disable_properties' => true,
+                        'disable_properties' => false,
+                        "no_additional_properties" => false,
                         'keep_oneof_values' => false,
                         'expand_height' => true,
                     ],
