@@ -11,6 +11,7 @@
 namespace hrzg\widget\widgets;
 
 use dmstr\ajaxbutton\AjaxButton;
+use dmstr\modules\backend\interfaces\ContextMenuItemsInterface;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
@@ -20,12 +21,15 @@ use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
 use yii\caching\TagDependency;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
-class Cell extends Widget
+/**
+ * Class Cell
+ * @package hrzg\widget\widgets
+ */
+class Cell extends Widget implements ContextMenuItemsInterface
 {
     /**
      * Global route
@@ -90,11 +94,14 @@ class Cell extends Widget
         if ($this->timezone === null) {
             $this->timezone = \Yii::$app->getModule($this->moduleName)->timezone;
         }
+
+        parent::init();
     }
 
     /**
      * @inheritdoc
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function run()
     {
@@ -102,10 +109,15 @@ class Cell extends Widget
         return $this->renderWidgets();
     }
 
+    /**
+     * @return array
+     */
     public function getMenuItems()
     {
         // todo, register FA-asset from asset bundle
         AssetBundle::register($this->view);
+
+        $linkTarget = \Yii::$app->params['backend.iframe.name'] ?? '_self';
         return [
             [
                 'label' => ' ' . $this->id . ' <span class="label label-info">Cell</span>',
@@ -120,9 +132,7 @@ class Cell extends Widget
                         ],
                     ],
                     'linkOptions' => [
-                        'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                            ? \Yii::$app->params['backend.iframe.name']
-                            : '_self',
+                        'target' => $linkTarget,
                     ],
                 ],
                     [
@@ -137,20 +147,21 @@ class Cell extends Widget
                             ],
                         ],
                         'linkOptions' => [
-                            'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                                ? \Yii::$app->params['backend.iframe.name']
-                                : '_self',
-                        ],
-
-                    ]],
-            ],
+                            'target' => $linkTarget
+                        ]
+                    ]]
+            ]
         ];
     }
 
+    /**
+     * @return array|WidgetContent[]|mixed|\yii\db\ActiveRecord[]
+     */
     protected function queryWidgets()
     {
         $cache = \Yii::$app->cache;
-        $cacheKey = Json::encode([self::class,\Yii::$app->language,\Yii::$app->requestedRoute,\Yii::$app->request->get($this->requestParam),$this->id]);
+        $cacheKey = Json::encode([self::class, \Yii::$app->language, \Yii::$app->requestedRoute, \Yii::$app->request->get($this->requestParam), $this->id]);
+
         $data = $cache->get($cacheKey);
 
         if ($data !== false && \Yii::$app->user->isGuest) {
@@ -193,7 +204,7 @@ class Cell extends Widget
     private function getRoute()
     {
         #return '/' . \Yii::$app->controller->getRoute();
-        return \Yii::$app->controller->module->id . '/' . \Yii::$app->controller->id . '/' . \Yii::$app->controller->action->id;
+        return $this->getControllerRoute() . \Yii::$app->controller->action->id;
     }
 
     /**
@@ -201,7 +212,7 @@ class Cell extends Widget
      */
     private function getControllerRoute()
     {
-        return \Yii::$app->controller->module->id . '/' . \Yii::$app->controller->id . '/';
+        return $this->getModuleRoute() . \Yii::$app->controller->id . '/';
     }
 
     /**
@@ -215,6 +226,7 @@ class Cell extends Widget
     /**
      * @return string
      * @throws \yii\base\InvalidConfigException
+     * @throws \Exception
      */
     private function renderWidgets()
     {
@@ -238,7 +250,7 @@ class Cell extends Widget
             if ($properties) {
                 $class->setProperties($properties);
             }
-            $visbility = $widget->isVisibleFrontend() ? '' : 'hrzg-widget-widget-invisible-frontend';
+            $visibility = $widget->isVisibleFrontend() ? '' : 'hrzg-widget-widget-invisible-frontend';
             $html .= Html::beginTag('div',
                 [
                     'id' => 'widget-' . $widget->domain_id,
@@ -249,7 +261,7 @@ class Cell extends Widget
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
-                $html .= Html::beginTag('div', ['class' => $visbility,]);
+                $html .= Html::beginTag('div', ['class' => $visibility,]);
                 $html .= $class->run();
                 $html .= Html::endTag('div');
             }
@@ -261,6 +273,7 @@ class Cell extends Widget
 
     /**
      * @return string
+     * @throws \Exception
      */
     private function generateCellControls()
     {
@@ -282,9 +295,7 @@ class Cell extends Widget
                     ],
                 ],
                 'linkOptions' => [
-                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                        ? \Yii::$app->params['backend.iframe.name']
-                        : '_self'
+                    'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
                 ]
             ];
         }
@@ -310,12 +321,14 @@ class Cell extends Widget
      * @param $widget
      *
      * @return string
+     * @throws \Exception
      */
     private function generateWidgetControls(WidgetContent $widget)
     {
 
-        $icon = ($widget->access_domain == WidgetContent::$_all) ? FA::_GLOBE : FA::_FLAG_O;
-        $color = ($widget->getBehavior('translatable')->isFallbackTranslation) ? 'info' : 'default';
+
+        $icon = $widget->access_domain === WidgetContent::$_all ? FA::_GLOBE : FA::_FLAG_O;
+        $color = $widget->getBehavior('translatable')->isFallbackTranslation ? 'info' : 'default';
         $published = $this->checkPublicationStatus($widget);
         $newStatus = (int)!$widget->status;
 
@@ -332,11 +345,9 @@ class Cell extends Widget
                 'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
             ]);
 
-
-
         $html .= AjaxButton::widget([
-                                        'content' => FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)),
-                                        'successExpression' => <<<JS
+            'content' => FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)),
+            'successExpression' => <<<JS
 function(resp,status,xhr) {
   if (xhr.status === 200) {
     var params = button.data("ajax-button-params");
@@ -347,8 +358,9 @@ function(resp,status,xhr) {
   }
 }
 JS
-                                        ,
-                                        'errorExpression' => <<<JS
+
+            ,
+            'errorExpression' => <<<JS
 function(xhr) {
   if (xhr.status === 404) {
     button.addClass("btn-danger").html("Error");
@@ -356,14 +368,14 @@ function(xhr) {
   }
 }
 JS
-                                        ,
-                                        'method' => 'put',
-                                        'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
-                                        'params' => ['status' => $newStatus],
-                                        'options' => [
-                                            'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
-                                        ]
-                                    ]);
+            ,
+            'method' => 'put',
+            'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
+            'params' => ['status' => $newStatus],
+            'options' => [
+                'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+            ]
+        ]);
 
 
         if ($widget->getTranslation()->id) {
@@ -394,9 +406,7 @@ JS
             ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
             [
                 'class' => 'btn  btn-primary',
-                'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                    ? \Yii::$app->params['backend.iframe.name']
-                    : '_self'
+                'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
 
@@ -416,9 +426,7 @@ JS
             ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
             [
                 'class' => 'btn  btn-' . $color,
-                'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                    ? \Yii::$app->params['backend.iframe.name']
-                    : '_self'
+                'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
 
@@ -430,10 +438,10 @@ JS
      * @param $widget
      *
      * @return boolean
+     * @throws \Exception
      */
     private function checkPublicationStatus($widget)
     {
-        $published = false;
         if (!\Yii::$app->getModule($this->moduleName)->dateBasedAccessControl) {
             $published = true;
         } else {
