@@ -204,8 +204,10 @@ widgets_crud_widget_view | Widgets CRUD Content View
 widgets_crud_widget-template | Widgets CRUD Template
 widgets_test | Widgets TEST Playground
 widgets_copy | Widgets Language Copy
+widgets-cell-edit | Frontend editing
 widgets | Widgets Module
 
+From **dmstr/yii2-backend-module**: `frontend.toggle-view-mode`
 
 Settings
 ---
