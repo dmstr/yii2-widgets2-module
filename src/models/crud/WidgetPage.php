@@ -29,6 +29,8 @@ class WidgetPage extends BaseWidgetPage
     const STATUS_ACTIVE = 1;
     const STATUS_DRAFT = 0;
 
+    const ACCESS_ALL = '*';
+
     /**
      * @return array
      */
@@ -115,7 +117,7 @@ class WidgetPage extends BaseWidgetPage
     public function getIs_visible()
     {
         // page is active, access domain is either global or current language
-        return $this->status === static::STATUS_ACTIVE && ($this->access_domain === '*' || $this->access_domain === Yii::$app->language);
+        return $this->status === static::STATUS_ACTIVE && ($this->access_domain === static::ACCESS_ALL|| $this->access_domain === Yii::$app->language);
     }
 
     /**
@@ -136,5 +138,20 @@ class WidgetPage extends BaseWidgetPage
             static::STATUS_ACTIVE => Yii::t('widgets', 'Active'),
             static::STATUS_DRAFT => Yii::t('widgets', 'Draft'),
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function optsAccessDomain() {
+        $access_domains[static::ACCESS_ALL] = Yii::t('widgets','Global');
+        return $access_domains;
+    }
+    /**
+     * @return mixed
+     */
+    public static function optsAccessPrivileges() {
+        $access_domains[static::ACCESS_ALL] = Yii::t('widgets','All');
+        return $access_domains;
     }
 }

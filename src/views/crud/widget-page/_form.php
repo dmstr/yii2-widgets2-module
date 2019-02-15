@@ -1,6 +1,7 @@
 <?php
 
 use dmstr\widgets\AccessInput;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use \dmstr\bootstrap\Tabs;
@@ -36,25 +37,52 @@ use \dmstr\bootstrap\Tabs;
 
 
 
-        <?= $form->field($model, 'view'); ?>
+    <?= $form->field($model, 'view'); ?>
 
-        <?= $form->field($model, 'title'); ?>
+    <?= $form->field($model, 'title'); ?>
 
-        <?= $form->field($model, 'description')->textarea(); ?>
+    <?= $form->field($model, 'description')->textarea(); ?>
 
-        <?= $form->field($model, 'keywords'); ?>
+    <?= $form->field($model, 'keywords'); ?>
 
-        <?= $form->field($model, 'status')->radioList($model::optsStatus()); ?>
+    <?= $form->field($model, 'status')->radioList($model::optsStatus()); ?>
 
-        <?= $form->field($model, 'access_owner'); ?>
+    <?php
+    $model->access_owner = $model->isNewRecord ? Yii::$app->user->id : $model->access_owner;
+    ?>
+    <?= $form->field($model, 'access_owner')->textInput(['readonly' => true]); ?>
 
-        <?= $form->field($model, 'access_domain'); ?>
+    <?= $form->field($model, 'access_domain')->widget(Select2::class, [
+        'data' => $model::optsAccessDomain(),
+        'theme' => Select2::THEME_BOOTSTRAP,
+        'pluginOptions' => [
+            'allowClear' => true
+        ]
+    ]); ?>
 
-        <?= $form->field($model, 'access_read'); ?>
+    <?= $form->field($model, 'access_read')->widget(Select2::class, [
+        'data' => $model::optsAccessPrivileges(),
+        'theme' => Select2::THEME_BOOTSTRAP,
+        'pluginOptions' => [
+            'allowClear' => true
+        ]
+    ]); ?>
 
-        <?= $form->field($model, 'access_update'); ?>
+    <?= $form->field($model, 'access_update')->widget(Select2::class, [
+        'data' => $model::optsAccessPrivileges(),
+        'theme' => Select2::THEME_BOOTSTRAP,
+        'pluginOptions' => [
+            'allowClear' => true
+        ]
+    ]); ?>
 
-        <?= $form->field($model, 'access_delete'); ?>
+    <?= $form->field($model, 'access_delete')->widget(Select2::class, [
+        'data' => $model::optsAccessPrivileges(),
+        'theme' => Select2::THEME_BOOTSTRAP,
+        'pluginOptions' => [
+            'allowClear' => true
+        ]
+    ]); ?>
 
     <hr/>
 
