@@ -54,7 +54,7 @@ abstract class WidgetPageMeta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['widget_page_id', 'language'], 'required'],
+            [['widget_page_id', 'language','status'], 'required'],
             [['widget_page_id', 'status'], 'integer'],
             [['language'], 'string', 'max' => 5],
             [['widget_page_id', 'language'], 'unique', 'targetAttribute' => ['widget_page_id', 'language']],

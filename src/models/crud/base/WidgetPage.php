@@ -22,8 +22,8 @@ use yii\db\Expression;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property \hrzg\widget\models\crud\WidgetPageMeta[] $hrzgWidgetPageMetas
- * @property \hrzg\widget\models\crud\WidgetPageTranslation[] $hrzgWidgetPageTranslations
+ * @property \hrzg\widget\models\crud\WidgetPageMeta[] $widgetPageMetas
+ * @property \hrzg\widget\models\crud\WidgetPageTranslation[] $widgetPageTranslations
  * @property string $aliasModel
  */
 abstract class WidgetPage extends \yii\db\ActiveRecord
@@ -83,15 +83,15 @@ abstract class WidgetPage extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getHrzgWidgetPageMetas()
+    public function getWidgetPageMetas()
     {
-        return $this->hasMany(\hrzg\widget\models\crud\WidgetPage::class, ['widget_page_id' => 'id']);
+        return $this->hasMany(\hrzg\widget\models\crud\WidgetPageMeta::class, ['widget_page_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getHrzgWidgetPageTranslations()
+    public function getWidgetPageTranslations()
     {
         return $this->hasMany(\hrzg\widget\models\crud\WidgetPageTranslation::class, ['widget_page_id' => 'id']);
     }
