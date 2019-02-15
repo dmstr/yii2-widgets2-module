@@ -7,6 +7,7 @@ namespace hrzg\widget\models\crud\base;
 use hrzg\widget\models\crud\query\WidgetPageTranslationQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the base-model class for table "app_hrzg_widget_page_translation".
@@ -33,7 +34,7 @@ abstract class WidgetPageTranslation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'app_hrzg_widget_page_translation';
+        return '{{%hrzg_widget_page_translation}}';
     }
 
     /**
@@ -44,6 +45,7 @@ abstract class WidgetPageTranslation extends \yii\db\ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::class,
+                'value' => new Expression('NOW()')
             ],
         ];
     }

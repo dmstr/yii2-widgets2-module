@@ -7,6 +7,7 @@ namespace hrzg\widget\models\crud\base;
 use hrzg\widget\models\crud\query\WidgetPageMetaQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the base-model class for table "hrzg_widget_page_meta".
@@ -42,6 +43,7 @@ abstract class WidgetPageMeta extends \yii\db\ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::class,
+                'value' => new Expression('NOW()')
             ],
         ];
     }
