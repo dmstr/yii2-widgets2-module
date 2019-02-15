@@ -1,5 +1,6 @@
 <?php
 
+use dmstr\widgets\AccessInput;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use \dmstr\bootstrap\Tabs;
@@ -32,9 +33,7 @@ use \dmstr\bootstrap\Tabs;
     );
     ?>
 
-    <?php $this->beginBlock('main'); ?>
 
-    <p>
 
 
         <?= $form->field($model, 'view'); ?>
@@ -56,23 +55,7 @@ use \dmstr\bootstrap\Tabs;
         <?= $form->field($model, 'access_update'); ?>
 
         <?= $form->field($model, 'access_delete'); ?>
-    </p>
-    <?php $this->endBlock(); ?>
 
-    <?=
-    Tabs::widget(
-        [
-            'encodeLabels' => false,
-            'items' => [
-                [
-                    'label' => Yii::t('widgets', 'WidgetPage'),
-                    'content' => $this->blocks['main'],
-                    'active' => true,
-                ],
-            ]
-        ]
-    );
-    ?>
     <hr/>
 
     <?php echo $form->errorSummary($model); ?>

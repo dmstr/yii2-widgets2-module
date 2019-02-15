@@ -2,6 +2,7 @@
 
 namespace hrzg\widget\models\crud;
 
+use bedezign\yii2\audit\AuditTrailBehavior;
 use dosamigos\translateable\TranslateableBehavior;
 use \hrzg\widget\models\crud\base\WidgetPage as BaseWidgetPage;
 use Yii;
@@ -19,11 +20,12 @@ use yii\helpers\ArrayHelper;
  * @property string $title
  * @property string $description
  * @property string $keywords
+ * @property bool $is_visible
+ * @property bool $is_accessible
  * @property int $status
  */
 class WidgetPage extends BaseWidgetPage
 {
-
     const STATUS_ACTIVE = 1;
     const STATUS_DRAFT = 0;
 
@@ -33,6 +35,9 @@ class WidgetPage extends BaseWidgetPage
     public function behaviors()
     {
         $behaviors = parent::behaviors();
+        $behaviors['audit'] = [
+            'class' => AuditTrailBehavior::class
+        ];
         $behaviors['translatable'] = [
             'class' => TranslateableBehavior::class,
             'relation' => 'widgetPageTranslations',
@@ -45,7 +50,7 @@ class WidgetPage extends BaseWidgetPage
             'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
             'restrictDeletion' => TranslateableBehavior::DELETE_LAST,
         ];
-        $behaviors['translatable-meta'] = [
+        $behaviors['translatable_meta'] = [
             'class' => TranslateableBehavior::class,
             'relation' => 'widgetPageMetas',
             'fallbackLanguage' => false,
@@ -68,27 +73,6 @@ class WidgetPage extends BaseWidgetPage
         return $transactions;
     }
 
-//    /**
-//     * @return array
-//     */
-//    public function scenarios()
-//    {
-//        $scenarios = parent::scenarios();
-//        $scenarios['crud'] = [
-//            'view',
-//            'title',
-//            'descripton',
-//            'keywords',
-//            'status',
-//            'access_owner',
-//            'access_domain',
-//            'access_read',
-//            'access_update',
-//            'access_delete',
-//        ];
-//        return $scenarios;
-//    }
-
     /**
      * @return array
      */
@@ -104,7 +88,7 @@ class WidgetPage extends BaseWidgetPage
     protected function translatableRules()
     {
         $rules = [];
-        foreach ([$this->getBehavior('translatable'), $this->getBehavior('translatable-meta')] as $key => $behavoir) {
+        foreach ([$this->getBehavior('translatable'), $this->getBehavior('translatable_meta')] as $key => $behavoir) {
             if ($behavoir instanceof TranslateableBehavior) {
                 $translation_model_class = $this->getRelation($behavoir->relation)->modelClass;
                 $import_rules = (new $translation_model_class)->rules();
@@ -126,12 +110,31 @@ class WidgetPage extends BaseWidgetPage
     }
 
     /**
+     * @return bool
+     */
+    public function getIs_visible()
+    {
+        // page is active, access domain is either global or current language
+        return $this->status === static::STATUS_ACTIVE && ($this->access_domain === '*' || $this->access_domain === Yii::$app->language);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIs_accessible()
+    {
+        return Yii::$app->user->can($this->access_read);
+    }
+
+
+    /**
      * @return array
      */
-    public static function optsStatus() {
+    public static function optsStatus()
+    {
         return [
-          self::STATUS_ACTIVE => Yii::t('widgets','Active'),
-          self::STATUS_DRAFT => Yii::t('widgets','Draft'),
+            static::STATUS_ACTIVE => Yii::t('widgets', 'Active'),
+            static::STATUS_DRAFT => Yii::t('widgets', 'Draft'),
         ];
     }
 }

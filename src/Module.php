@@ -4,11 +4,19 @@ namespace hrzg\widget;
 
 use dmstr\web\traits\AccessBehaviorTrait;
 
+/**
+ * Class Module
+ * @package hrzg\widget
+ *
+ * @property string $widget_page_layout
+ */
 class Module extends \yii\base\Module
 {
     use AccessBehaviorTrait;
     
     public $controllerNamespace = 'hrzg\widget\controllers';
+
+    public $widget_page_layout = '@app/views/layouts/main';
 
     /**
      * RBAC full permission to widget module
