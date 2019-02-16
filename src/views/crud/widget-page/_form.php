@@ -1,10 +1,8 @@
 <?php
 
-use dmstr\widgets\AccessInput;
 use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use \dmstr\bootstrap\Tabs;
 
 /**
  * @var yii\web\View $this
@@ -33,9 +31,6 @@ use \dmstr\bootstrap\Tabs;
         ]
     );
     ?>
-
-
-
 
     <?= $form->field($model, 'view'); ?>
 

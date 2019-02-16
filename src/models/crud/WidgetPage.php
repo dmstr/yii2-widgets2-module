@@ -30,6 +30,7 @@ class WidgetPage extends BaseWidgetPage
     const STATUS_DRAFT = 0;
 
     const ACCESS_ALL = '*';
+    const EDIT_PRIVILEGE = 'widgets_default_update';
 
     /**
      * @return array
@@ -125,7 +126,7 @@ class WidgetPage extends BaseWidgetPage
      */
     public function getIs_accessible()
     {
-        return Yii::$app->user->can($this->access_read);
+        return $this->access_read === static::ACCESS_ALL || Yii::$app->user->can($this->access_read);
     }
 
 

@@ -5,6 +5,7 @@ namespace hrzg\widget\controllers;
 use hrzg\widget\models\crud\search\WidgetTemplate;
 use hrzg\widget\models\crud\WidgetPage;
 use hrzg\widget\Module;
+use hrzg\widget\widgets\EditPageControls;
 use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -19,6 +20,20 @@ use yii\web\NotFoundHttpException;
  */
 class DefaultController extends Controller
 {
+    /**
+     * @param \yii\base\Action $action
+     * @param mixed $result
+     * @return mixed
+     * @throws \Exception
+     */
+    public function afterAction($action, $result)
+    {
+        if ($action->id === 'page') {
+            $result .= EditPageControls::widget(['edit_page_url' => ['/' . $this->module->id . '/crud/widget-page/update','id' => $action->controller->actionParams['page_id']]]);
+        }
+        return parent::afterAction($action, $result);
+    }
+
     public function actionIndex()
     {
         $searchModel = new WidgetTemplate();
