@@ -8,10 +8,12 @@ use \hrzg\widget\models\crud\base\WidgetPage as BaseWidgetPage;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Inflector;
 
 
 /**
  * Class WidgetPage
+ *
  * @package hrzg\widget\models\crud
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
@@ -22,6 +24,7 @@ use yii\helpers\ArrayHelper;
  * @property string $keywords
  * @property bool $is_visible
  * @property bool $is_accessible
+ * @property string $uuid
  * @property int $status
  */
 class WidgetPage extends BaseWidgetPage
@@ -127,6 +130,14 @@ class WidgetPage extends BaseWidgetPage
     public function getIs_accessible()
     {
         return $this->access_read === static::ACCESS_ALL || Yii::$app->user->can($this->access_read);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return 'widget-page-' . $this->id;
     }
 
 

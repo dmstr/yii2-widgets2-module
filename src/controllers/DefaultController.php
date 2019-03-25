@@ -2,11 +2,13 @@
 
 namespace hrzg\widget\controllers;
 
+use dmstr\modules\pages\traits\RequestParamActionTrait;
 use hrzg\widget\models\crud\search\WidgetTemplate;
 use hrzg\widget\models\crud\WidgetPage;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\EditPageControls;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -20,6 +22,17 @@ use yii\web\NotFoundHttpException;
  */
 class DefaultController extends Controller
 {
+
+    use RequestParamActionTrait;
+
+    /**
+     * @return mixed
+     */
+    protected function pageActionParamPage_id() {
+        return ArrayHelper::map(WidgetPage::find()->all(),'id','title');
+    }
+
+
     /**
      * @param \yii\base\Action $action
      * @param mixed $result
@@ -34,6 +47,9 @@ class DefaultController extends Controller
         return parent::afterAction($action, $result);
     }
 
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         $searchModel = new WidgetTemplate();
@@ -53,11 +69,11 @@ class DefaultController extends Controller
     {
         $widget_page = WidgetPage::find()->andWhere([WidgetPage::tableName() . '.id' => $page_id])->one();
 
-        if ($widget_page === null || !$widget_page->is_visible) {
+        if ($widget_page === null || $widget_page->is_visible === false) {
             throw new NotFoundHttpException(Yii::t('widgets', 'Page not found.'));
         }
 
-        if (!$widget_page->is_accessible) {
+        if ($widget_page->is_accessible === false) {
             if (Yii::$app->user->isGuest) {
                 return $this->redirect(\Yii::$app->user->loginUrl);
             }
