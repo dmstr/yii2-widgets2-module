@@ -43,17 +43,7 @@ class WidgetPage extends BaseWidgetPage
     /**
      * The request param for a page identifier
      */
-    const REQUEST_PARAM_ID = 'widget_id';
-
-    /**
-     * The request param for a page slug
-     */
-    const REQUEST_PARAM_SLUG = 'pageSlug';
-
-    /**
-     * The request param for a page path
-     */
-    const REQUEST_PARAM_PATH = 'pagePath';
+    const REQUEST_PARAM_ID = 'page_id';
 
     /**
      * @return array

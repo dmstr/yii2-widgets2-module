@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace dmstr\modules\pages;
+namespace hrzg\widget;
 
 use hrzg\widget\models\crud\WidgetPage;
 use yii\base\Application;
@@ -30,15 +30,7 @@ class Bootstrap implements BootstrapInterface
     {
         $app->urlManager->addRules(
             [
-                [
-                    'class' => WidgetPageUrlRule::class
-                ],
-                [
-                    'pattern' => 'p/<' . WidgetPage::REQUEST_PARAM_PATH . ':[a-zA-Z0-9_\-\./\+]*>/<' . WidgetPage::REQUEST_PARAM_SLUG . ':[a-zA-Z0-9_\-\.]*>-<' . WidgetPage::REQUEST_PARAM_ID . ':[0-9]*>.html',
-                    'route' => 'widgets/default/page',
-                    'encodeParams' => false,
-                ],
-                'p/<' . WidgetPage::REQUEST_PARAM_SLUG . ':[a-zA-Z0-9_\-\.]*>-<' . WidgetPage::REQUEST_PARAM_ID . ':[0-9]*>.html' => 'widgets/default/page',
+                'p/<' . WidgetPage::REQUEST_PARAM_ID . ':[0-9]*>' => 'widgets/default/page',
             ]);
     }
 }
