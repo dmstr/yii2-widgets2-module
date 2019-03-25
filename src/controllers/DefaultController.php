@@ -26,7 +26,8 @@ class DefaultController extends Controller
     use RequestParamActionTrait;
 
     /**
-     * @return mixed
+     * @editor title Page Name
+     * @return array
      */
     protected function pageActionParamPage_id() {
         return ArrayHelper::map(WidgetPage::find()->all(),'id','title');
