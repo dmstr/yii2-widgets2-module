@@ -123,8 +123,7 @@ $console = [
     ],
     'controllerMap' => [
         'db'      => '\dmstr\console\controllers\MysqlController',
-        'migrate' => '\dmstr\console\controllers\MigrateController',
-        'copy-widgets' => '\hrzg\widget\commands\CopyController'
+        'migrate' => '\dmstr\console\controllers\MigrateController'
     ],
 ];
 

@@ -38,10 +38,7 @@ class Module extends \yii\base\Module
      */
     const TEMPLATE_ACCESS_PERMISSION = 'widgets_crud_widget-template';
 
-    /**
-     * RBAC permission name to copy widgets
-     */
-    const COPY_ACCESS_PERMISSION = 'widgets_copy';
+    const PAGE_ACCESS_PERMISSION = 'widgets_crud_widget-page';
 
     /**
      * layout path for the /widgets/test playground actions

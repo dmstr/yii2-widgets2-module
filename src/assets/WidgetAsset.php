@@ -10,7 +10,13 @@
 namespace hrzg\widget\assets;
 
 use yii\web\AssetBundle;
+use dosamigos\ckeditor\CKEditorAsset;
+use beowulfenator\JsonEditor\SelectizeAsset;
+use uran1980\yii\assets\jQueryEssential\JqueryCookieAsset;
 
+/**
+ * @package hrzg\widget\assets
+ */
 class WidgetAsset extends AssetBundle
 {
     /**
@@ -22,14 +28,14 @@ class WidgetAsset extends AssetBundle
      * @var array
      */
     public $css = [
-        'widgets.less'
+        'less/widgets.less'
     ];
 
     /**
      * @var array
      */
     public $js = [
-        'cell.js'
+        'js/cell.js'
     ];
 
     /**
@@ -43,9 +49,9 @@ class WidgetAsset extends AssetBundle
      * @var array
      */
     public $depends = [
-        'dosamigos\ckeditor\CKEditorAsset',
-        'beowulfenator\JsonEditor\SelectizeAsset',
-        'rmrevin\yii\fontawesome\AssetBundle',
-        'uran1980\yii\assets\jQueryEssential\JqueryCookieAsset'
+        CKEditorAsset::class,
+        SelectizeAsset::class,
+        \rmrevin\yii\fontawesome\AssetBundle::class,
+        JqueryCookieAsset::class
     ];
 }

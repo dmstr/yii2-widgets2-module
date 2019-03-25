@@ -61,7 +61,7 @@ JS;
 
     <?php $this->beginBlock('meta-data') ?>
     <?= $form->field($model, 'widget_template_id')->widget(
-        Select2::classname(),
+        Select2::class,
         [
             'data' => $model::optsWidgetTemplateId(),
             'disabled' => !$model->isNewRecord && !Yii::$app->user->can('Admin'),
@@ -112,14 +112,14 @@ JS;
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
-                ->widget(\dmstr\jsoneditor\JsonEditorWidget::className(), [
+                ->widget(\dmstr\jsoneditor\JsonEditorWidget::class, [
                     'id' => 'editor',
                     'schema' => $schema,
                     'clientOptions' => [
                         'theme' => 'bootstrap3',
                         'disable_collapse' => true,
                         'disable_properties' => false,
-                        "no_additional_properties" => false,
+                        'no_additional_properties' => false,
                         'keep_oneof_values' => false,
                         'expand_height' => true,
                     ],
@@ -153,7 +153,7 @@ JS;
                     // add 1 extra minutes. ex: cannot set 09:10 when 09:10.
                     $dateByTimeZone->add(new DateInterval('PT1M'));
                     $startDate = $dateByTimeZone->format('Y-m-d H:i');
-                    $langCode = explode("-",$language)[0];
+                    $langCode = explode('-',$language)[0];
                     ?>
 
                     <div class="panel-heading">
@@ -169,7 +169,7 @@ JS;
                                         'format' => 'yyyy-mm-dd hh:ii',
                                         'autoclose' => true,
                                         'todayHighlight' => true,
-                                        'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                        'minView' => \Yii::$app->controller->module->datepickerMinutes ? 0 : 1,
                                         'startDate' => $startDate,
                                         'language' => $langCode,
                                     ],
@@ -182,7 +182,7 @@ JS;
                                         'format' => 'yyyy-mm-dd hh:ii',
                                         'autoclose' => true,
                                         'todayHighlight' => true,
-                                        'minView' => (\Yii::$app->controller->module->datepickerMinutes) ? 0 : 1,
+                                        'minView' => \Yii::$app->controller->module->datepickerMinutes ? 0 : 1,
                                         'startDate' => $startDate,
                                         'language' => $langCode,
                                     ],
@@ -201,7 +201,7 @@ JS;
                         'label' => \Yii::t('widgets', 'Meta Data'),
                         'content' =>  $this->blocks['meta-data'],
                         // open content by default, if it is a new record
-                        'contentOptions' => ['class' => ($model->isNewRecord ? 'in':'')],
+                        'contentOptions' => ['class' => $model->isNewRecord ? 'in':''],
                     ],
                     // another group item
                     [
@@ -220,5 +220,5 @@ JS;
 
 <?php
 // TODO: this is just a positioning workaround
-$js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/widgets-init.js'));
+$js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/js/widgets-init.js'));
 $this->registerJs($js);

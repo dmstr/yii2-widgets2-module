@@ -98,6 +98,32 @@ $moduleId = $this->context->module->id;
         </div>
     <?php endif; ?>
 
+<?php if (\Yii::$app->user->can(Module::PAGE_ACCESS_PERMISSION, ['route' => true])) : ?>
+        <div class="col-xs-12 col-sm-4">
+            <?php $infoBoxHtml = InfoBox::widget(
+                [
+                    'text' => \Yii::t('widgets', 'New Widget Template'),
+                    'boxBg' => InfoBox::TYPE_GREEN,
+                    'icon' => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-plus'
+                ]
+            );
+            echo Html::a($infoBoxHtml, ['/' . $moduleId . '/crud/widget-page/create']);
+            ?>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+            <?php $infoBoxHtml = InfoBox::widget(
+                [
+                    'text' => \Yii::t('widgets', 'Widget Pages'),
+                    'number' => \hrzg\widget\models\crud\WidgetPage::find()->count(),
+                    'boxBg' => InfoBox::TYPE_GREEN,
+                    'icon' => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-list'
+                ]
+            );
+            echo Html::a($infoBoxHtml, ['/' . $moduleId . '/crud/widget-page/index']);
+            ?>
+        </div>
+    <?php endif; ?>
+
 </div>
 <?php #Box::end() ?>
 
@@ -105,19 +131,6 @@ $moduleId = $this->context->module->id;
 <?php Box::begin(['title' => \Yii::t('widgets', 'Extras'), 'type' => Box::TYPE_PRIMARY]) ?>
 <div class="row">
     <div class="col-xs-12 col-sm-4 col-md-3">
-        <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) : ?>
-
-            <?php
-            echo Html::a(
-                FA::icon(FA::_COPY) . ' Copy',
-                ['/' . $moduleId . '/copy/language', '.btn'],
-                [
-                    'class' => 'btn btn-app'
-                ]
-            );
-            ?>
-
-        <?php endif; ?>
         <?php
         // check settings component and module existence
         if (\Yii::$app->has('settings') && \Yii::$app->hasModule('settings')) {

@@ -17,7 +17,6 @@
             <?= $content ?>
 
         </div>
-        <!-- /.box-body -->
     </div>
 
 <?php $this->endContent(); ?>
