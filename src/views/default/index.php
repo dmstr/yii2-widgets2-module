@@ -102,7 +102,7 @@ $moduleId = $this->context->module->id;
         <div class="col-xs-12 col-sm-4">
             <?php $infoBoxHtml = InfoBox::widget(
                 [
-                    'text' => \Yii::t('widgets', 'New Widget Template'),
+                    'text' => \Yii::t('widgets', 'New Widget Page'),
                     'boxBg' => InfoBox::TYPE_GREEN,
                     'icon' => FA::$cssPrefix . ' ' . FA::$cssPrefix . '-plus'
                 ]

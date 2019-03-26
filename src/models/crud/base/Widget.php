@@ -33,6 +33,8 @@ use yii\db\ActiveRecord;
  * @property integer $copied_from
  * @property string $created_at
  * @property string $updated_at
+ * @property \yii\db\ActiveQuery $translationsMeta
+ * @property \yii\db\ActiveQuery $translations
  * @property string $aliasModel
  */
 abstract class Widget extends ActiveRecord
@@ -47,7 +49,7 @@ abstract class Widget extends ActiveRecord
         $behaviors = parent::behaviors();
 
         $behaviors['translatable'] = [
-            'class' => TranslateableBehavior::className(),
+            'class' => TranslateableBehavior::class,
             'languageField' => 'language',
             'skipSavingDuplicateTranslation' => true,
             'translationAttributes' => [
@@ -57,7 +59,7 @@ abstract class Widget extends ActiveRecord
             'restrictDeletion' => TranslateableBehavior::DELETE_LAST,
         ];
         $behaviors['translation_meta'] = [
-            'class' => TranslateableBehavior::className(),
+            'class' => TranslateableBehavior::class,
             'relation' => 'translationsMeta',
             'languageField' => 'language',
             'fallbackLanguage' => false,
@@ -71,6 +73,9 @@ abstract class Widget extends ActiveRecord
         return $behaviors;
     }
 
+    /**
+     * @return array
+     */
     public function transactions()
     {
         return [
@@ -84,7 +89,7 @@ abstract class Widget extends ActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(WidgetContentTranslation::className(), ['widget_content_id' => 'id']);
+        return $this->hasMany(WidgetContentTranslation::class, ['widget_content_id' => 'id']);
     }
 
     /**
@@ -92,7 +97,7 @@ abstract class Widget extends ActiveRecord
      */
     public function getTranslationsMeta()
     {
-        return $this->hasMany(WidgetContentTranslationMeta::className(), ['widget_content_id' => 'id']);
+        return $this->hasMany(WidgetContentTranslationMeta::class, ['widget_content_id' => 'id']);
     }
 
     /**
@@ -107,15 +112,17 @@ abstract class Widget extends ActiveRecord
      * Alias name of table for crud viewsLists all Area models.
      * Change the alias name manual if needed later.
      *
+     * @param bool $plural
+     *
      * @return string
      */
     public function getAliasModel($plural = false)
     {
         if ($plural) {
             return Yii::t('widgets', 'Widgets');
-        } else {
-            return Yii::t('widgets', 'Widget');
         }
+
+        return Yii::t('widgets', 'Widget');
     }
 
     /**
@@ -159,14 +166,17 @@ abstract class Widget extends ActiveRecord
             'access_read' => Yii::t('widgets', 'Access Read'),
             'access_update' => Yii::t('widgets', 'Access Update'),
             'access_delete' => Yii::t('widgets', 'Access Delete'),
-            'publish_at' => Yii::t('models', 'Publish At'),
-            'expire_at' => Yii::t('models', 'Expire At'),
+            'publish_at' => Yii::t('widgets', 'Publish At'),
+            'expire_at' => Yii::t('widgets', 'Expire At'),
             'copied_from' => Yii::t('widgets', 'Copied From'),
             'created_at' => Yii::t('widgets', 'Created At'),
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
     }
 
+    /**
+     * @return string
+     */
     public function isVisibleFrontend()
     {
         return $this->status;
