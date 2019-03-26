@@ -28,9 +28,6 @@ class Bootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $app->urlManager->addRules(
-            [
-                'p/<' . WidgetPage::REQUEST_PARAM_ID . ':[0-9]*>' => 'widgets/default/page',
-            ]);
+        $app->urlManager->addRules(['p/<slugged_menu_path>/<slugged_menu_name>-<' . WidgetPage::REQUEST_PARAM_ID . ':[0-9]*>' => 'widgets/default/page']);
     }
 }

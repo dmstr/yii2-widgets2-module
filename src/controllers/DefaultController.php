@@ -62,9 +62,10 @@ class DefaultController extends Controller
 
     /**
      * @param $page_id
+     *
      * @return string
-     * @throws NotFoundHttpException
      * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionPage($page_id)
     {
