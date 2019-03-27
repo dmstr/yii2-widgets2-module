@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 
 /**
  * Class DefaultController
+ *
  * @package hrzg\widget\controllers
  *
  * @property Module $module
@@ -29,21 +30,23 @@ class DefaultController extends Controller
      * @editor title Page Name
      * @return array
      */
-    protected function pageActionParamPage_id() {
-        return ArrayHelper::map(WidgetPage::find()->all(),'id','title');
+    protected function pageActionParamPage_id()
+    {
+        return ArrayHelper::map(WidgetPage::find()->all(), 'id', 'title');
     }
 
 
     /**
      * @param \yii\base\Action $action
      * @param mixed $result
+     *
      * @return mixed
      * @throws \Exception
      */
     public function afterAction($action, $result)
     {
-        if ($action->id === 'page') {
-            $result .= EditPageControls::widget(['edit_page_url' => ['/' . $this->module->id . '/crud/widget-page/update','id' => $action->controller->actionParams['page_id']]]);
+        if ($action->id === 'page' && Yii::$app->user->can(WidgetPage::EDIT_PRIVILEGE)) {
+            $result .= EditPageControls::widget(['edit_page_url' => ['/' . $this->module->id . '/crud/widget-page/update', 'id' => $action->controller->actionParams['page_id']]]);
         }
         return parent::afterAction($action, $result);
     }

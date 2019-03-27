@@ -10,7 +10,6 @@
 namespace hrzg\widget\widgets;
 
 
-use hrzg\widget\models\crud\WidgetPage;
 use rmrevin\yii\fontawesome\FA;
 use Yii;
 use yii\base\Widget;
@@ -18,6 +17,7 @@ use yii\helpers\Html;
 
 /**
  * Class EditPageControls
+ *
  * @package hrzg\widget\widgets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
@@ -25,21 +25,18 @@ use yii\helpers\Html;
  */
 class EditPageControls extends Widget
 {
-    public $edit_page_url = '';
+    public $edit_page_url = [''];
 
     /**
      * @return string
      */
     public function run()
     {
-        if (Yii::$app->user->can(WidgetPage::EDIT_PRIVILEGE)) {
-            return Html::a(
-                Yii::t('widgets', '{icon} Edit page', ['icon' => FA::icon(FA::_EDIT)]),
-                $this->edit_page_url,
-                [
-                    'class' => 'btn btn-xs btn-primary'
-                ]);
-        }
-        return '';
+        return Html::a(
+            Yii::t('widgets', '{icon} Edit page', ['icon' => FA::icon(FA::_EDIT)]),
+            $this->edit_page_url,
+            [
+                'class' => 'btn btn-xs btn-primary'
+            ]);
     }
 }

@@ -40,6 +40,8 @@ class Module extends \yii\base\Module
 
     const PAGE_ACCESS_PERMISSION = 'widgets_crud_widget-page';
 
+    const PAGE_PREVIEW_ACCESS_PERMISSION = 'widgets_crud_widget-page-preview';
+
     /**
      * layout path for the /widgets/test playground actions
      *

@@ -5,6 +5,7 @@ namespace hrzg\widget\models\crud;
 use bedezign\yii2\audit\AuditTrailBehavior;
 use dosamigos\translateable\TranslateableBehavior;
 use \hrzg\widget\models\crud\base\WidgetPage as BaseWidgetPage;
+use hrzg\widget\Module;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -130,8 +131,15 @@ class WidgetPage extends BaseWidgetPage
      */
     public function getIs_visible()
     {
-        // page is active, access domain is either global or current language
-        return $this->status === static::STATUS_ACTIVE && ($this->access_domain === static::ACCESS_ALL|| $this->access_domain === Yii::$app->language);
+        // access domain is either global or current language
+        $access_validation  = $this->access_domain === static::ACCESS_ALL|| $this->access_domain === Yii::$app->language;
+
+        // user has preview previleges
+        if (Yii::$app->user->can(Module::PAGE_PREVIEW_ACCESS_PERMISSION) && $access_validation) {
+            return true;
+        }
+        // page is active
+        return $this->status === static::STATUS_ACTIVE && $access_validation;
     }
 
     /**
