@@ -197,8 +197,9 @@ class WidgetPage extends BaseWidgetPage
         }
 
         $combined_views_list = ArrayHelper::merge(static::$available_views, $settings_views_list);
+        $combined_views_list = array_unique($combined_views_list); // removed duplicated items
 
-        return array_unique($combined_views_list);
+        return array_combine($combined_views_list,$combined_views_list);
 
     }
 }
