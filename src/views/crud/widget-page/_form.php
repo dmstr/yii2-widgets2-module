@@ -1,6 +1,8 @@
 <?php
 
+use dmstr\widgets\AccessInput;
 use kartik\select2\Select2;
+use pudinglabs\tagsinput\TagsinputWidget;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -9,6 +11,8 @@ use yii\bootstrap\ActiveForm;
  * @var hrzg\widget\models\crud\WidgetPage $model
  * @var yii\widgets\ActiveForm $form
  */
+
+$this->registerCss('.bootstrap-tagsinput {width: 100%;}');
 ?>
 
 <div class="widget-page-form">
@@ -32,52 +36,20 @@ use yii\bootstrap\ActiveForm;
     );
     ?>
 
-    <?= $form->field($model, 'view'); ?>
+    <?= $form->field($model, 'view')->widget(Select2::class, [
+        'data' => $model::optsView(),
+        'theme' => Select2::THEME_BOOTSTRAP,
+    ]); ?>
 
     <?= $form->field($model, 'title'); ?>
 
     <?= $form->field($model, 'description')->textarea(); ?>
 
-    <?= $form->field($model, 'keywords'); ?>
+    <?= $form->field($model, 'keywords')->widget(TagsinputWidget::class, ['clientOptions' => ['trimValue' => true, 'allowDuplicates' => false,'tagClass' => 'label label-primary']]); ?>
 
     <?= $form->field($model, 'status')->radioList($model::optsStatus()); ?>
 
-    <?php
-    $model->access_owner = $model->isNewRecord ? Yii::$app->user->id : $model->access_owner;
-    ?>
-    <?= $form->field($model, 'access_owner')->textInput(['readonly' => true]); ?>
-
-    <?= $form->field($model, 'access_domain')->widget(Select2::class, [
-        'data' => $model::optsAccessDomain(),
-        'theme' => Select2::THEME_BOOTSTRAP,
-        'pluginOptions' => [
-            'allowClear' => true
-        ]
-    ]); ?>
-
-    <?= $form->field($model, 'access_read')->widget(Select2::class, [
-        'data' => $model::optsAccessPrivileges(),
-        'theme' => Select2::THEME_BOOTSTRAP,
-        'pluginOptions' => [
-            'allowClear' => true
-        ]
-    ]); ?>
-
-    <?= $form->field($model, 'access_update')->widget(Select2::class, [
-        'data' => $model::optsAccessPrivileges(),
-        'theme' => Select2::THEME_BOOTSTRAP,
-        'pluginOptions' => [
-            'allowClear' => true
-        ]
-    ]); ?>
-
-    <?= $form->field($model, 'access_delete')->widget(Select2::class, [
-        'data' => $model::optsAccessPrivileges(),
-        'theme' => Select2::THEME_BOOTSTRAP,
-        'pluginOptions' => [
-            'allowClear' => true
-        ]
-    ]); ?>
+    <?= AccessInput::widget(['form' => $form, 'model' => $model]) ?>
 
     <hr/>
 

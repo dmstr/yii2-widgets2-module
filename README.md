@@ -39,14 +39,18 @@ Config
 
 ```
 ...
+'bootstrap' => [
+    hrzg\widget\Bootstrap::class
+]
 'modules => [
 	'widgets' => [
-		'class' => '\hrzg\widget\Module',
+		'class' => hrzg\widget\Module::class,
 		'layout' => '@backend/views/layouts/main',
 		'playgroundLayout' => '@frontend/views/layouts/main',
 		'dateBasedAccessControl' => true,
 		'datepickerMinutes' => false,
-		'timezone' => 'Europe/Berlin'
+		'timezone' => 'Europe/Berlin',
+		'widget_page_layout' => '@app/views/layouts/main'
 	]
 ]
 ...
@@ -57,7 +61,11 @@ Config
 
 Settings
 ---
+Section: `widgets`
 
+Keys:
+
+`availableViews` - List of newline separated paths to custom views
 `availablePhpClasses`
 `availableFrontendPhpClasses` - Templates with one of the listed classes in this setting will be outputed in cell widgets dropdown for available templates (default: hrzg\widget\widgets\TwigTemplate)
 

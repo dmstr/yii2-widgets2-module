@@ -1,5 +1,6 @@
 <?php
 
+use hrzg\widget\models\crud\WidgetPage;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -72,7 +73,41 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            'title',
+            [
+                'class' => DataColumn::class,
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return Html::tag('span', WidgetPage::optsStatus()[$model->status], ['class' => 'label label-' . ($model->status === WidgetPage::STATUS_ACTIVE ? 'success' : 'warning')]);
+                },
+                'format' => 'raw'
+            ],
             'view',
+            [
+                'class' => DataColumn::class,
+                'attribute' => 'keywords',
+                'value' => function ($model) {
+                    $html_elements = [];
+                    foreach (explode(',', $model->keywords) as $keyword) {
+                        $html_elements[] = Html::tag('span', trim($keyword), ['class' => 'label label-primary']);
+                    }
+
+                    return implode(' ', $html_elements);
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => DataColumn::class,
+                'attribute' => 'description',
+                'value' => function ($model) {
+                    $description = $model->description;
+                    $max_length = 30;
+                    if (strlen($description) < $max_length) {
+                        return $description;
+                    }
+                    return rtrim(substr($description, 0, $max_length)) . '...';
+                },
+            ],
             'access_owner',
             'access_domain',
             'access_read',

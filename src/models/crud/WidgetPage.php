@@ -3,9 +3,11 @@
 namespace hrzg\widget\models\crud;
 
 use bedezign\yii2\audit\AuditTrailBehavior;
+use dmstr\db\traits\ActiveRecordAccessTrait;
 use dosamigos\translateable\TranslateableBehavior;
 use \hrzg\widget\models\crud\base\WidgetPage as BaseWidgetPage;
 use hrzg\widget\Module;
+use const PHP_EOL;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -27,9 +29,16 @@ use yii\helpers\Inflector;
  * @property bool $is_accessible
  * @property string $uuid
  * @property int $status
+ *
+ * --- CUSTOM PROPERTIES
+ *
+ * @property array $available_views
  */
 class WidgetPage extends BaseWidgetPage
 {
+
+    use ActiveRecordAccessTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_DRAFT = 0;
 
@@ -45,6 +54,13 @@ class WidgetPage extends BaseWidgetPage
      * The request param for a page identifier
      */
     const REQUEST_PARAM_ID = 'page_id';
+
+    /**
+     * @var array
+     */
+    public static $available_views = [
+        '@vendor/dmstr/yii2-widgets2-module/src/views/default/page'
+    ];
 
     /**
      * @return array
@@ -158,7 +174,6 @@ class WidgetPage extends BaseWidgetPage
         return 'widget-page-' . $this->id;
     }
 
-
     /**
      * @return array
      */
@@ -171,17 +186,19 @@ class WidgetPage extends BaseWidgetPage
     }
 
     /**
-     * @return mixed
+     * @return array
+     * @throws \yii\base\InvalidConfigException
      */
-    public static function optsAccessDomain() {
-        $access_domains[static::ACCESS_ALL] = Yii::t('widgets','Global');
-        return $access_domains;
-    }
-    /**
-     * @return mixed
-     */
-    public static function optsAccessPrivileges() {
-        $access_domains[static::ACCESS_ALL] = Yii::t('widgets','All');
-        return $access_domains;
+    public static function optsView()
+    {
+        $settings_views_list = [];
+        if (Yii::$app->get('settings')) {
+            $settings_views_list = explode("\n",Yii::$app->settings->get('availableViews','widgets'));
+        }
+
+        $combined_views_list = ArrayHelper::merge(static::$available_views, $settings_views_list);
+
+        return array_unique($combined_views_list);
+
     }
 }
