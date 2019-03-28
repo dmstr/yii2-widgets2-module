@@ -17,6 +17,7 @@ use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
+use Yii;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
@@ -27,7 +28,13 @@ use yii\helpers\Url;
 
 /**
  * Class Cell
+ *
  * @package hrzg\widget\widgets
+ *
+ * @property string $moduleRoute
+ * @property string $route
+ * @property array $menuItems
+ * @property string $controllerRoute
  */
 class Cell extends Widget implements ContextMenuItemsInterface
 {
@@ -378,7 +385,10 @@ JS
         ]);
 
 
-        if ($widget->getTranslation()->id) {
+        $translation_count = (int)$widget->getTranslations()->count();
+        $widget_translation = $widget->getTranslation();
+        // there exists one translation for the current language and there are more than one translation
+        if ($widget_translation->id && $translation_count > 1) {
             $html .= Html::a(
                 FA::icon(FA::_REMOVE),
                 ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
@@ -388,7 +398,8 @@ JS
                 ]
             );
         } else {
-            if ($widget->hasPermission('access_delete')) {
+            // is able to delete due to permissions and there is just one translation left
+            if ($widget->hasPermission('access_delete') && $translation_count <= 1 && $widget_translation->id) {
                 $html .= Html::a(
                     FA::icon(FA::_TRASH),
                     ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
