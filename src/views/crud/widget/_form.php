@@ -217,8 +217,3 @@ JS;
     <?php $this->endBlock(); ?>
     <?= $this->blocks['main'] ?>
 </div>
-
-<?php
-// TODO: this is just a positioning workaround
-$js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/widgets-init.js'));
-$this->registerJs($js);
