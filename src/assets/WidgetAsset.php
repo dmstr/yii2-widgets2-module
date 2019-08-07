@@ -9,6 +9,9 @@
 
 namespace hrzg\widget\assets;
 
+use dosamigos\ckeditor\CKEditorAsset;
+use dosamigos\selectize\SelectizeAsset;
+use uran1980\yii\assets\jQueryEssential\JqueryCookieAsset;
 use yii\web\AssetBundle;
 
 class WidgetAsset extends AssetBundle
@@ -43,9 +46,9 @@ class WidgetAsset extends AssetBundle
      * @var array
      */
     public $depends = [
-        'dosamigos\ckeditor\CKEditorAsset',
-        'beowulfenator\JsonEditor\SelectizeAsset',
-        'rmrevin\yii\fontawesome\AssetBundle',
-        'uran1980\yii\assets\jQueryEssential\JqueryCookieAsset'
+        CKEditorAsset::class,
+        SelectizeAsset::class,
+        \rmrevin\yii\fontawesome\AssetBundle::class,
+        JqueryCookieAsset::class,
     ];
 }
