@@ -4,10 +4,12 @@ namespace hrzg\widget\models\crud;
 
 use dmstr\db\traits\ActiveRecordAccessTrait;
 use Faker\Provider\DateTime;
+use hrzg\filemanager\helpers\Url;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\TagDependency;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
@@ -66,17 +68,29 @@ class WidgetContent extends BaseWidget
     public function afterFind()
     {
         parent::afterFind();
-        $this->setNameId($this->domain_id.'_'.$this->access_domain);
+        $this->setNameId($this->domain_id . '_' . $this->access_domain);
 
         // correct dates by timezone
-        if($this->publish_at) {
+        if ($this->publish_at) {
             $dateByTimeZone = new \DateTime($this->publish_at, new \DateTimeZone($this->timezone));
             $this->publish_at = $dateByTimeZone->format('Y-m-d H:i');
         }
-        if($this->expire_at) {
+        if ($this->expire_at) {
             $dateByTimeZone = new \DateTime($this->expire_at, new \DateTimeZone($this->timezone));
             $this->expire_at = $dateByTimeZone->format('Y-m-d H:i');
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
     }
 
     /**
@@ -105,10 +119,13 @@ class WidgetContent extends BaseWidget
      */
     public function rules()
     {
+        // generate auto-rank, this is not meant to be unique in all cases
+        $rank = 'a-'.str_pad(self::find()->max('id'), 4, "0", STR_PAD_LEFT).'0';
+
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['rank', 'default', 'value' => 'a-'.dechex(date('U'))],
+                ['rank', 'default', 'value' => $rank],
                 [
                     'domain_id',
                     'default',
@@ -117,42 +134,28 @@ class WidgetContent extends BaseWidget
                 [
                     'access_domain',
                     'default',
-                    'value' => function () {
-                        return mb_strtolower(\Yii::$app->language);
-                    }
+                    'value' => self::getDefaultAccessDomain()
                 ],
-                ['access_domain', 'validateAccessDomain'],
                 [
                     [
                         'access_read',
-                        'access_update',
-                        'access_delete',
                     ],
                     'default',
                     'value' => self::$_all
                 ],
+                [
+                    [
+                        'access_update',
+                        'access_delete',
+                    ],
+                    'default',
+                    'value' => self::getDefaultAccessUpdateDelete()
+                ],
                 [['publish_at', 'expire_at'], 'default', 'value' => null],
                 [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
-                [ 'expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
+                ['expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
             ]
         );
-    }
-
-    /**
-     * Check if user tries to save / update records to another language
-     * 'widget_copy' permission required
-     *
-     * @param $attribute
-     */
-    public function validateAccessDomain($attribute)
-    {
-        if ($this->attributes[$attribute] !== \Yii::$app->language && php_sapi_name() !== 'cli') {
-            if (! \Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) {
-                $errorMsg = \Yii::t('widgets', 'You are not allowed to copy widgets between languages');
-                \Yii::$app->session->setFlash('error', $errorMsg);
-                $this->addError($attribute, $errorMsg);
-            }
-        }
     }
 
     /**
@@ -178,17 +181,6 @@ class WidgetContent extends BaseWidget
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function optsAccessDomain()
-    {
-        $availableLanguages = [];
-        foreach (\Yii::$app->urlManager->languages as $availablelanguage) {
-            $availableLanguages[mb_strtolower($availablelanguage)] = mb_strtolower($availablelanguage);
-        }
-        return $availableLanguages;
-    }
 
     /**
      * @return array
@@ -222,9 +214,25 @@ class WidgetContent extends BaseWidget
      */
     public function getViewFile()
     {
-        $file = '/'.\Yii::getAlias('@runtime').'/'.md5($this->template->twig_template).'.twig';
+        $file = '/' . \Yii::getAlias('@runtime') . '/' . md5($this->template->twig_template) . '.twig';
         file_put_contents($file, $this->template->twig_template);
 
         return $file;
+    }
+
+    public function getFrontendRoute()
+    {
+        $mapping = \Yii::$app->controller->module->frontendRouteMap[$this->route] ?? false;
+
+        if ($mapping) {
+            return \yii\helpers\Url::to(
+                [
+                    '/' . $mapping,
+                    'pageId' => $this->request_param,
+                    '#' => 'widget-' . $this->domain_id
+                ]);
+        } else {
+            return false;
+        }
     }
 }

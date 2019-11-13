@@ -47,7 +47,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 
 <div class="giiant-crud widget-index">
 
-    <?php Box::begin(['type'=>'solid']) ?>
+    <?php Box::begin() ?>
 
     <?php Pjax::begin([
         'id' => 'pjax-main',
@@ -168,34 +168,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                 ],
                 'id',
                 [
-                    'attribute' => 'status',
-                    'format' => 'raw',
-                    'contentOptions' => ['nowrap' => 'nowrap'],
-                    'filter'=> \hrzg\widget\models\crud\WidgetContent::optsStatus(),
-                    'value' => function($model) {
-                        return $model->status ? $model::optsStatus()[$model->status] : 'n/a';
-                    },
-                    'filterInputOptions' => [
-                        'class' => 'form-control',
-                        'style' => 'width:80px;'
-                    ]
-                ],
-                [
-                    'attribute' => 'template.name',
-                    'header' => 'Template',
-                    'contentOptions' => ['nowrap' => 'nowrap'],
-                    'filter'=> ArrayHelper::map(WidgetTemplate::find()->asArray()->all(), 'name', 'name'),
-                    'filterInputOptions' => [
-                        'class' => 'form-control',
-                        'style' => 'width:180px;'
-                    ]
-                ],
-                'route',
-                'request_param',
-                'container_id',
-                /*'domain_id',*/
-                /*'rank',*/
-                [
                     'attribute' => 'default_properties_json',
                     'format' => 'raw',
                     'value' => function ($model) { return \devgroup\jsoneditor\Jsoneditor::widget([
@@ -217,7 +189,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                     ]);},
                 ],
                 'access_domain',
-                /*'access_owner',*/
                 'access_read',
                 'access_update',
                 'access_delete',

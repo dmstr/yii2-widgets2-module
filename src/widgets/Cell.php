@@ -7,22 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace hrzg\widget\widgets;
 
+use dmstr\ajaxbutton\AjaxButton;
+use dmstr\modules\backend\interfaces\ContextMenuItemsInterface;
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
-use hrzg\widget\Module;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
+use Yii;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
+use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
-class Cell extends Widget
+/**
+ * Class Cell
+ *
+ * @package hrzg\widget\widgets
+ *
+ * @property string $moduleRoute
+ * @property string $route
+ * @property array $menuItems
+ * @property string $controllerRoute
+ */
+class Cell extends Widget implements ContextMenuItemsInterface
 {
     /**
      * Global route
@@ -49,9 +63,9 @@ class Cell extends Widget
     public $showContainerControls = true;
 
     public $positionWidgetControls = 'top-right';
-    public $positionContainerControls = 'bottom-right';
+    public $positionContainerControls = 'bottom-left';
 
-    public $rbacEditRole= 'widgets-cell-edit';
+    public $rbacEditRole = 'widgets-cell-edit';
 
     /**
      *
@@ -87,11 +101,14 @@ class Cell extends Widget
         if ($this->timezone === null) {
             $this->timezone = \Yii::$app->getModule($this->moduleName)->timezone;
         }
+
+        parent::init();
     }
 
     /**
      * @inheritdoc
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function run()
     {
@@ -99,54 +116,69 @@ class Cell extends Widget
         return $this->renderWidgets();
     }
 
+    /**
+     * @return array
+     */
     public function getMenuItems()
     {
         // todo, register FA-asset from asset bundle
         AssetBundle::register($this->view);
+
+        $linkTarget = \Yii::$app->params['backend.iframe.name'] ?? '_self';
         return [
             [
-                'label' => FA::icon(FA::_PLUS_SQUARE).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
-                'url' => [
-                    '/'.$this->moduleName.'/crud/widget/create',
-                    'WidgetContent' => [
-                        'route' => $this->getRoute(),
-                        'container_id' => $this->id,
-                        'request_param' => \Yii::$app->request->get($this->requestParam),
-                        'access_domain' => \Yii::$app->language,
+                'label' => ' ' . $this->id . ' <span class="label label-info">Cell</span>',
+                'items' => [[
+                    'label' => FA::icon(FA::_PLUS),
+                    'url' => [
+                        '/' . $this->moduleName . '/crud/widget/create',
+                        'WidgetContent' => [
+                            'route' => $this->getRoute(),
+                            'container_id' => $this->id,
+                            'request_param' => \Yii::$app->request->get($this->requestParam),
+                        ],
+                    ],
+                    'linkOptions' => [
+                        'target' => $linkTarget,
                     ],
                 ],
-                'linkOptions' => [
-                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                        ? \Yii::$app->params['backend.iframe.name']
-                        : '_self',
-                ],
-            ],
-            [
-                'label' => FA::icon(FA::_LIST).' <b>'.$this->id.'</b> <span class="label label-info">widget</span>',
-                'url' => [
-                    '/'.$this->moduleName.'/crud/widget/index',
-                    'WidgetContent' => [
-                        'route' => $this->getRoute(),
-                        'container_id' => $this->id,
-                        'request_param' => \Yii::$app->request->get('id'),
-                        'access_domain' => \Yii::$app->language,
-                    ],
-                ],
-                'linkOptions' => [
-                    'target' => (isset(\Yii::$app->params['backend.iframe.name']))
-                        ? \Yii::$app->params['backend.iframe.name']
-                        : '_self',
-                ],
-
-            ],
+                    [
+                        'label' => FA::icon(FA::_LIST),
+                        'url' => [
+                            '/' . $this->moduleName . '/crud/widget/index',
+                            'WidgetContent' => [
+                                'route' => $this->getRoute(),
+                                'container_id' => $this->id,
+                                'request_param' => \Yii::$app->request->get('id'),
+                                'access_domain' => \Yii::$app->language,
+                            ],
+                        ],
+                        'linkOptions' => [
+                            'target' => $linkTarget
+                        ]
+                    ]]
+            ]
         ];
     }
 
+    /**
+     * @return array|WidgetContent[]|mixed|\yii\db\ActiveRecord[]
+     */
     protected function queryWidgets()
     {
+        $cache = \Yii::$app->cache;
+        $cacheKey = Json::encode([self::class, \Yii::$app->language, \Yii::$app->requestedRoute, \Yii::$app->request->get($this->requestParam), $this->id]);
+
+        $data = $cache->get($cacheKey);
+
+        if ($data !== false && \Yii::$app->user->isGuest) {
+            return $data;
+        }
+
         \Yii::trace(\Yii::$app->requestedRoute, __METHOD__);
-        $models = WidgetContent::find()
+        $query = WidgetContent::find()
             ->orderBy('rank ASC')
+            ->joinWith('template')
             ->andFilterWhere(
                 [
                     'request_param' => [\Yii::$app->request->get($this->requestParam), self::EMPTY_REQUEST_PARAM],
@@ -156,11 +188,21 @@ class Cell extends Widget
                 [
                     'container_id' => $this->id,
                     'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
-                    'access_domain' => mb_strtolower(\Yii::$app->language),
-                ])
-            ->all();
+                    '{{%hrzg_widget_content}}.access_domain' => [mb_strtolower(\Yii::$app->language), WidgetContent::$_all],
+                ]);
+        if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true])) {
+            // editors see all widgets, also untranslated ones
+        } else {
+            $query->joinWith('translations');
+        }
+        $data = $query->all();
 
-        return $models;
+        if (\Yii::$app->user->isGuest) {
+            $cacheDependency = new TagDependency(['tags' => 'widgets']);
+            $cache->set($cacheKey, $data, 3600, $cacheDependency);
+        }
+
+        return $data;
     }
 
     /**
@@ -169,7 +211,7 @@ class Cell extends Widget
     private function getRoute()
     {
         #return '/' . \Yii::$app->controller->getRoute();
-        return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->controller->action->id;
+        return $this->getControllerRoute() . \Yii::$app->controller->action->id;
     }
 
     /**
@@ -177,7 +219,7 @@ class Cell extends Widget
      */
     private function getControllerRoute()
     {
-        return \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/';
+        return $this->getModuleRoute() . \Yii::$app->controller->id . '/';
     }
 
     /**
@@ -185,25 +227,26 @@ class Cell extends Widget
      */
     private function getModuleRoute()
     {
-        return \Yii::$app->controller->module->id.'/';
+        return \Yii::$app->controller->module->id . '/';
     }
 
     /**
      * @return string
      * @throws \yii\base\InvalidConfigException
+     * @throws \Exception
      */
     private function renderWidgets()
     {
         $html = Html::beginTag(
             'div',
             [
-                'id' => 'cell-'.$this->id,
-                'class' => self::CSS_PREFIX.'-'.$this->id.' '.self::CSS_PREFIX.'-widget-container',
+                'id' => 'cell-' . $this->id,
+                'class' => self::CSS_PREFIX . '-' . $this->id . ' ' . self::CSS_PREFIX . '-widget-container',
             ]
         );
 
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showContainerControls) {
-            $html .= $this->generateContainerControls();
+            $html .= $this->generateCellControls();
         }
 
         foreach ($this->queryWidgets() as $widget) {
@@ -214,14 +257,20 @@ class Cell extends Widget
             if ($properties) {
                 $class->setProperties($properties);
             }
+            $visibility = $widget->isVisibleFrontend() ? '' : 'hrzg-widget-widget-invisible-frontend';
             $html .= Html::beginTag('div',
-                ['id' => 'widget-'.($widget->name_id ?: $widget->id), 'class' => 'hrzg-widget-widget']);
+                [
+                    'id' => 'widget-' . $widget->domain_id,
+                    'class' => 'hrzg-widget-widget ',
+                ]);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showWidgetControls) {
                 $html .= $this->generateWidgetControls($widget);
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
+                $html .= Html::beginTag('div', ['class' => $visibility,]);
                 $html .= $class->run();
+                $html .= Html::endTag('div');
             }
             $html .= Html::endTag('div');
         }
@@ -231,42 +280,41 @@ class Cell extends Widget
 
     /**
      * @return string
+     * @throws \Exception
      */
-    private function generateContainerControls()
+    private function generateCellControls()
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pos-'.$this->positionContainerControls]);
+        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pos-' . $this->positionContainerControls]);
         $items = [
-            ['label'=>$this->id]
+            ['label' => $this->id]
         ];
 
-        foreach (WidgetTemplate::find()->orderBy('name')->all() as $template) {
+        foreach (WidgetTemplate::find()->where(['php_class' => TwigTemplate::class])->orderBy('name')->all() as $template) {
             $items[] = [
                 'label' => $template->name,
                 'url' => [
-                    '/'.$this->moduleName.'/crud/widget/create',
+                    '/' . $this->moduleName . '/crud/widget/create',
                     'WidgetContent' => [
                         'route' => $this->getRoute(),
                         'container_id' => $this->id,
                         'request_param' => \Yii::$app->request->get($this->requestParam),
-                        'access_domain' => \Yii::$app->language,
                         'widget_template_id' => $template->id,
                     ],
                 ],
                 'linkOptions' => [
-                    'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                        ? \Yii::$app->params['backend.iframe.name']
-                        : '_self'
+                    'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
                 ]
             ];
         }
 
+        $dropdownClass = $this->positionContainerControls === 'bottom-left' ? 'dropdown-menu-left' : 'dropdown-menu-right';
         $html .= ButtonDropdown::widget([
-            'label' => FA::icon(FA::_PLUS_SQUARE).' '.$this->id,
+            'label' => FA::icon(FA::_PLUS_SQUARE) . ' ' . $this->id,
             'encodeLabel' => false,
-            'options' => ['class' => 'btn btn-xs btn-primary'],
-            'dropdown' =>  [
+            'options' => ['class' => 'btn btn-primary'],
+            'dropdown' => [
                 'options' => [
-                    'class'=>'dropdown-menu-right'
+                    'class' => $dropdownClass
                 ],
                 'items' => $items,
             ],
@@ -280,39 +328,119 @@ class Cell extends Widget
      * @param $widget
      *
      * @return string
+     * @throws \Exception
      */
-    private function generateWidgetControls($widget)
+    private function generateWidgetControls(WidgetContent $widget)
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-widget-controls btn-group pos-'.$this->positionWidgetControls, 'role' => 'group']);
-        $html .= Html::a(
-            FA::icon(FA::_TRASH_O),
-            ['/'.$this->moduleName.'/crud/widget/delete', 'id' => $widget->id],
-            [
-                'class' => 'btn btn-xs btn-danger',
-                'data-confirm' => ''.\Yii::t('widgets', 'Are you sure to delete this item?').'',
-            ]
-        );
-        $html .= Html::a(
-            FA::icon(FA::_EYE),
-            ['/'.$this->moduleName.'/crud/widget/view', 'id' => $widget->id],
-            [
-                'class' => 'btn btn-xs btn-default',
-                'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                    ? \Yii::$app->params['backend.iframe.name']
-                    : '_self'
-            ]
-        );
+
+
+        $icon = $widget->access_domain === WidgetContent::$_all ? FA::_GLOBE : FA::_FLAG_O;
+        $color = $widget->getBehavior('translatable')->isFallbackTranslation ? 'info' : 'default';
         $published = $this->checkPublicationStatus($widget);
-        $html .= Html::a(
-            FA::icon(FA::_PENCIL).' #'.$widget->id.' '.$widget->template->name.' <span class="label label-default">'.$widget->rank.'</span>',
-            ['/'.$this->moduleName.'/crud/widget/update', 'id' => $widget->id],
+        $newStatus = (int)!$widget->status;
+
+        $html = '';
+        $html .= Html::beginTag('div', ['class' => 'hrzg-widget-widget-info']);
+        $html .= ' <span class="label label-info">' . $widget->rank . '</span>';
+        $html .= ' <span class="hidden-xs label label-default">#' . $widget->id . ' ' . $widget->template->name . '</span> ';
+        $html .= Html::endTag('div');
+
+
+        $html .= Html::beginTag(
+            'div',
             [
-                'class' => 'btn btn-xs btn-'.(($widget->status && $published) ? 'success' : 'warning'),
-                'target'=> (isset(\Yii::$app->params['backend.iframe.name']))
-                    ? \Yii::$app->params['backend.iframe.name']
-                    : '_self'
+                'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
+            ]);
+
+        $html .= AjaxButton::widget([
+            'content' => FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)),
+            'successExpression' => <<<JS
+function(resp,status,xhr) {
+  if (xhr.status === 200) {
+    var params = button.data("ajax-button-params");
+    params.status = !params.status | 0;
+    button.attr("data-ajax-button-params",JSON.stringify(params));
+    button.toggleClass("btn-success btn-warning");
+    button.find("i").toggleClass("fa-eye fa-eye-slash")
+  }
+}
+JS
+
+            ,
+            'errorExpression' => <<<JS
+function(xhr) {
+  if (xhr.status === 404) {
+    button.addClass("btn-danger").html("Error");
+    console.error(xhr.responseJSON)
+  }
+}
+JS
+            ,
+            'method' => 'put',
+            'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
+            'params' => ['status' => $newStatus],
+            'options' => [
+                'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+            ]
+        ]);
+
+
+        $translation_count = (int)$widget->getTranslations()->count();
+        $widget_translation = $widget->getTranslation();
+        // there exists one translation for the current language and there are more than one translation
+        if ($widget_translation->id && $translation_count > 1) {
+            $html .= Html::a(
+                FA::icon(FA::_REMOVE),
+                ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
+                [
+                    'class' => 'btn  btn-danger',
+                    'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this translation?') . '',
+                ]
+            );
+        } else {
+            // is able to delete due to permissions and there is just one translation left
+            if ($widget->hasPermission('access_delete') && $translation_count <= 1 && $widget_translation->id) {
+                $html .= Html::a(
+                    FA::icon(FA::_TRASH),
+                    ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
+                    [
+                        'class' => 'btn  btn-danger',
+                        'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this base-item?') . '',
+                    ]
+                );
+            }
+        }
+
+        ##$published = $this->checkPublicationStatus($widget);
+        $html .= Html::a(
+            FA::icon(FA::_PENCIL) . '',
+            ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
+            [
+                'class' => 'btn  btn-primary',
+                'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
+
+//        $html .= Html::a(
+//            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
+//            ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
+//            [
+//                'data-method' => 'put',
+//                'data-params' => ['status' => $newStatus],
+//                'class' => 'btn  btn-' . (($widget->status && $published) ? 'default' : 'warning'),
+//            ]
+//        );
+
+
+        $html .= Html::a(
+            FA::icon($icon),
+            ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
+            [
+                'class' => 'btn  btn-' . $color,
+                'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
+            ]
+        );
+
         $html .= Html::endTag('div');
         return $html;
     }
@@ -321,10 +449,11 @@ class Cell extends Widget
      * @param $widget
      *
      * @return boolean
+     * @throws \Exception
      */
-    private function checkPublicationStatus($widget) {
-        $published = false;
-        if(!\Yii::$app->getModule($this->moduleName)->dateBasedAccessControl) {
+    private function checkPublicationStatus($widget)
+    {
+        if (!\Yii::$app->getModule($this->moduleName)->dateBasedAccessControl) {
             $published = true;
         } else {
             $published =

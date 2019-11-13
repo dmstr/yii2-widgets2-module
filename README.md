@@ -59,6 +59,7 @@ Settings
 ---
 
 `availablePhpClasses`
+`availableFrontendPhpClasses` - Templates with one of the listed classes in this setting will be outputed in cell widgets dropdown for available templates (default: hrzg\widget\widgets\TwigTemplate)
 
 
 Usage
@@ -207,7 +208,6 @@ widgets_copy | Widgets Language Copy
 widgets-cell-edit | Frontend editing
 widgets | Widgets Module
 
-From **dmstr/yii2-backend-module**: `frontend.toggle-view-mode`
 
 Settings
 ---

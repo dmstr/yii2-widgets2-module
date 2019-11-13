@@ -8,7 +8,7 @@ use insolita\wgadminlte\Box;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-$this->title                   = $model->getAliasModel() . ' ' . $model->id . ', ' . \Yii::t('widgets', 'Edit');
+$this->title                   = $model->getAliasModel() . $model->id . ', ' . \Yii::t('widgets', 'Edit');
 $this->params['breadcrumbs'][] = ['label' => $model->getAliasModel(true), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
@@ -50,11 +50,6 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
 </div>
 <?php $this->endBlock() ?>
 
-<?php if ($model->getBehavior('translatable')->isFallbackTranslation) {
-    echo ' <div class="alert alert-info">' . \Yii::t('widgets', 'The currently displayed values are taken from the fallback language. If you change translated values a new translation will be stored for this widget. Changing the status does not affect the translation.') . '</div>';
-}
-?>
-
 <div class="giiant-crud widget-update">
     <?php $form = ActiveForm::begin(
         [
@@ -73,10 +68,9 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
         ]
     );
     ?>
-    <?php Box::begin(['type'=>'solid']) ?>
+    <?php Box::begin() ?>
     <h1>
         <?= $model->getAliasModel() ?>
-        <small><?= $model->name_id ?></small>
     </h1>
 
     <?= $this->blocks['crud-navigation'] ?>

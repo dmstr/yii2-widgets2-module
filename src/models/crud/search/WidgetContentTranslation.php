@@ -2,7 +2,7 @@
 
 namespace hrzg\widget\models\crud\search;
 
-use hrzg\widget\models\crud\WidgetContent as WidgetModel;
+use hrzg\widget\models\crud\WidgetContentTranslation as WidgetTranslationModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
@@ -10,7 +10,7 @@ use yii\db\Query;
 /**
  * Widget represents the model behind the search form about `hrzg\widget\models\crud\Widget`.
  */
-class WidgetContent extends WidgetModel
+class WidgetContentTranslation extends WidgetTranslationModel
 {
     /**
      * {@inheritdoc}
@@ -20,16 +20,11 @@ class WidgetContent extends WidgetModel
     public function rules()
     {
         return [
-            [['id', 'copied_from'], 'integer'],
+            ['id', 'integer'],
             [
                 [
-                    'status',
-                    'widget_template_id',
-                    'domain_id',
-                    'container_id',
-                    'rank',
-                    'route',
-                    'request_param',
+                    'widget_content_id',
+                    'language',
                     'access_owner',
                     'access_domain',
                     'access_read',
@@ -37,16 +32,10 @@ class WidgetContent extends WidgetModel
                     'access_delete',
                     'created_at',
                     'updated_at',
-                    'template.name',
                 ],
                 'safe',
             ],
         ];
-    }
-
-    public function attributes()
-    {
-        return array_merge(parent::attributes(),['template.name']);
     }
 
     /**
@@ -70,50 +59,34 @@ class WidgetContent extends WidgetModel
      */
     public function search($params)
     {
-        $query = WidgetModel::find();
+        $query = WidgetTranslationModel::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $query->joinWith(
-            [
-                'template' => function (Query $query) {
-                    $query->from(['template' => '{{%hrzg_widget_template}}']);
-                }
-            ]
-        );
-        // join for status field
-        $query->joinWith('translationsMeta');
-
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
+        $query->andWhere(['language' => \Yii::$app->language]);
+
         $query->andFilterWhere([
-            WidgetModel::tableName() . '.id' => $this->id,
+            'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'widget_template_id', $this->widget_template_id])
-            ->andFilterWhere(['like', 'domain_id', $this->domain_id])
-            ->andFilterWhere(['like', 'container_id', $this->container_id])
-            ->andFilterWhere(['like', 'rank', $this->rank])
-            ->andFilterWhere(['like', 'route', $this->route])
-            ->andFilterWhere(['like', 'request_param', $this->request_param])
+        $query->andFilterWhere(['like', 'widget_content_id', $this->widget_content_id])
+            ->andFilterWhere(['like', 'language', $this->language])
             ->andFilterWhere(['like', 'access_owner', $this->access_owner])
             ->andFilterWhere(['like', 'access_domain', $this->access_domain])
             ->andFilterWhere(['like', 'access_read', $this->access_read])
             ->andFilterWhere(['like', 'access_update', $this->access_update])
-            ->andFilterWhere(['like', 'access_delete', $this->access_delete])
-            ->andFilterWhere(['like', 'copied_from', $this->copied_from])
-            ->andFilterWhere(['=', 'template.name', $this->getAttribute('template.name')]);
+            ->andFilterWhere(['like', 'access_delete', $this->access_delete]);
+
 
         return $dataProvider;
     }

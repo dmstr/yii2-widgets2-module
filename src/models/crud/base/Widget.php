@@ -5,7 +5,11 @@
 namespace hrzg\widget\models\crud\base;
 
 use dmstr\db\traits\ActiveRecordAccessTrait;
+use dosamigos\translateable\TranslateableBehavior;
+use hrzg\widget\models\crud\WidgetContentTranslation;
+use hrzg\widget\models\crud\WidgetContentTranslationMeta;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the base-model class for table "app_hrzg_widget".
@@ -31,23 +35,64 @@ use Yii;
  * @property string $updated_at
  * @property string $aliasModel
  */
-abstract class Widget extends \yii\db\ActiveRecord
+abstract class Widget extends ActiveRecord
 {
     use ActiveRecordAccessTrait;
 
     /**
-     * Enable access_domain access checks in ActiveRecordAccessTrait
-     * @return array with access field names
+     * @inheritdoc
      */
-    public static function accessColumnAttributes()
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['translatable'] = [
+            'class' => TranslateableBehavior::className(),
+            'languageField' => 'language',
+            'skipSavingDuplicateTranslation' => true,
+            'translationAttributes' => [
+                'default_properties_json'
+            ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
+            'restrictDeletion' => TranslateableBehavior::DELETE_LAST,
+        ];
+        $behaviors['translation_meta'] = [
+            'class' => TranslateableBehavior::className(),
+            'relation' => 'translationsMeta',
+            'languageField' => 'language',
+            'fallbackLanguage' => false,
+            'skipSavingDuplicateTranslation' => false,
+            'translationAttributes' => [
+                'status'
+            ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
+        ];
+
+        return $behaviors;
+    }
+
+    public function transactions()
     {
         return [
-            'owner'  => 'access_owner',
-            'read'   => 'access_read',
-            'update' => 'access_update',
-            'delete' => 'access_delete',
-            'domain' => 'access_domain',
+            // enable transactions in delete case, to remove translations in the same transaction as the record
+            self::SCENARIO_DEFAULT => self::OP_DELETE,
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslations()
+    {
+        return $this->hasMany(WidgetContentTranslation::className(), ['widget_content_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslationsMeta()
+    {
+        return $this->hasMany(WidgetContentTranslationMeta::className(), ['widget_content_id' => 'id']);
     }
 
     /**
@@ -120,5 +165,10 @@ abstract class Widget extends \yii\db\ActiveRecord
             'created_at' => Yii::t('widgets', 'Created At'),
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];
+    }
+
+    public function isVisibleFrontend()
+    {
+        return $this->status;
     }
 }

@@ -18,18 +18,8 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
     {
         WidgetAsset::register($this->view);
         // if set use CKEditor configurations from settings module else use default configuration.
-        $defaultConfig = '{
-          "height": "400px",
-          "toolbar": [
-            ["Format"],
-            ["Link", "Image", "Table", "-", "NumberedList", "BulletedList", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
-            ["Source"],
-            "/",
-            ["Bold", "Italic", "Underline", "StrikeThrough", "-", "RemoveFormat", "-", "Undo", "Redo", "-", "Paste", "PasteText", "PasteFromWord", "-", "Cut", "Copy", "Find", "Replace", "-", "Outdent", "Indent", "-", "Print"]
-          ]
-        }';
-        $json = \Yii::$app->settings->getOrSet('ckeditor.config', $defaultConfig, 'widgets', 'object');
-        $ckeditorConfiguration = isset($json->scalar) ? $json->scalar : $defaultConfig;
+        $json = \Yii::$app->settings->get('ckeditor.config', 'widgets');
+        $ckeditorConfiguration = isset($json->scalar) ? $json->scalar : "{}";
         $script = "window.CKCONFIG = {$ckeditorConfiguration};";
         \Yii::$app->view->registerJs($script, \yii\web\View::POS_HEAD);
         return parent::beforeAction($action);
@@ -47,7 +37,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
 
         try {
             if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
+                return $this->redirect(['view','id' => $model->id]);
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -69,8 +59,6 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
      */
     public function actionCopy($id)
     {
-        Url::remember();
-
         // save new widget
         $newWidget = new WidgetContent();
         if ($newWidget->load(\Yii::$app->request->post())) {
@@ -85,7 +73,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
                 \Yii::$app->session->setFlash('error', $errorMsg . ' | ' . implode('<br>', $newWidget->getFirstErrors()));
                 \Yii::error($errorMsg, __METHOD__);
                 \Yii::error($newWidget->getErrors(), __METHOD__);
-                return $this->redirect(Url::previous());
+                return $this->redirect(['view', 'id' => $newWidget->id]);
             }
         }
 
@@ -104,7 +92,7 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
 
         // set new auto generated defaults
         $newWidget->domain_id = uniqid();
-        $newWidget->rank = 'a-'.dechex(date('U'));
+        $newWidget->rank = 'a-' . dechex(date('U'));
 
         // render copy form
         return $this->render('copy', ['model' => $newWidget, 'schema' => $this->getJsonSchema($newWidget)]);

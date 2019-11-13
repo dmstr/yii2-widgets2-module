@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     );
     ?>
-    <?php Box::begin() ?>
+    <?php Box::begin(['type'=>'solid']) ?>
     <h1>
         <?= $model->getAliasModel() ?>
         <small><?= $model->name_id ?></small>
