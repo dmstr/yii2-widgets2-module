@@ -30,7 +30,8 @@
     "scrivo/highlight.php": "~8.0 || ~9.0",
     "zhuravljov/yii2-datetime-widgets" : "^1.1.0",
     "dmstr/yii2-ajax-button": "^1.0",
-    "trntv/yii2-aceeditor": "^2.1.0"
+    "trntv/yii2-aceeditor": "^2.1.0",
+    "eluhr/yii2-sortablejs": "^0.0.3"
   },
   "autoload": {
     "psr-4": {

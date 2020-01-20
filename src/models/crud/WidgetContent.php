@@ -8,6 +8,7 @@ use hrzg\filemanager\helpers\Url;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
+use const STR_PAD_LEFT;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\Expression;
@@ -113,19 +114,21 @@ class WidgetContent extends BaseWidget
         $this->name_id = $name_id;
     }
 
+    public static function rankByData($data) {
+        // generate auto-rank, this is not meant to be unique in all cases
+        return 'a-'.str_pad($data, 4, "0", STR_PAD_LEFT).'0';
+    }
+
     /**
      * @inheritdoc
      * @return array
      */
     public function rules()
     {
-        // generate auto-rank, this is not meant to be unique in all cases
-        $rank = 'a-'.str_pad(self::find()->max('id'), 4, "0", STR_PAD_LEFT).'0';
-
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['rank', 'default', 'value' => $rank],
+                ['rank', 'default', 'value' => self::rankByData(self::find()->max('id'))],
                 [
                     'domain_id',
                     'default',

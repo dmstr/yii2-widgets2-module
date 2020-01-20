@@ -11,6 +11,7 @@ namespace hrzg\widget\assets;
 
 use dosamigos\ckeditor\CKEditorAsset;
 use dosamigos\selectize\SelectizeAsset;
+use eluhr\sortablejs\assets\SortableJsAssetBundle;
 use uran1980\yii\assets\jQueryEssential\JqueryCookieAsset;
 use yii\web\AssetBundle;
 
@@ -50,5 +51,6 @@ class WidgetAsset extends AssetBundle
         SelectizeAsset::class,
         \rmrevin\yii\fontawesome\AssetBundle::class,
         JqueryCookieAsset::class,
+        SortableJsAssetBundle::class
     ];
 }

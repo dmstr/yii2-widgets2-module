@@ -242,13 +242,16 @@ class Cell extends Widget implements ContextMenuItemsInterface
             [
                 'id' => 'cell-' . $this->id,
                 'class' => self::CSS_PREFIX . '-' . $this->id . ' ' . self::CSS_PREFIX . '-widget-container',
+                'data-widget' => 'container'
             ]
         );
+
 
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showContainerControls) {
             $html .= $this->generateCellControls();
         }
 
+        $userIsEditor = \Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showWidgetControls;
         foreach ($this->queryWidgets() as $widget) {
             $properties = Json::decode($widget->default_properties_json);
             $class = \Yii::createObject($widget->template->php_class);
@@ -261,9 +264,10 @@ class Cell extends Widget implements ContextMenuItemsInterface
             $html .= Html::beginTag('div',
                 [
                     'id' => 'widget-' . $widget->domain_id,
-                    'class' => 'hrzg-widget-widget ',
+                    'class' => 'hrzg-widget-widget',
+                    'data-widget-id' => $userIsEditor ? $widget->id : null,
                 ]);
-            if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showWidgetControls) {
+            if ($userIsEditor) {
                 $html .= $this->generateWidgetControls($widget);
             }
             $published = $this->checkPublicationStatus($widget);
@@ -440,6 +444,8 @@ JS
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
+
+        $html .= Html::button(FA::icon(FA::_ARROWS_V),['class' => 'btn btn-default', 'data-sortable' => 'vertical']);
 
         $html .= Html::endTag('div');
         return $html;
