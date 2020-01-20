@@ -25,8 +25,12 @@ document.querySelectorAll("[data-widget='container']").forEach(function (el) {
          });
 
 
-         var orderedWidgetIds = childItems.map(function (item) {
-            return item.dataset.widgetId;
+         var orderedWidgetData = [];
+         childItems.forEach(function (item) {
+            orderedWidgetData.push({
+               widgetId: item.dataset.widgetId,
+               requestParam: item.dataset.widgetRequestParam
+            })
          });
 
          var url = location.origin + '/de/widgets/default/re-order';
@@ -39,7 +43,7 @@ document.querySelectorAll("[data-widget='container']").forEach(function (el) {
             },
             body: JSON.stringify({
                containerId: containerId.replace('cell-', ''),
-               orderedWidgetIds: orderedWidgetIds
+               orderedWidgetData: orderedWidgetData
             })
          }).then(function (response) {
             if (!response.ok) {

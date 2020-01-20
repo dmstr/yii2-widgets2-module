@@ -21,7 +21,7 @@ use yii\base\Model;
 class ReOrderWidgets extends Model
 {
     public $containerId;
-    public $orderedWidgetIds = [];
+    public $orderedWidgetData = [];
 
     public function formName()
     {
@@ -37,7 +37,7 @@ class ReOrderWidgets extends Model
         $rules['required'] = [
             [
                 'containerId',
-                'orderedWidgetIds'
+                'orderedWidgetData'
             ],
             'required'
         ];
@@ -54,12 +54,13 @@ class ReOrderWidgets extends Model
         $newRank = 0;
 
         $wasSuccessful = true;
-        foreach ($this->orderedWidgetIds as $widgetContentId) {
-            $widgetModel = WidgetContent::findOne($widgetContentId);
+        foreach ($this->orderedWidgetData as $widgetContentData) {
+            $widgetModel = WidgetContent::findOne($widgetContentData['widgetId']);
             if ($widgetModel) {
                 $newRank++;
                 $widgetModel->container_id = $this->containerId;
                 $widgetModel->rank = WidgetContent::rankByData($newRank);
+                $widgetModel->request_param = $widgetContentData['requestParam'];
                 if (!$widgetModel->save()) {
                     $wasSuccessful = false;
                     break;
