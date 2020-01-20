@@ -61,6 +61,7 @@ class ReOrderWidgets extends Model
                 $widgetModel->container_id = $this->containerId;
                 $widgetModel->rank = WidgetContent::rankByData($newRank);
                 $widgetModel->request_param = $widgetContentData['requestParam'];
+                $widgetModel->route = $widgetContentData['route'];
                 if (!$widgetModel->save()) {
                     $wasSuccessful = false;
                     break;

@@ -266,7 +266,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
                     'id' => 'widget-' . $widget->domain_id,
                     'class' => 'hrzg-widget-widget',
                     'data-widget-id' => $userIsEditor ? $widget->id : null,
-                    'data-widget-request-param' => $userIsEditor ? $widget->request_param : null,
+                    'data-request-param' => $userIsEditor ? $widget->request_param : null,
+                    'data-route' => $userIsEditor ? $widget->route : null,
                 ]);
             if ($userIsEditor) {
                 $html .= $this->generateWidgetControls($widget);

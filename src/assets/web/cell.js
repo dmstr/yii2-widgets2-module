@@ -29,7 +29,8 @@ document.querySelectorAll("[data-widget='container']").forEach(function (el) {
          childItems.forEach(function (item) {
             orderedWidgetData.push({
                widgetId: item.dataset.widgetId,
-               requestParam: item.dataset.widgetRequestParam
+               requestParam: item.dataset.requestParam,
+               route: item.dataset.route
             })
          });
 
