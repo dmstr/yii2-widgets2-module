@@ -289,7 +289,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
             ['label' => $this->id]
         ];
 
-        foreach (WidgetTemplate::find()->where(['php_class' => TwigTemplate::class])->orderBy('name')->all() as $template) {
+        foreach (WidgetTemplate::twigTemplatelist() as $template) {
             $items[] = [
                 'label' => $template->name,
                 'url' => [

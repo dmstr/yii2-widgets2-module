@@ -3,8 +3,9 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\WidgetTemplate as BaseWidgetTemplate;
+use hrzg\widget\widgets\TwigTemplate;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\Expression;
@@ -36,6 +37,24 @@ class WidgetTemplate extends BaseWidgetTemplate
         );
     }
 
+	/**
+	 * List of templates
+	 * @return self[]
+	 */
+    protected static $_template_list = [];
+
+	/**
+	 * List of twig templates ordered by name
+	 * @return self[]
+	 */
+	public static function twigTemplatelist()
+	{
+		if (empty(static::$_template_list)) {
+			static::$_template_list = self::find()->where(['php_class' => TwigTemplate::class])->orderBy('name')->all();
+		}
+		return static::$_template_list;
+    }
+
     /**
      * @inheritdoc
      */
@@ -50,10 +69,10 @@ class WidgetTemplate extends BaseWidgetTemplate
                 ],
                 [
                     'json_schema',
-                    function ($attribute, $params) {
+                    function ($attribute) {
                         try {
                             Json::decode($this->$attribute);
-                        } catch (InvalidParamException $e) {
+                        } catch (InvalidArgumentException $e) {
                             $this->addError($attribute, 'Invalid JSON: '.$e->getMessage());
                         }
                     },
