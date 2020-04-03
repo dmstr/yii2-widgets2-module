@@ -2,9 +2,6 @@
 
 namespace hrzg\widget\models\crud;
 
-use dmstr\db\traits\ActiveRecordAccessTrait;
-use Faker\Provider\DateTime;
-use hrzg\filemanager\helpers\Url;
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
@@ -12,6 +9,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * Class WidgetContent
@@ -225,14 +223,14 @@ class WidgetContent extends BaseWidget
         $mapping = \Yii::$app->controller->module->frontendRouteMap[$this->route] ?? false;
 
         if ($mapping) {
-            return \yii\helpers\Url::to(
+            return Url::to(
                 [
                     '/' . $mapping,
                     'pageId' => $this->request_param,
                     '#' => 'widget-' . $this->domain_id
                 ]);
-        } else {
-            return false;
         }
+
+        return false;
     }
 }
