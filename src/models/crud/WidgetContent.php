@@ -117,47 +117,72 @@ class WidgetContent extends BaseWidget
      */
     public function rules()
     {
+        $rules = parent::rules();
         // generate auto-rank, this is not meant to be unique in all cases
-        $rank = 'a-'.str_pad(self::find()->max('id'), 4, "0", STR_PAD_LEFT).'0';
-
-        return ArrayHelper::merge(
-            parent::rules(),
+        $rules['unique-default-rank'] = [
+            'rank',
+            'default',
+            'value' => 'a-' . str_pad(self::find()->max('id'), 4, '0', STR_PAD_LEFT) . '0'
+        ];
+        $rules['unique-default-domain_id'] = [
+            'domain_id',
+            'default',
+            'value' => uniqid()
+        ];
+        $rules['match_domain_id'] = [
+            'domain_id',
+            'match',
+            'pattern' => '/[a-z0-9_-]/i'
+        ];
+        $rules['default-access_domain'] = [
+            'access_domain',
+            'default',
+            'value' => self::getDefaultAccessDomain()
+        ];
+        $rules['default-access_read'] = [
+            'access_read',
+            'default',
+            'value' => self::$_all
+        ];
+        $rules['default-access_update-delete'] = [
             [
-                ['rank', 'default', 'value' => $rank],
-                [
-                    'domain_id',
-                    'default',
-                    'value' => uniqid()
-                ],
-                [
-                    'access_domain',
-                    'default',
-                    'value' => self::getDefaultAccessDomain()
-                ],
-                [
-                    [
-                        'access_read',
-                    ],
-                    'default',
-                    'value' => self::$_all
-                ],
-                [
-                    [
-                        'access_update',
-                        'access_delete',
-                    ],
-                    'default',
-                    'value' => self::getDefaultAccessUpdateDelete()
-                ],
-                [['publish_at', 'expire_at'], 'default', 'value' => null],
-                [['publish_at', 'expire_at'], 'date', 'format' => 'yyyy-MM-dd HH:mm'],
-                ['expire_at', 'compare', 'compareAttribute' => 'publish_at', 'operator' => '>', 'type' => 'datetime'],
-            ]
-        );
+                'access_update',
+                'access_delete',
+            ],
+            'default',
+            'value' => self::getDefaultAccessUpdateDelete()
+        ];
+        $rules['default-publish-expire_at'] = [
+            [
+                'publish_at',
+                'expire_at'
+            ],
+            'default',
+            'value' => null
+        ];
+        $rules['date-publish-expire_at'] = [
+            [
+                'publish_at',
+                'expire_at'
+            ],
+            'date',
+            'format' => 'yyyy-MM-dd HH:mm'
+        ];
+        $rules['compare-expire-publish_at'] = [
+            'expire_at',
+            'compare',
+            'compareAttribute' => 'publish_at',
+            'operator' => '>',
+            'type' => 'datetime'
+        ];
+
+
+        return $rules;
     }
 
     /**
      * Global route needs empty request param
+     *
      * @param bool $insert
      *
      * @return bool
