@@ -62,7 +62,6 @@ class WidgetController extends Controller
      */
     public function actionIndex()
     {
-        Url::remember();
         $searchModel = new WidgetSearch();
         $dataProvider = $searchModel->search($_GET);
 
@@ -83,8 +82,6 @@ class WidgetController extends Controller
      */
     public function actionView($id)
     {
-        Url::remember();
-
         Tabs::rememberActiveState();
 
         return $this->render('view', [
