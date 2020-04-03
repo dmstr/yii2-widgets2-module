@@ -58,7 +58,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     <h1>
         <?= $searchModel->getAliasModel(true) ?>
         <small>
-            List
+            <?=Yii::t('widgets', 'List')?>
         </small>
     </h1>
 
@@ -167,6 +167,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                     'contentOptions' => ['nowrap' => 'nowrap'],
                 ],
                 'id',
+                'domain_id',
                 [
                     'attribute' => 'status',
                     'format' => 'raw',
@@ -193,8 +194,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                 'route',
                 'request_param',
                 'container_id',
-                /*'domain_id',*/
-                /*'rank',*/
                 [
                     'attribute' => 'default_properties_json',
                     'format' => 'raw',

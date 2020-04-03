@@ -15,29 +15,29 @@ class WidgetContent extends WidgetModel
     /**
      * {@inheritdoc}
      *
-     * @return unknown
+     * @return array
      */
     public function rules()
     {
         return [
-            [['id', 'copied_from'], 'integer'],
+            [
+                'id',
+                'integer'
+            ],
             [
                 [
                     'status',
-                    'widget_template_id',
                     'domain_id',
-                    'container_id',
-                    'rank',
+                    'status',
+                    'template.name',
                     'route',
                     'request_param',
-                    'access_owner',
+                    'container_id',
+                    'default_properties_json',
                     'access_domain',
                     'access_read',
                     'access_update',
-                    'access_delete',
-                    'created_at',
-                    'updated_at',
-                    'template.name',
+                    'access_delete'
                 ],
                 'safe',
             ],
@@ -46,13 +46,13 @@ class WidgetContent extends WidgetModel
 
     public function attributes()
     {
-        return array_merge(parent::attributes(),['template.name']);
+        return array_merge(parent::attributes(), ['template.name']);
     }
 
     /**
      * {@inheritdoc}
      *
-     * @return unknown
+     * @return array
      */
     public function scenarios()
     {
@@ -71,6 +71,7 @@ class WidgetContent extends WidgetModel
     public function search($params)
     {
         $query = WidgetModel::find();
+        $query->alias('w');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -85,6 +86,7 @@ class WidgetContent extends WidgetModel
         );
         // join for status field
         $query->joinWith('translationsMeta');
+        $query->joinWith('translations');
 
         $this->load($params);
 
@@ -94,26 +96,20 @@ class WidgetContent extends WidgetModel
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            WidgetModel::tableName() . '.id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'widget_template_id', $this->widget_template_id])
-            ->andFilterWhere(['like', 'domain_id', $this->domain_id])
-            ->andFilterWhere(['like', 'container_id', $this->container_id])
-            ->andFilterWhere(['like', 'rank', $this->rank])
-            ->andFilterWhere(['like', 'route', $this->route])
-            ->andFilterWhere(['like', 'request_param', $this->request_param])
-            ->andFilterWhere(['like', 'access_owner', $this->access_owner])
-            ->andFilterWhere(['like', 'access_domain', $this->access_domain])
-            ->andFilterWhere(['like', 'access_read', $this->access_read])
-            ->andFilterWhere(['like', 'access_update', $this->access_update])
-            ->andFilterWhere(['like', 'access_delete', $this->access_delete])
-            ->andFilterWhere(['like', 'copied_from', $this->copied_from])
-            ->andFilterWhere(['=', 'template.name', $this->getAttribute('template.name')]);
+        $query->andFilterWhere([ 'w.id' => $this->id])
+            ->andFilterWhere(['LIKE', 'status', $this->status])
+            ->andFilterWhere(['LIKE', 'domain_id', $this->domain_id])
+            ->andFilterWhere(['LIKE', 'status', $this->status])
+            ->andFilterWhere(['template.name' => $this->getAttribute('template.name')])
+            ->andFilterWhere(['LIKE', 'route', $this->route])
+            ->andFilterWhere(['LIKE', 'request_param', $this->request_param])
+            ->andFilterWhere(['LIKE', 'container_id', $this->container_id])
+            ->andFilterWhere(['LIKE', 'default_properties_json', $this->default_properties_json])
+            ->andFilterWhere(['LIKE', 'w.access_owner', $this->access_owner])
+            ->andFilterWhere(['LIKE', 'w.access_domain', $this->access_domain])
+            ->andFilterWhere(['LIKE', 'w.access_read', $this->access_read])
+            ->andFilterWhere(['LIKE', 'w.access_update', $this->access_update])
+            ->andFilterWhere(['LIKE', 'w.access_delete', $this->access_delete]);
 
         return $dataProvider;
     }

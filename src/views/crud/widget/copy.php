@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Copy');
     <?php Box::begin() ?>
     <h1>
         <?= $model->getAliasModel() ?>
-        <small><?= $model->name_id ?></small>
+        <small><?= Html::encode($model->name_id) ?></small>
     </h1>
 
     <div class="clearfix crud-navigation">

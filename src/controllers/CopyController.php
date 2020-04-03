@@ -45,8 +45,6 @@ class CopyController extends Controller
      */
     public function actionLanguage()
     {
-        Url::remember();
-
         $model = new CopyForm();
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
 

@@ -66,7 +66,6 @@ class WidgetTranslationController extends Controller
      */
     public function actionIndex()
     {
-        Url::remember();
         $searchModel = new WidgetTranslationSearch();
         $dataProvider = $searchModel->search($_GET);
 
@@ -87,8 +86,6 @@ class WidgetTranslationController extends Controller
      */
     public function actionView($id)
     {
-        Url::remember();
-
         Tabs::rememberActiveState();
 
         return $this->render('view', [
