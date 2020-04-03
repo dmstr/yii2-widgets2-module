@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
     <?php Box::begin(['type'=>'solid']) ?>
     <h1>
         <?= $model->getAliasModel() ?>
-        <small><?= $model->name_id ?></small>
+        <small><?= Html::encode($model->name_id) ?></small>
     </h1>
 
     <?= $this->blocks['crud-navigation'] ?>
