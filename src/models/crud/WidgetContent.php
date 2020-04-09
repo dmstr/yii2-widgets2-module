@@ -132,7 +132,7 @@ class WidgetContent extends BaseWidget
         $rules['match_domain_id'] = [
             'domain_id',
             'match',
-            'pattern' => '/[a-z0-9_-]/i'
+            'pattern' => '/^[a-z0-9_-]+$/i'
         ];
         $rules['default-access_domain'] = [
             'access_domain',
