@@ -89,7 +89,7 @@ JS;
 
     <?php $this->beginBlock('access') ?>
 
-    <?= \dmstr\widgets\AccessInput::widget(
+    <?= \dmstr\activeRecordPermissions\AccessInput::widget(
         [
             'form' => $form,
             'model' => $model

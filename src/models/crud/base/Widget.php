@@ -4,7 +4,7 @@
 
 namespace hrzg\widget\models\crud\base;
 
-use dmstr\db\traits\ActiveRecordAccessTrait;
+use dmstr\activeRecordPermissions\ActiveRecordAccessTrait;
 use dosamigos\translateable\TranslateableBehavior;
 use hrzg\widget\models\crud\WidgetContentTranslation;
 use hrzg\widget\models\crud\WidgetContentTranslationMeta;

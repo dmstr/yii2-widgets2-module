@@ -15,7 +15,7 @@
 namespace hrzg\widget\models\crud\base;
 
 use bedezign\yii2\audit\AuditTrailBehavior;
-use dmstr\db\traits\ActiveRecordAccessTrait;
+use dmstr\activeRecordPermissions\ActiveRecordAccessTrait;
 use hrzg\widget\models\crud\query\WidgetTranslationQuery;
 use hrzg\widget\models\crud\WidgetContent;
 use Yii;
