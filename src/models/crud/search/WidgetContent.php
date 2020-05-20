@@ -71,7 +71,6 @@ class WidgetContent extends WidgetModel
     public function search($params)
     {
         $query = WidgetModel::find();
-        $query->alias('w');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -96,7 +95,9 @@ class WidgetContent extends WidgetModel
             return $dataProvider;
         }
 
-        $query->andFilterWhere([ 'w.id' => $this->id])
+        $tableName = self::getTableSchema()->name;
+
+        $query->andFilterWhere([ $tableName.'.id' => $this->id])
             ->andFilterWhere(['LIKE', 'status', $this->status])
             ->andFilterWhere(['LIKE', 'domain_id', $this->domain_id])
             ->andFilterWhere(['LIKE', 'status', $this->status])
@@ -105,11 +106,11 @@ class WidgetContent extends WidgetModel
             ->andFilterWhere(['LIKE', 'request_param', $this->request_param])
             ->andFilterWhere(['LIKE', 'container_id', $this->container_id])
             ->andFilterWhere(['LIKE', 'default_properties_json', $this->default_properties_json])
-            ->andFilterWhere(['LIKE', 'w.access_owner', $this->access_owner])
-            ->andFilterWhere(['LIKE', 'w.access_domain', $this->access_domain])
-            ->andFilterWhere(['LIKE', 'w.access_read', $this->access_read])
-            ->andFilterWhere(['LIKE', 'w.access_update', $this->access_update])
-            ->andFilterWhere(['LIKE', 'w.access_delete', $this->access_delete]);
+            ->andFilterWhere(['LIKE', $tableName.'.access_owner', $this->access_owner])
+            ->andFilterWhere(['LIKE', $tableName.'.access_domain', $this->access_domain])
+            ->andFilterWhere(['LIKE', $tableName.'.access_read', $this->access_read])
+            ->andFilterWhere(['LIKE', $tableName.'.access_update', $this->access_update])
+            ->andFilterWhere(['LIKE', $tableName.'.access_delete', $this->access_delete]);
 
         return $dataProvider;
     }
