@@ -4,6 +4,7 @@ namespace hrzg\widget\controllers\crud;
 
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\models\crud\WidgetContent;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 
 /**
@@ -13,6 +14,21 @@ use yii\helpers\Url;
  */
 class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetController
 {
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'delete' => [
+                    'DELETE',
+                    'POST'
+                ]
+            ]
+        ];
+        return $behaviors;
+    }
 
     public function beforeAction($action)
     {

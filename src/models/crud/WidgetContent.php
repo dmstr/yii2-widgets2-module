@@ -17,6 +17,7 @@ use yii\helpers\Url;
  */
 class WidgetContent extends BaseWidget
 {
+
     /**
      * Virtual attribute generated from "domain_id"_"access_domain".
      *

@@ -13,6 +13,7 @@ use dmstr\jsoneditor\JsonEditorPluginsAsset;
 use dosamigos\ckeditor\CKEditorAsset;
 use dosamigos\selectize\SelectizeAsset;
 use uran1980\yii\assets\jQueryEssential\JqueryCookieAsset;
+use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\AssetBundle;
 
 class WidgetAsset extends AssetBundle
@@ -52,5 +53,6 @@ class WidgetAsset extends AssetBundle
         \rmrevin\yii\fontawesome\AssetBundle::class,
         JqueryCookieAsset::class,
         JsonEditorPluginsAsset::class,
+        BootstrapPluginAsset::class
     ];
 }

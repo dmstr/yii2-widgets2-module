@@ -17,7 +17,6 @@ use hrzg\widget\models\crud\WidgetContent;
 use hrzg\widget\models\crud\WidgetTemplate;
 use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
-use Yii;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
@@ -268,7 +267,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
-                $html .= Html::beginTag('div', ['class' => $visibility,]);
+                $html .= Html::beginTag('div', ['class' => [$visibility,'hrzg-widget-content-frontend']]);
                 $html .= $class->run();
                 $html .= Html::endTag('div');
             }
@@ -361,8 +360,10 @@ function(resp,status,xhr) {
     params.status = !params.status | 0;
     button.attr("data-ajax-button-params",JSON.stringify(params));
     button.toggleClass("btn-success btn-warning");
-    button.find("i").toggleClass("fa-eye fa-eye-slash")
+    button.find("i").toggleClass("fa-eye fa-eye-slash");
+    button.parent().next('.hrzg-widget-content-frontend').toggleClass('hrzg-widget-widget-invisible-frontend');
   }
+  button.button('reset');
 }
 JS
 
@@ -373,6 +374,7 @@ function(xhr) {
     button.addClass("btn-danger").html("Error");
     console.error(xhr.responseJSON)
   }
+  button.button('reset');
 }
 JS
             ,
@@ -381,7 +383,12 @@ JS
             'params' => ['status' => $newStatus],
             'options' => [
                 'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
-            ]
+                'data' => [
+                    'button' => 'loading',
+                    'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
+                    'html' => true
+                ]
+            ],
         ]);
 
 
@@ -394,7 +401,14 @@ JS
                 ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
                 [
                     'class' => 'btn  btn-danger',
-                    'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this translation?') . '',
+                    'data' => [
+                        'method' => 'delete',
+                        'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
+                        'pjax'=> '0',
+                        'params' => [
+                            'returnUrl' => Url::to('')
+                        ]
+                    ]
                 ]
             );
         } else {
@@ -405,7 +419,14 @@ JS
                     ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
                     [
                         'class' => 'btn  btn-danger',
-                        'data-confirm' => '' . \Yii::t('widgets', 'Are you sure to delete this base-item?') . '',
+                        'data' => [
+                            'method' => 'delete',
+                            'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
+                            'pjax'=> '0',
+                            'params' => [
+                                'returnUrl' => Url::to('')
+                            ]
+                        ]
                     ]
                 );
             }

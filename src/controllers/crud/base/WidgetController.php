@@ -21,8 +21,8 @@ class WidgetController extends Controller
     /**
      * @param WidgetContent $model
      *
-     * @return array|mixed
      * @throws HttpException
+     * @return array|mixed
      */
     public function getJsonSchema(WidgetContent $model)
     {
@@ -33,14 +33,14 @@ class WidgetController extends Controller
             case !empty($model->widget_template_id):
 
                 $template = WidgetTemplate::findOne($model->widget_template_id);
-                if(empty($template)) {
+                if (empty($template)) {
                     throw new HttpException(404, \Yii::t('widgets', 'Template not found'));
                 }
 
                 break;
             case \Yii::$app->request->get('Widget'):
                 $template = WidgetTemplate::findOne(\Yii::$app->request->get('Widget')['widget_template_id']);
-                if(empty($template)) {
+                if (empty($template)) {
                     throw new HttpException(404, \Yii::t('widgets', 'Template not found'));
                 }
                 break;
@@ -105,9 +105,9 @@ class WidgetController extends Controller
                 if (isset($_POST['apply'])) {
                     return $this->redirect(['update', 'id' => $model->id]);
                 } else {
-                    return $this->redirect(['view', 'id'=>$model->id]);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
-            } elseif (!\Yii::$app->request->isPost) {
+            } else if (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
         } catch (\Exception $e) {
@@ -129,6 +129,7 @@ class WidgetController extends Controller
      */
     public function actionUpdate($id)
     {
+
         $model = $this->findModel($id);
 
         // remember old model
@@ -166,9 +167,9 @@ class WidgetController extends Controller
 
             if (isset($_POST['apply'])) {
                 return $this->redirect(['update', 'id' => $model->id]);
-            } else {
-                return $this->redirect(['view', 'id'=>$model->id]);
             }
+
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -192,21 +193,20 @@ class WidgetController extends Controller
             if (!$model->delete()) {
                 throw new UserException(\Yii::t('widgets', 'Can not delete Widget.'));
             }
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
-            \Yii::$app->getSession()->addFlash('error', $msg);
+        } catch (\Throwable $e) {
+            \Yii::$app->getSession()->addFlash('error', $e->errorInfo[2] ?? $e->getMessage());
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(\Yii::$app->request->post('returnUrl') ?: ['index']);
     }
 
     /**
      * Finds the Widget model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @throws HttpException if the model cannot be found
-     *
      * @param int $id
+     *
+     * @throws HttpException if the model cannot be found
      *
      * @return WidgetContent the loaded model
      */
@@ -215,7 +215,7 @@ class WidgetController extends Controller
         if (($model = WidgetContent::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new HttpException(404, 'The requested page does not exist.');
+            throw new HttpException(404, \Yii::t('widgets', 'The requested page does not exist.'));
         }
     }
 }

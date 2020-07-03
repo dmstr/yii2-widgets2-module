@@ -10,3 +10,7 @@ function toggleCellOutline () {
 
 $(document).ready(toggleCellOutline);
 $(document).on('cookieUpdate', toggleCellOutline);
+
+$(document).on('click', '[data-button="loading"]', function () {
+   $(this).button('loading');
+});
