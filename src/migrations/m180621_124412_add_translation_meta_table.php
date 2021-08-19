@@ -12,6 +12,8 @@ class m180621_124412_add_translation_meta_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = $this->db->getDriverName() === 'mysql' ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci' : null;
+
         $this->createTable('{{%hrzg_widget_content_translation_meta}}', [
             'id' => $this->primaryKey(),
             'widget_content_id' => $this->integer()->notNull(),
@@ -19,7 +21,7 @@ class m180621_124412_add_translation_meta_table extends Migration
             'status' => 'VARCHAR(32) NOT NULL',
             'created_at' => $this->dateTime(),
             'updated_at' => $this->dateTime(),
-        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
+        ], $tableOptions);
 
         $this->addForeignKey(
             'fk_widget_widget_translation_meta_id',
