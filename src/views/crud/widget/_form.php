@@ -122,6 +122,7 @@ JS;
                         "no_additional_properties" => false,
                         'keep_oneof_values' => false,
                         'expand_height' => true,
+                        'ajax' => !empty(\Yii::$app->controller->module->allowAjaxInSchema) ? true : false,
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
