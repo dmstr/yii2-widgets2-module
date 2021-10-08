@@ -68,6 +68,13 @@ class Module extends \yii\base\Module
     ];
 
     /**
+     * set ajax option for JsonEditor
+     *
+     * @var bool
+     */
+    public $allowAjaxInSchema = false;
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool
