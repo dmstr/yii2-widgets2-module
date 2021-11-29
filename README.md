@@ -46,7 +46,12 @@ Config
 		'playgroundLayout' => '@frontend/views/layouts/main',
 		'dateBasedAccessControl' => true,
 		'datepickerMinutes' => false,
-		'timezone' => 'Europe/Berlin'
+		'timezone' => 'Europe/Berlin',
+		// set ajax option for JsonEditor
+		'allowAjaxInSchema' => false,
+        // If true, the json content properties will be validated against the json schema from the widget_template.
+        // To be BC the default is false, but you should enable it
+		'validateContentSchema' => false
 	]
 ]
 ...

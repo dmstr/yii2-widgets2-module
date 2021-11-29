@@ -74,6 +74,15 @@ class Module extends \yii\base\Module
      */
     public $allowAjaxInSchema = false;
 
+
+    /**
+     * If true, the json content properties will be validated against the json schema from the widget_template.
+     * To be BC the default is false, but you should enable it
+     *
+     * @var bool
+     */
+    public $validateContentSchema = false;
+
     /**
      * @param \yii\base\Action $action
      *
