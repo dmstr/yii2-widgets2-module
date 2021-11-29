@@ -9,8 +9,11 @@
 
 namespace hrzg\widget\models\crud;
 
+use hrzg\widget\models\crud\base\Widget;
 use hrzg\widget\models\crud\base\WidgetTranslation;
+use JsonSchema\Validator;
 use yii\caching\TagDependency;
+use yii\helpers\Json;
 
 
 /**
@@ -20,6 +23,45 @@ use yii\caching\TagDependency;
  */
 class WidgetContentTranslation extends WidgetTranslation
 {
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = parent::rules();
+        // add json schema validation if enabled in module
+        if (!empty(\Yii::$app->controller->module->validateContentSchema)) {
+            $rules['validate_properties_json'] = [
+                'default_properties_json',
+                function ($attribute) {
+
+                    /** @var Widget $baseWidget */
+                    $baseWidget = $this->getWidgetContent()->one();
+                    /** @var WidgetTemplate $tmpl */
+                    $tmpl = $baseWidget->getTemplate()->one();
+                    if (!$tmpl) {
+                        return;
+                    }
+                    $schema    = $tmpl->json_schema;
+                    $validator = new Validator();
+                    $obj       = Json::decode($schema, false);
+                    $data      = Json::decode($this->{$attribute}, false);
+                    $validator->check($data, $obj);
+
+                    if ($validator->getErrors()) {
+                        foreach ($validator->getErrors() as $error) {
+                            $this->addError($error['property'], "{$error['property']}: {$error['message']}");
+                        }
+                    }
+
+                }
+
+            ];
+        }
+        return $rules;
+    }
+
     /**
      * Global route needs empty request param
      * @param bool $insert

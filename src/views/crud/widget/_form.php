@@ -4,6 +4,7 @@
  * @var $model \hrzg\widget\models\crud\WidgetContent
  * @var $form \yii\widgets\ActiveForm
  * @var array $userAuthItems
+ * @var object $schema
  */
 
 use hrzg\widget\Module;

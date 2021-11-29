@@ -4,6 +4,7 @@
  * @var $model \hrzg\widget\models\crud\WidgetContentTranslation
  * @var $form \yii\widgets\ActiveForm
  * @var array $userAuthItems
+ * @var object $schema
  */
 
 use hrzg\widget\Module;
@@ -89,7 +90,7 @@ $userAuthItems = $model::getUsersAuthItems();
 
     <div class="row">
         <div class="col-md-9">
-
+            <?= $form->errorSummary($model) ?>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
