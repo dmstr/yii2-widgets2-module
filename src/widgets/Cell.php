@@ -310,7 +310,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
         $html .= ButtonDropdown::widget([
             'label' => FA::icon(FA::_PLUS_SQUARE) . ' ' . $this->id,
             'encodeLabel' => false,
-            'options' => ['class' => 'btn btn-primary'],
+            'options' => ['class' => 'btn btn-widget-control btn-primary'],
             'dropdown' => [
                 'options' => [
                     'class' => $dropdownClass
@@ -382,7 +382,7 @@ JS
             'url' => ['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id],
             'params' => ['status' => $newStatus],
             'options' => [
-                'class' => 'btn  btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+                'class' => 'btn  btn-widget-control btn-' . (($widget->status && $published) ? 'success' : 'warning'),
                 'data' => [
                     'button' => 'loading',
                     'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
@@ -400,7 +400,7 @@ JS
                 FA::icon(FA::_REMOVE),
                 ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
                 [
-                    'class' => 'btn  btn-danger',
+                    'class' => 'btn  btn-widget-control btn-danger',
                     'data' => [
                         'method' => 'delete',
                         'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
@@ -418,7 +418,7 @@ JS
                     FA::icon(FA::_TRASH),
                     ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
                     [
-                        'class' => 'btn  btn-danger',
+                        'class' => 'btn  btn-widget-control btn-danger',
                         'data' => [
                             'method' => 'delete',
                             'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
@@ -437,7 +437,7 @@ JS
             FA::icon(FA::_PENCIL) . '',
             ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
             [
-                'class' => 'btn  btn-primary',
+                'class' => 'btn  btn-widget-control btn-primary',
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
@@ -457,7 +457,7 @@ JS
             FA::icon($icon),
             ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
             [
-                'class' => 'btn  btn-' . $color,
+                'class' => 'btn  btn-widget-control btn-' . $color,
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
