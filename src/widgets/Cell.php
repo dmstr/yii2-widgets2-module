@@ -25,7 +25,6 @@ use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use yii\widgets\PjaxAsset;
 
 /**
  * Class Cell
@@ -470,21 +469,33 @@ JS
         );
 
         if ($this->frontendEditing) {
-            $html .= Html::button(
-                FA::icon(FA::_PENCIL_SQUARE_O) . '',
-                [
-                    'class' => 'btn btn-widget-control btn-info',
-                    'data' => [
-                        'target' => '#' . $this->modalId,
-                        'toggle' => 'modal',
-                        'widget-id' => $widget->id,
-                        'widget-template-id' => $widget->widget_template_id,
-                        'language' => \Yii::$app->language
+            $dropdownItems = [];
+            foreach (\Yii::$app->urlManager->languages as $language) {
+                $dropdownItems[] =[
+                    'label' => $language,
+                    'url' => '#',
+                    'options' => [
+                        'data' => [
+                            'target' => '#' . $this->modalId,
+                            'toggle' => 'modal',
+                            'widget-id' => $widget->id,
+                            'widget-template-id' => $widget->widget_template_id,
+                            'language' => $language
+                        ]
                     ]
+                ] ;
+            }
+            $html .= ButtonDropdown::widget([
+                'label' => FA::icon(FA::_PENCIL_SQUARE_O),
+                'encodeLabel' => false,
+                'options' => [
+                    'class' => 'btn btn-widget-control btn-info',
+                ],
+                'dropdown' => [
+                    'items' => $dropdownItems
                 ]
-            );
+            ]);
         }
-
 
 //        $html .= Html::a(
 //            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
