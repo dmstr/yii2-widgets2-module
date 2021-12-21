@@ -89,6 +89,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     public $timezone;
 
+    public $frontendEditing = true;
+
     protected static $modalRendered = false;
 
     public $modalId = 'widget-edit-modal';
@@ -466,18 +468,23 @@ JS
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
-        $html .= Html::button(
-            FA::icon(FA::_BUG) . '',
-            [
-                'class' => 'btn btn-widget-control btn-info',
-                'data' => [
-                    'target' => '#' . $this->modalId,
-                    'toggle' => 'modal',
-                    'widget-id' => $widget->id,
-                    'widget-template-id' => $widget->widget_template_id
+
+        if ($this->frontendEditing) {
+            $html .= Html::button(
+                FA::icon(FA::_PENCIL_SQUARE_O) . '',
+                [
+                    'class' => 'btn btn-widget-control btn-info',
+                    'data' => [
+                        'target' => '#' . $this->modalId,
+                        'toggle' => 'modal',
+                        'widget-id' => $widget->id,
+                        'widget-template-id' => $widget->widget_template_id,
+                        'language' => \Yii::$app->language
+                    ]
                 ]
-            ]
-        );
+            );
+        }
+
 
 //        $html .= Html::a(
 //            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
@@ -536,7 +543,7 @@ JS
     private function renderModalOnDemand()
     {
 
-        if (static::$modalRendered === false) {
+        if ($this->frontendEditing && static::$modalRendered === false) {
             static::$modalRendered = true;
             $this->view->registerJs(<<<JS
 var widgetModalEl = $("#{$this->modalId}");
@@ -545,16 +552,17 @@ widgetModalEl.on("show.bs.modal", async function(e) {
     var button = $(e.relatedTarget);
     var widgetId = button.data("widget-id");
     var widgetTemplateId = button.data("widget-template-id");
+    var language = button.data("language");
     
     async function fetchWidgetContent (id) {
-        var response = await fetch('/widgets/crud/api/widget/view?id=' + id, {
+        var response = await fetch('/' + language + '/widgets/crud/api/widget/view?id=' + id, {
             method: 'GET'
         });
         return response.json();
     }
     
     async function fetchWidgetTemplate (id) {
-        var response = await fetch('/widgets/crud/api/widget-template/view?id=' + id, {
+        var response = await fetch('/' + language + '/widgets/crud/api/widget-template/view?id=' + id, {
             method: 'GET'
         });
         return response.json();
@@ -572,6 +580,7 @@ widgetModalEl.on("show.bs.modal", async function(e) {
         
         var modalBody = $(this).find(".modal-body");
         modalBody.append("<input type='hidden' id='widget-modal-widget-id' value='" + widgetId + "' />");
+        modalBody.append("<input type='hidden' id='widget-modal-language' value='" + language + "' />");
         modalBody.append(editorEl);
         
         widgetContentJsonEditor = new JSONEditor(editorEl.get(0), {
@@ -593,10 +602,11 @@ widgetModalEl.on("hidden.bs.modal", function(e) {
 widgetModalEl.find("button[data-action='save-changes']").on("click", function(e) {
   e.preventDefault();
   var widgetId = $("#widget-modal-widget-id").val();
+  var language = $("#widget-modal-language").val();
   var button = $(this);
   button.button('saving');
   if (widgetContentJsonEditor instanceof JSONEditor) {
-      fetch('/widgets/crud/api/widget/update?id=' + widgetId, {
+      fetch('/' + language + '/widgets/crud/api/widget/update?id=' + widgetId, {
       method: 'PATCH',
       headers: {
         "Accept": "application/json",
