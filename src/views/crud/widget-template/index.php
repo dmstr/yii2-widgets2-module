@@ -49,23 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {copy} {update} {delete}',
-                    'buttons' => [
-                        'copy' => function($url, $model) {
-
-                            /** @var $model WidgetTemplate */
-                            $title = \Yii::t('widgets', 'Copy');
-                            $disabled = null;
-                            $disabledClass = null;
-                            $options = [
-                                'title'      => $title,
-                                'aria-label' => $title,
-                                'data-pjax'  => '0',
-                            ];
-                            $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-copy"]);
-                            return Html::a($icon, $url, $options);
-                        },
-                    ],
+                    'template' => '{view} {update} {delete}',
                     'urlCreator' => function ($action, $model, $key, $index) {
                         // using the column name as key, not mapping to 'id' like the standard generator
                         $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
