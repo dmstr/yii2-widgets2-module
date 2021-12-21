@@ -25,6 +25,7 @@ use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\web\View;
 
 /**
  * Class Cell
@@ -91,8 +92,10 @@ class Cell extends Widget implements ContextMenuItemsInterface
     public $frontendEditing = true;
 
     protected static $modalRendered = false;
+    protected static $sidebarRendered = false;
 
     public $modalId = 'widget-edit-modal';
+    public $asideId = 'widget-templates-aside';
 
     /**
      * @inheritdoc
@@ -119,7 +122,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
     public function run()
     {
         Url::remember('', $this->getRoute());
-        return $this->renderWidgets() . $this->renderModalOnDemand();
+        return $this->renderWidgets() . $this->renderModalOnDemand() . $this->renderSidebarOnDemand();
     }
 
     /**
@@ -259,13 +262,15 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     private function renderWidgets()
     {
-        $html = Html::beginTag(
-            'div',
-            [
-                'id' => 'cell-' . $this->id,
-                'class' => self::CSS_PREFIX . '-' . $this->id . ' ' . self::CSS_PREFIX . '-widget-container',
-            ]
-        );
+        $options = [
+            'id' => 'cell-' . $this->id,
+            'class' => self::CSS_PREFIX . '-' . $this->id . ' ' . self::CSS_PREFIX . '-widget-container',
+        ];
+        if ($this->frontendEditing) {
+            $options['ondrop'] = 'widgetTemplateDrop(event)';
+            $options['ondragover'] = 'widgetTemplateAllowDrop(event)';
+        }
+        $html = Html::beginTag('div', $options);
 
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) && $this->showContainerControls) {
             $html .= $this->generateCellControls();
@@ -471,7 +476,7 @@ JS
         if ($this->frontendEditing) {
             $dropdownItems = [];
             foreach (\Yii::$app->urlManager->languages as $language) {
-                $dropdownItems[] =[
+                $dropdownItems[] = [
                     'label' => $language,
                     'url' => '#',
                     'options' => [
@@ -483,7 +488,7 @@ JS
                             'language' => $language
                         ]
                     ]
-                ] ;
+                ];
             }
             $html .= ButtonDropdown::widget([
                 'label' => FA::icon(FA::_PENCIL_SQUARE_O),
@@ -560,12 +565,26 @@ JS
 var widgetModalEl = $("#{$this->modalId}");
 var widgetContentJsonEditor;
 widgetModalEl.on("show.bs.modal", async function(e) {
-    var button = $(e.relatedTarget);
-    var widgetId = button.data("widget-id");
-    var widgetTemplateId = button.data("widget-template-id");
-    var language = button.data("language");
+    widgetId = undefined
+    var containerId, route
+    if (window.widgetTemplateDragParams) {
+                console.log(window.widgetTemplateDragParams)
+        widgetTemplateId = window.widgetTemplateDragParams.widgetTemplateId
+        language = window.widgetTemplateDragParams.language
+        containerId = window.widgetTemplateDragParams.containerId
+        route = window.widgetTemplateDragParams.route
+    } else {
+        var button = $(e.relatedTarget);
+        var widgetId = button.data("widget-id");
+        var widgetTemplateId = button.data("widget-template-id");
+        var language = button.data("language");  
+    }
+
     
     async function fetchWidgetContent (id) {
+        if (typeof id ===  'undefined') {
+            return undefined
+        }
         var response = await fetch('/' + language + '/widgets/crud/api/widget/view?id=' + id, {
             method: 'GET'
         });
@@ -582,15 +601,13 @@ widgetModalEl.on("show.bs.modal", async function(e) {
     var widgetContentData = await fetchWidgetContent(widgetId);
     var widgetTemplateData = await fetchWidgetTemplate(widgetTemplateId);
     
-    if (widgetContentData && widgetTemplateData) {
+    var modalBody = $(this).find(".modal-body");
+    if (widgetTemplateData) {
 
-        var widgetContent = JSON.parse(widgetContentData.default_properties_json);
         var widgetSchema = JSON.parse(widgetTemplateData.json_schema);
         
         var editorEl = $("<div class='widget-content-editor'></div>");
         
-        var modalBody = $(this).find(".modal-body");
-        modalBody.append("<input type='hidden' id='widget-modal-widget-id' value='" + widgetId + "' />");
         modalBody.append("<input type='hidden' id='widget-modal-language' value='" + language + "' />");
         modalBody.append(editorEl);
         
@@ -598,8 +615,15 @@ widgetModalEl.on("show.bs.modal", async function(e) {
           theme: 'bootstrap3',
           schema: widgetSchema
         })
-        
+    }
+    if (widgetContentData) {
+        var widgetContent = JSON.parse(widgetContentData.default_properties_json);
+        modalBody.append("<input type='hidden' id='widget-modal-widget-id' value='" + widgetId + "' />");
         widgetContentJsonEditor.setValue(widgetContent);
+    } else {
+        modalBody.append("<input type='hidden' id='widget-modal-widget-template-id' value='" + widgetTemplateId + "' />");
+        modalBody.append("<input type='hidden' id='widget-modal-widget-container-id' value='" + containerId + "' />");
+        modalBody.append("<input type='hidden' id='widget-modal-widget-route' value='" + route + "' />");
     }
 });
 
@@ -614,16 +638,30 @@ widgetModalEl.find("button[data-action='save-changes']").on("click", function(e)
   e.preventDefault();
   var widgetId = $("#widget-modal-widget-id").val();
   var language = $("#widget-modal-language").val();
+  var bodyData = {default_properties_json: JSON.stringify(widgetContentJsonEditor.getValue())};
+  var method, action
+  if (widgetId) {
+    method = 'PATCH';
+    action = 'update?id=' + widgetId;
+    bodyData.status = '0';
+  } else {
+    method = 'POST';
+    action = 'create';
+    bodyData.status = '0';
+    bodyData.widget_template_id = $("#widget-modal-widget-template-id").val();
+    bodyData.container_id = $("#widget-modal-widget-container-id").val();
+    bodyData.route = $("#widget-modal-widget-route").val();
+  }
   var button = $(this);
   button.button('saving');
   if (widgetContentJsonEditor instanceof JSONEditor) {
-      fetch('/' + language + '/widgets/crud/api/widget/update?id=' + widgetId, {
-      method: 'PATCH',
+      fetch('/' + language + '/widgets/crud/api/widget/' + action, {
+      method: method,
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({default_properties_json: JSON.stringify(widgetContentJsonEditor.getValue())})
+      body: JSON.stringify(bodyData)
   })
   .then(function(reponse) {
     return reponse.json()
@@ -654,6 +692,62 @@ JS
                         'saving-text' => \Yii::t('widgets', 'Saving...')
                     ]
                 ])
+            ]);
+        }
+        return '';
+    }
+
+    private function renderSidebarOnDemand()
+    {
+        if ($this->frontendEditing && static::$sidebarRendered === false) {
+            static::$sidebarRendered = true;
+            $this->view->registerJs(<<<JS
+window.widgetTemplateDragParams = undefined;
+function widgetTemplateAllowDrop(event) {
+    event.preventDefault();
+}
+function widgetTemplateDrag(event) {
+    window.widgetTemplateDragParams = undefined
+    event.dataTransfer.setData("params", JSON.stringify($(event.target).data()));
+}
+function widgetTemplateDrop(event) {
+  event.preventDefault();
+  var data = JSON.parse(event.dataTransfer.getData("params"));
+  window.widgetTemplateDragParams = data;
+  $("#{$this->modalId}").modal('show');
+  window.widgetTemplateDragParams = undefined;
+}
+JS
+                , View::POS_HEAD);
+            $this->view->registerCss(<<<CSS
+#{$this->asideId} {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    z-index: 1100;
+}
+CSS
+            );
+            $templateModels = WidgetTemplate::find()->where(['php_class' => TwigTemplate::class])->orderBy('name')->all();
+            return Html::ul($templateModels, [
+                'tag' => 'aside',
+                'item' => function (WidgetTemplate $model) {
+                    return Html::tag('div', $model->name, [
+                        'class' => 'list-group-item',
+                        'draggable' => 'true',
+                        'ondragstart' => 'widgetTemplateDrag(event)',
+                        'data' => [
+                            'widget-template-id' => $model->id,
+                            'route' => $this->getRoute(),
+                            'container-id' => $this->id,
+                            'request-param' => \Yii::$app->request->get($this->requestParam),
+                            'language' => \Yii::$app->language
+                        ]
+                    ]);
+                },
+                'class' => 'list-group',
+                'id' => $this->asideId
             ]);
         }
         return '';
