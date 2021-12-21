@@ -286,4 +286,12 @@ class WidgetContent extends BaseWidget
 
         return false;
     }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields[] = 'default_properties_json';
+        $fields[] = 'status';
+        return $fields;
+    }
 }

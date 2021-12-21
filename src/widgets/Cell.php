@@ -20,10 +20,12 @@ use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
+use yii\bootstrap\Modal;
 use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\widgets\PjaxAsset;
 
 /**
  * Class Cell
@@ -87,6 +89,10 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     public $timezone;
 
+    protected static $modalRendered = false;
+
+    public $modalId = 'widget-edit-modal';
+
     /**
      * @inheritdoc
      */
@@ -112,7 +118,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
     public function run()
     {
         Url::remember('', $this->getRoute());
-        return $this->renderWidgets();
+        return $this->renderWidgets() . $this->renderModalOnDemand();
     }
 
     /**
@@ -127,20 +133,21 @@ class Cell extends Widget implements ContextMenuItemsInterface
         return [
             [
                 'label' => ' ' . $this->id . ' <span class="label label-info">Cell</span>',
-                'items' => [[
-                    'label' => FA::icon(FA::_PLUS),
-                    'url' => [
-                        '/' . $this->moduleName . '/crud/widget/create',
-                        'WidgetContent' => [
-                            'route' => $this->getRoute(),
-                            'container_id' => $this->id,
-                            'request_param' => \Yii::$app->request->get($this->requestParam),
+                'items' => [
+                    [
+                        'label' => FA::icon(FA::_PLUS),
+                        'url' => [
+                            '/' . $this->moduleName . '/crud/widget/create',
+                            'WidgetContent' => [
+                                'route' => $this->getRoute(),
+                                'container_id' => $this->id,
+                                'request_param' => \Yii::$app->request->get($this->requestParam),
+                            ],
+                        ],
+                        'linkOptions' => [
+                            'target' => $linkTarget,
                         ],
                     ],
-                    'linkOptions' => [
-                        'target' => $linkTarget,
-                    ],
-                ],
                     [
                         'label' => FA::icon(FA::_LIST),
                         'url' => [
@@ -155,7 +162,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
                         'linkOptions' => [
                             'target' => $linkTarget
                         ]
-                    ]]
+                    ]
+                ]
             ]
         ];
     }
@@ -166,7 +174,13 @@ class Cell extends Widget implements ContextMenuItemsInterface
     protected function queryWidgets()
     {
         $cache = \Yii::$app->cache;
-        $cacheKey = Json::encode([self::class, \Yii::$app->language, \Yii::$app->requestedRoute, \Yii::$app->request->get($this->requestParam), $this->id]);
+        $cacheKey = Json::encode([
+            self::class,
+            \Yii::$app->language,
+            \Yii::$app->requestedRoute,
+            \Yii::$app->request->get($this->requestParam),
+            $this->id
+        ]);
 
         $data = $cache->get($cacheKey);
 
@@ -186,8 +200,16 @@ class Cell extends Widget implements ContextMenuItemsInterface
             ->andWhere(
                 [
                     'container_id' => $this->id,
-                    'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
-                    '{{%hrzg_widget_content}}.access_domain' => [mb_strtolower(\Yii::$app->language), WidgetContent::$_all],
+                    'route' => [
+                        $this->getRoute(),
+                        $this->getControllerRoute(),
+                        $this->getModuleRoute(),
+                        self::GLOBAL_ROUTE
+                    ],
+                    '{{%hrzg_widget_content}}.access_domain' => [
+                        mb_strtolower(\Yii::$app->language),
+                        WidgetContent::$_all
+                    ],
                 ]);
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true])) {
             // editors see all widgets, also untranslated ones
@@ -266,8 +288,9 @@ class Cell extends Widget implements ContextMenuItemsInterface
                 $html .= $this->generateWidgetControls($widget);
             }
             $published = $this->checkPublicationStatus($widget);
-            if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
-                $html .= Html::beginTag('div', ['class' => [$visibility,'hrzg-widget-content-frontend']]);
+            if (\Yii::$app->user->can($this->rbacEditRole,
+                    ['route' => true]) || ($widget->status == 1 && $published == true)) {
+                $html .= Html::beginTag('div', ['class' => [$visibility, 'hrzg-widget-content-frontend']]);
                 $html .= $class->run();
                 $html .= Html::endTag('div');
             }
@@ -283,7 +306,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     private function generateCellControls()
     {
-        $html = Html::beginTag('div', ['class' => 'hrzg-widget-container-controls pos-' . $this->positionContainerControls]);
+        $html = Html::beginTag('div',
+            ['class' => 'hrzg-widget-container-controls pos-' . $this->positionContainerControls]);
         $items = [
             ['label' => $this->id]
         ];
@@ -348,7 +372,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
         $html .= Html::beginTag(
             'div',
             [
-                'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls, 'role' => 'group',
+                'class' => 'hrzg-widget-widget-controls btn-group pos-' . $this->positionWidgetControls,
+                'role' => 'group',
             ]);
 
         $html .= AjaxButton::widget([
@@ -385,7 +410,7 @@ JS
                 'class' => 'btn  btn-widget-control btn-' . (($widget->status && $published) ? 'success' : 'warning'),
                 'data' => [
                     'button' => 'loading',
-                    'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
+                    'loading-text' => FA::icon(FA::_SPINNER, ['class' => 'fa-spin']),
                     'html' => true
                 ]
             ],
@@ -404,7 +429,7 @@ JS
                     'data' => [
                         'method' => 'delete',
                         'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
-                        'pjax'=> '0',
+                        'pjax' => '0',
                         'params' => [
                             'returnUrl' => Url::to('')
                         ]
@@ -422,7 +447,7 @@ JS
                         'data' => [
                             'method' => 'delete',
                             'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
-                            'pjax'=> '0',
+                            'pjax' => '0',
                             'params' => [
                                 'returnUrl' => Url::to('')
                             ]
@@ -439,6 +464,18 @@ JS
             [
                 'class' => 'btn  btn-widget-control btn-primary',
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
+            ]
+        );
+        $html .= Html::button(
+            FA::icon(FA::_BUG) . '',
+            [
+                'class' => 'btn btn-widget-control btn-info',
+                'data' => [
+                    'target' => '#' . $this->modalId,
+                    'toggle' => 'modal',
+                    'widget-id' => $widget->id,
+                    'widget-template-id' => $widget->widget_template_id
+                ]
             ]
         );
 
@@ -481,16 +518,123 @@ JS
                 (
                     !$widget->publish_at
                     ||
-                    new \DateTime(null, new \DateTimeZone($this->timezone)) >= new \DateTime($widget->publish_at, new \DateTimeZone($this->timezone))
+                    new \DateTime(null, new \DateTimeZone($this->timezone)) >= new \DateTime($widget->publish_at,
+                        new \DateTimeZone($this->timezone))
                 )
                 &&
                 (
                     !$widget->expire_at
                     ||
-                    new \DateTime(null, new \DateTimeZone($this->timezone)) <= new \DateTime($widget->expire_at, new \DateTimeZone($this->timezone))
+                    new \DateTime(null, new \DateTimeZone($this->timezone)) <= new \DateTime($widget->expire_at,
+                        new \DateTimeZone($this->timezone))
                 );
         }
 
         return $published;
+    }
+
+    private function renderModalOnDemand()
+    {
+
+        if (static::$modalRendered === false) {
+            static::$modalRendered = true;
+            $this->view->registerJs(<<<JS
+var widgetModalEl = $("#{$this->modalId}");
+var widgetContentJsonEditor;
+widgetModalEl.on("show.bs.modal", async function(e) {
+    var button = $(e.relatedTarget);
+    var widgetId = button.data("widget-id");
+    var widgetTemplateId = button.data("widget-template-id");
+    
+    async function fetchWidgetContent (id) {
+        var response = await fetch('/widgets/crud/api/widget/view?id=' + id, {
+            method: 'GET'
+        });
+        return response.json();
+    }
+    
+    async function fetchWidgetTemplate (id) {
+        var response = await fetch('/widgets/crud/api/widget-template/view?id=' + id, {
+            method: 'GET'
+        });
+        return response.json();
+    }
+    
+    var widgetContentData = await fetchWidgetContent(widgetId);
+    var widgetTemplateData = await fetchWidgetTemplate(widgetTemplateId);
+    
+    if (widgetContentData && widgetTemplateData) {
+
+        var widgetContent = JSON.parse(widgetContentData.default_properties_json);
+        var widgetSchema = JSON.parse(widgetTemplateData.json_schema);
+        
+        var editorEl = $("<div class='widget-content-editor'></div>");
+        
+        var modalBody = $(this).find(".modal-body");
+        modalBody.append("<input type='hidden' id='widget-modal-widget-id' value='" + widgetId + "' />");
+        modalBody.append(editorEl);
+        
+        widgetContentJsonEditor = new JSONEditor(editorEl.get(0), {
+          theme: 'bootstrap3',
+          schema: widgetSchema
+        })
+        
+        widgetContentJsonEditor.setValue(widgetContent);
+    }
+});
+
+widgetModalEl.on("hidden.bs.modal", function(e) {
+  if (widgetContentJsonEditor instanceof JSONEditor) {
+      widgetContentJsonEditor.destroy();
+  }
+  $(e.target).find(".modal-body").html("");
+});
+
+widgetModalEl.find("button[data-action='save-changes']").on("click", function(e) {
+  e.preventDefault();
+  var widgetId = $("#widget-modal-widget-id").val();
+  var button = $(this);
+  button.button('saving');
+  if (widgetContentJsonEditor instanceof JSONEditor) {
+      fetch('/widgets/crud/api/widget/update?id=' + widgetId, {
+      method: 'PATCH',
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({default_properties_json: JSON.stringify(widgetContentJsonEditor.getValue())})
+  })
+  .then(function(reponse) {
+    return reponse.json()
+  })
+  .then(function(json) {
+      if (json) {
+           widgetModalEl.modal('hide');
+           window.location.reload();
+      }
+  })
+  .finally(function() {
+    button.button('reset');
+  });
+  } else {
+    button.button('reset');
+  }
+  
+});
+JS
+            );
+            return Modal::widget([
+                'size' => Modal::SIZE_LARGE,
+                'id' => $this->modalId,
+                'footer' => Html::button(\Yii::t('widgets', 'Save changes'), [
+                    'class' => 'btn btn-primary',
+                    'data' => [
+                        'action' => 'save-changes',
+                        'saving-text' => \Yii::t('widgets', 'Saving...')
+                    ]
+                ])
+            ]);
+        }
+        return '';
     }
 }
