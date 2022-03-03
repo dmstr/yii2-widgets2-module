@@ -38,16 +38,6 @@ JS
         <?php #TODO: need to check correct request param, currently not stored in database ?>
         <?= Html::a('View in Frontend', $model->getFrontendRoute(), ['class'=>'btn btn-primary', 'disabled'=>!$model->getFrontendRoute()]) ?>
 
-        <?php if (\Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) : ?>
-            <?php if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) : ?>
-                <?= Html::a(
-                    '<span class="glyphicon glyphicon-copy"></span> ' . \Yii::t('widgets', 'Copy'),
-                    ['copy', 'id' => $model->id],
-                    ['class' => 'btn btn-default']
-                ) ?>
-            <?php endif; ?>
-        <?php endif; ?>
-
         <?php #if ($model->hasPermission('access_delete') && \Yii::$app->user->can('widgets_crud_widget_delete', ['route' => true])) : ?>
             <?= Html::a(
                 '<span class="glyphicon glyphicon-trash"></span> ' . \Yii::t('widgets', 'Delete'),

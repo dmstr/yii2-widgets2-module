@@ -105,19 +105,6 @@ $moduleId = $this->context->module->id;
 <?php Box::begin(['title' => \Yii::t('widgets', 'Extras'), 'type' => Box::TYPE_PRIMARY]) ?>
 <div class="row">
     <div class="col-xs-12 col-sm-4 col-md-3">
-        <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) : ?>
-
-            <?php
-            echo Html::a(
-                FA::icon(FA::_COPY) . ' Copy',
-                ['/' . $moduleId . '/copy/language', '.btn'],
-                [
-                    'class' => 'btn btn-app'
-                ]
-            );
-            ?>
-
-        <?php endif; ?>
         <?php
         // check settings component and module existence
         if (\Yii::$app->has('settings') && \Yii::$app->hasModule('settings')) {

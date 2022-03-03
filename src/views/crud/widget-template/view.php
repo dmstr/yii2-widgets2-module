@@ -24,11 +24,6 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
             ['class' => 'btn btn-success']
         ) ?>
         <?= Html::a(
-            '<span class="glyphicon glyphicon-copy"></span> ' . Yii::t('widgets', 'Copy'),
-            ['copy', 'id' => $model->id],
-            ['class' => 'btn btn-default']
-        ) ?>
-        <?= Html::a(
             '<span class="glyphicon glyphicon-pencil"></span> ' . Yii::t('widgets', 'Edit'),
             ['update', 'id' => $model->id],
             ['class' => 'btn btn-info']

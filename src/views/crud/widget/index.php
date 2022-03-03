@@ -24,10 +24,6 @@ if (\Yii::$app->user->can('widgets_crud_widget_view', ['route' => true])) {
     $actionColumnTemplates[] = '{view}';
 }
 
-if (\Yii::$app->user->can('widgets_crud_widget_copy', ['route' => true])) {
-    $actionColumnTemplates[] = '{copy}';
-}
-
 if (\Yii::$app->user->can('widgets_crud_widget_update', ['route' => true])) {
     $actionColumnTemplates[] = '{update}';
 }
@@ -40,7 +36,7 @@ if (isset($actionColumnTemplates)) {
     $actionColumnTemplateString = $actionColumnTemplate;
 } else {
     Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']);
-    $actionColumnTemplateString = "{view} {copy} {update} {delete}";
+    $actionColumnTemplateString = "{view} {update} {delete}";
 }
 $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
 ?>
@@ -106,27 +102,6 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                                 'data-pjax'  => '0',
                             ];
                             $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]);
-                            return Html::a($icon, $url, $options);
-                        },
-                        'copy' => function ($url, $model, $key) {
-                            /** @var hrzg\widget\models\crud\WidgetContent $model */
-                            $title = Yii::t('widgets', 'Copy');
-                            $disabled = null;
-                            $disabledClass = null;
-                            if ( ! \Yii::$app->user->can('widgets_crud_widget_create', ['route' => true])) {
-                                $title = Yii::t('widgets', 'Copy denied');
-                                $disabled = 'disabled';
-                                $disabledClass = 'btn-default';
-                                $url = null;
-                            }
-                            $options = [
-                                'class'      => $disabledClass,
-                                'title'      => $title,
-                                'aria-label' => $title,
-                                'disabled'   => $disabled,
-                                'data-pjax'  => '0',
-                            ];
-                            $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-copy"]);
                             return Html::a($icon, $url, $options);
                         },
                         'delete' => function ($url, $model, $key) {

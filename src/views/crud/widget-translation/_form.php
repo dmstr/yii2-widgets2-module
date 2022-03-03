@@ -18,7 +18,6 @@ $userAuthItems = $model::getUsersAuthItems();
 <div class="widget-form">
 
 
-
     <?php $this->beginBlock('meta-data') ?>
 
     <?= $form->field($model, 'language')->widget(
@@ -30,22 +29,20 @@ $userAuthItems = $model::getUsersAuthItems();
         ]
     );
     ?>
-    
+
     <?php $this->endBlock() ?>
 
 
     <?php $this->beginBlock('access') ?>
-    <?php if (\Yii::$app->user->can(Module::COPY_ACCESS_PERMISSION, ['route' => true])) : ?>
-        <?= $form->field($model, 'access_domain')->widget(
-            Select2::class,
-            [
-                'data' => $model::optsAccessDomain(),
-                'options' => ['placeholder' => Yii::t('widgets', 'Select ...')],
-                'pluginOptions' => ['allowClear' => true],
-            ]
-        );
-        ?>
-    <?php endif; ?>
+    <?= $form->field($model, 'access_domain')->widget(
+        Select2::class,
+        [
+            'data' => $model::optsAccessDomain(),
+            'options' => ['placeholder' => Yii::t('widgets', 'Select ...')],
+            'pluginOptions' => ['allowClear' => true],
+        ]
+    );
+    ?>
     <?= $form->field($model, 'access_read')->widget(
         Select2::class,
         [
@@ -117,7 +114,7 @@ $userAuthItems = $model::getUsersAuthItems();
                         'label' => \Yii::t('widgets', 'Meta Data'),
                         'content' => $this->blocks['meta-data'],
                         // open content by default, if it is a new record
-                        'contentOptions' => ['class' => ($model->isNewRecord ? 'in':'')],
+                        'contentOptions' => ['class' => ($model->isNewRecord ? 'in' : '')],
                     ],
                     // another group item
                     [
@@ -127,7 +124,8 @@ $userAuthItems = $model::getUsersAuthItems();
                     ],
 
 
-            ]]); ?>
+                ]
+            ]); ?>
         </div>
     </div>
     <?php $this->endBlock(); ?>
