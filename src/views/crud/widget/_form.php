@@ -36,12 +36,14 @@ var widgets = {
         $.pjax.defaults.timeout = 5000;
         console.log('template: update',$(elem).val());
 		if (!lastTemplateId || confirm('Reset values and update template?')) {
-		    console.log('template: reload');
+            
+            var queryParams = new URLSearchParams(window.location.search);
+            var url = window.location;
+            queryParams.set("WidgetContent[widget_template_id]", $('#widgetcontent-widget_template_id').val());
 		    lastTemplateId = $(elem).val(); 
-			url = '/{$language}/{$module}/crud/widget/create?Widget[widget_template_id]='+$('#widgetcontent-widget_template_id').val();
-			//alert(url);
-			
-			
+			url = window.location.pathname + '?' + queryParams.toString();
+            console.log('template: reload');
+            
 			$.pjax.reload({
 			    url: url, 
 			    container: '#pjax-widget-form'
