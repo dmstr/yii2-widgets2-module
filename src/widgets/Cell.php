@@ -57,6 +57,16 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     public $requestParam = 'pageId';
 
+    /**
+     * if set this route will be used as default for new widgets and appended in the
+     * list of routes in the query constraint
+     *
+     * if not set, the module/controller/action route from current context
+     * is used as default route
+     *
+     * @var
+     */
+    public $route;
 
     public $showWidgetControls = true;
     public $showContainerControls = true;
@@ -111,7 +121,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     public function run()
     {
-        Url::remember('', $this->getRoute());
+        Url::remember('', $this->getActionRoute());
         return $this->renderWidgets();
     }
 
@@ -132,7 +142,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
                     'url' => [
                         '/' . $this->moduleName . '/crud/widget/create',
                         'WidgetContent' => [
-                            'route' => $this->getRoute(),
+                            'route' => $this->getDefaultRoute(),
                             'container_id' => $this->id,
                             'request_param' => \Yii::$app->request->get($this->requestParam),
                         ],
@@ -146,7 +156,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
                         'url' => [
                             '/' . $this->moduleName . '/crud/widget/index',
                             'WidgetContent' => [
-                                'route' => $this->getRoute(),
+                                'route' => $this->getDefaultRoute(),
                                 'container_id' => $this->id,
                                 'request_param' => \Yii::$app->request->get('id'),
                                 'access_domain' => \Yii::$app->language,
@@ -186,7 +196,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
             ->andWhere(
                 [
                     'container_id' => $this->id,
-                    'route' => [$this->getRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE],
+                    'route' => array_filter([$this->route, $this->getActionRoute(), $this->getControllerRoute(), $this->getModuleRoute(), self::GLOBAL_ROUTE]),
                     '{{%hrzg_widget_content}}.access_domain' => [mb_strtolower(\Yii::$app->language), WidgetContent::$_all],
                 ]);
         if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true])) {
@@ -204,10 +214,15 @@ class Cell extends Widget implements ContextMenuItemsInterface
         return $data;
     }
 
+    protected function getDefaultRoute()
+    {
+        return $this->route ? $this->route : $this->getActionRoute();
+    }
+
     /**
      * @return string
      */
-    private function getRoute()
+    private function getActionRoute()
     {
         #return '/' . \Yii::$app->controller->getRoute();
         return $this->getControllerRoute() . \Yii::$app->controller->action->id;
@@ -294,7 +309,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
                 'url' => [
                     '/' . $this->moduleName . '/crud/widget/create',
                     'WidgetContent' => [
-                        'route' => $this->getRoute(),
+                        'route' => $this->getDefaultRoute(),
                         'container_id' => $this->id,
                         'request_param' => \Yii::$app->request->get($this->requestParam),
                         'widget_template_id' => $template->id,
