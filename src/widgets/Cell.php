@@ -121,7 +121,6 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     public function run()
     {
-        Url::remember('', $this->getActionRoute());
         return $this->renderWidgets();
     }
 
