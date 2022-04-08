@@ -26,12 +26,12 @@
     "bedezign/yii2-audit": "^1.0",
     "insolita/yii2-adminlte-widgets": "^1.1.4",
     "mikehaertl/php-shellcommand": "^1.2.4",
-    "uran1980/yii2-jquery-essential": "^0.0.6",
     "scrivo/highlight.php": "~8.0 || ~9.0",
     "zhuravljov/yii2-datetime-widgets" : "^1.1.0",
     "dmstr/yii2-ajax-button": "^1.0",
     "trntv/yii2-aceeditor": "^2.1.0",
-    "justinrainbow/json-schema": "^5.2.0"
+    "justinrainbow/json-schema": "^5.2.0",
+    "bower-asset/jquery-cookie": "~1.4.1"
   },
   "autoload": {
     "psr-4": {

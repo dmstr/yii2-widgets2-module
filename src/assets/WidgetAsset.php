@@ -12,7 +12,6 @@ namespace hrzg\widget\assets;
 use dmstr\jsoneditor\JsonEditorPluginsAsset;
 use dosamigos\ckeditor\CKEditorAsset;
 use dosamigos\selectize\SelectizeAsset;
-use uran1980\yii\assets\jQueryEssential\JqueryCookieAsset;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\AssetBundle;
 
@@ -51,8 +50,8 @@ class WidgetAsset extends AssetBundle
         CKEditorAsset::class,
         SelectizeAsset::class,
         \rmrevin\yii\fontawesome\AssetBundle::class,
-        JqueryCookieAsset::class,
         JsonEditorPluginsAsset::class,
-        BootstrapPluginAsset::class
+        BootstrapPluginAsset::class,
+        JqueryCookieAsset::class
     ];
 }
