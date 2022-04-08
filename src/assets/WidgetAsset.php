@@ -51,6 +51,7 @@ class WidgetAsset extends AssetBundle
         SelectizeAsset::class,
         \rmrevin\yii\fontawesome\AssetBundle::class,
         JsonEditorPluginsAsset::class,
-        BootstrapPluginAsset::class
+        BootstrapPluginAsset::class,
+        JqueryCookieAsset::class
     ];
 }
