@@ -2,17 +2,18 @@
 
 namespace hrzg\widget\models\crud;
 
+use bedezign\yii2\audit\AuditTrailBehavior;
 use hrzg\widget\models\crud\base\WidgetTemplate as BaseWidgetTemplate;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\Expression;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 /**
  * Class WidgetTemplate
+ *
  * @package hrzg\widget\models\crud
  */
 class WidgetTemplate extends BaseWidgetTemplate
@@ -22,18 +23,15 @@ class WidgetTemplate extends BaseWidgetTemplate
      */
     public function behaviors()
     {
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                'timestamp' => [
-                    'class' => TimestampBehavior::className(),
-                    'value' => new Expression('NOW()'),
-                ],
-                'audit' => [
-                    'class' => 'bedezign\yii2\audit\AuditTrailBehavior'
-                ]
-            ]
-        );
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => TimestampBehavior::class,
+            'value' => new Expression('NOW()'),
+        ];
+        $behaviors['audit'] = [
+            'class' => AuditTrailBehavior::class
+        ];
+        return $behaviors;
     }
 
     /**
@@ -41,26 +39,23 @@ class WidgetTemplate extends BaseWidgetTemplate
      */
     public function rules()
     {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                [
-                    ['name'],
-                    'unique'
-                ],
-                [
-                    'json_schema',
-                    function ($attribute, $params) {
-                        try {
-                            Json::decode($this->$attribute);
-                        } catch (InvalidParamException $e) {
-                            $this->addError($attribute, 'Invalid JSON: '.$e->getMessage());
-                        }
-                    },
-                ],
-
-            ]
-        );
+        $rules = parent::rules();
+        $rules[] = [
+            'name',
+            'unique'
+        ];
+        $rules[] = [
+            'json_schema',
+            function ($attribute) {
+                try {
+                    Json::decode($this->$attribute);
+                } catch (InvalidArgumentException $e) {
+                    $this->addError($attribute, \Yii::t('widgets', 'Invalid JSON: {exceptionMessage}',
+                        ['exceptionMessage' => $e->getMessage()]));
+                }
+            },
+        ];
+        return $rules;
     }
 
     /**
@@ -78,6 +73,7 @@ class WidgetTemplate extends BaseWidgetTemplate
 
     /**
      * Format json_schema before saving to database
+     *
      * @param bool $insert
      *
      * @return bool
@@ -88,12 +84,18 @@ class WidgetTemplate extends BaseWidgetTemplate
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
         TagDependency::invalidate(\Yii::$app->cache, 'widgets');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterDelete()
     {
         parent::afterDelete();
