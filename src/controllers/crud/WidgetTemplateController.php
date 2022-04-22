@@ -49,4 +49,15 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
         }
         \Yii::$app->end();
     }
+
+    public function actionImport()
+    {
+        $this->view->title = \Yii::t('widgets','Import');
+        $this->view->params['breadcrumbs'][]= [
+            'label' => \Yii::t('widgets','Widget Templates'),
+            'url' => ['index']
+        ];
+        $this->view->params['breadcrumbs'][]= $this->view->title;
+        return $this->render('import');
+    }
 }

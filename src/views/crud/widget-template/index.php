@@ -33,6 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>
         </div>
+        <div class="pull-right">
+            <?= Html::a('<span class="glyphicon glyphicon-import"></span> '.\Yii::t('widgets', 'Import'), ['import'],
+                ['class' => 'btn btn-info']) ?>
+        </div>
     </div>
     <hr/>
     <div class="table-responsive">
