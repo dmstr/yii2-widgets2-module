@@ -27,6 +27,10 @@ use yii\helpers\Json;
  */
 class WidgetTemplateExport extends BaseObject
 {
+    public const META_FILE = 'meta.json';
+    public const TEMPLATE_FILE = 'template.twig';
+    public const SCHEMA_FILE = 'schema.json';
+
     /**
      * Export directory of the generated tar file
      * If this is set with an alias, it will be automatically resolved later on
@@ -41,7 +45,7 @@ class WidgetTemplateExport extends BaseObject
      *
      * @var string
      */
-    public $templateFilename = 'template.twig';
+    public $templateFilename = self::TEMPLATE_FILE;
 
     /**
      * Name of the file which is generated from the content of the attribute $json_schema from the widget template
@@ -49,7 +53,7 @@ class WidgetTemplateExport extends BaseObject
      *
      * @var string
      */
-    public $schemaFilename = 'schema.json';
+    public $schemaFilename = self::SCHEMA_FILE;
 
     /**
      * Optional name for the tar file. If not set, the value of the $name attribute from the widget template is used.
@@ -86,7 +90,7 @@ class WidgetTemplateExport extends BaseObject
      * @return void
      * @throws \yii\base\Exception if the export directory could not be created due to an php error
      * @throws \yii\base\InvalidConfigException if either the export directory is not set or the export directory cannot
-     * be set due to permission errors or the widget template is configured incorrectly
+     * be created due to permission errors or the widget template is configured incorrectly
      */
     public function init()
     {
@@ -153,7 +157,7 @@ class WidgetTemplateExport extends BaseObject
      */
     protected function getMetaFilePath(): string
     {
-        return $this->exportDirectory . DIRECTORY_SEPARATOR . 'meta.json';
+        return $this->exportDirectory . DIRECTORY_SEPARATOR . self::META_FILE;
     }
 
     /**
@@ -187,8 +191,8 @@ class WidgetTemplateExport extends BaseObject
         $phar = new \PharData($this->getTarFilePath());
         // Add generated files
         $phar->addFile($this->getTemplateFilePath(), $this->templateFilename);
-        $phar->addFile($this->getSchemaFilePath(),$this->schemaFilename);
-        $phar->addFile($this->getMetaFilePath(), 'meta.json');
+        $phar->addFile($this->getSchemaFilePath(), $this->schemaFilename);
+        $phar->addFile($this->getMetaFilePath(), self::META_FILE);
 
         // Remove generated files
         if (is_file($this->getTemplateFilePath()) && unlink($this->getTemplateFilePath()) === false) {

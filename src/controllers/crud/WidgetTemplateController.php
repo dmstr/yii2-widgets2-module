@@ -4,8 +4,10 @@ namespace hrzg\widget\controllers\crud;
 
 use hrzg\widget\assets\WidgetAsset;
 use hrzg\widget\helpers\WidgetTemplateExport;
+use hrzg\widget\models\WidgetTemplateImport;
 use yii\web\HttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * Class WidgetTemplateController
@@ -52,12 +54,24 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
 
     public function actionImport()
     {
+
+        $model = new WidgetTemplateImport();
+        if (\Yii::$app->request->isPost) {
+            $model->tarFiles = UploadedFile::getInstances($model, 'tarFiles');
+            if ($model->upload() && $model->extractFiles() && $model->import()) {
+                \Yii::$app->getSession()->addFlash('success', \Yii::t('widgets', 'Import was successful'));
+                return $this->refresh();
+            }
+        }
+
         $this->view->title = \Yii::t('widgets','Import');
         $this->view->params['breadcrumbs'][]= [
             'label' => \Yii::t('widgets','Widget Templates'),
             'url' => ['index']
         ];
         $this->view->params['breadcrumbs'][]= $this->view->title;
-        return $this->render('import');
+        return $this->render('import', [
+            'model' => $model
+        ]);
     }
 }

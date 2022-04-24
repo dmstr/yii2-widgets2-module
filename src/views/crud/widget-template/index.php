@@ -53,7 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update} {delete}',
+                    'template' => '{view} {update} {export} {delete}',
+                    'buttons' => [
+                            'export' => function ($url) {
+                                return Html::a('<span class="glyphicon glyphicon-export"></span>', $url,['data-pjax' => 0]);
+                            }
+                    ],
                     'urlCreator' => function ($action, $model, $key, $index) {
                         // using the column name as key, not mapping to 'id' like the standard generator
                         $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
