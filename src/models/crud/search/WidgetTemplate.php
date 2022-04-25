@@ -19,7 +19,7 @@ class WidgetTemplate extends WidgetTemplateModel
     {
         return [
             [['id'], 'integer'],
-            [['name', 'json_schema', 'twig_template', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'php_class', 'json_schema', 'twig_template', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
