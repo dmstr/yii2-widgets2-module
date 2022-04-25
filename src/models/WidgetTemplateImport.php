@@ -27,8 +27,6 @@ class WidgetTemplateImport extends Model
      */
     public $tarFiles;
 
-    protected $_fileInfos = [];
-
     /**
      * Import extract directory of the generated tar file
      * If this is set with an alias, it will be automatically resolved later on
