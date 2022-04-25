@@ -28,11 +28,15 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
             ['update', 'id' => $model->id],
             ['class' => 'btn btn-info']
         ) ?>
-        <?= Html::a(
-            '<span class="glyphicon glyphicon-download"></span> ' . Yii::t('widgets', 'Export'),
-            ['export', 'id' => $model->id],
-            ['class' => 'btn btn-warning']
-        ) ?>
+        <?php
+        if (Yii::$app->getUser()->can('widgets_crud_widget-template_export')) {
+            echo Html::a(
+                '<span class="glyphicon glyphicon-download"></span> ' . Yii::t('widgets', 'Export'),
+                ['export', 'id' => $model->id],
+                ['class' => 'btn btn-warning']
+            );
+        }
+        ?>
         <?= Html::a(
             '<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('widgets', 'Delete'),
             ['delete', 'id' => $model->id],

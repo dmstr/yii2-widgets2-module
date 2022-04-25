@@ -1,5 +1,4 @@
 <?php
-use hrzg\widget\models\crud\WidgetTemplate;
 use insolita\wgadminlte\Box;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -33,10 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>
         </div>
+        <?php if (Yii::$app->getUser()->can('widgets_crud_widget-template_import')): ?>
         <div class="pull-right">
             <?= Html::a('<span class="glyphicon glyphicon-import"></span> '.\Yii::t('widgets', 'Import'), ['import'],
                 ['class' => 'btn btn-info']) ?>
         </div>
+        <?php endif ?>
     </div>
     <hr/>
     <div class="table-responsive">
@@ -67,6 +68,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Url::toRoute($params);
                     },
                     'contentOptions' => ['nowrap' => 'nowrap'],
+                    'visibleButtons' => [
+                            'export' => Yii::$app->getUser()->can('widgets_crud_widget-template_export')
+                    ]
                 ],
                 'name',
                 'php_class',
