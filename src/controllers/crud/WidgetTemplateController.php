@@ -47,6 +47,9 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
 
         if (\Yii::$app->getResponse()->sendFile($export->getTarFilePath()) instanceof Response) {
             unlink($export->getTarFilePath());
+            if (!$export->cleanupTmpDirectory()) {
+                \Yii::$app->getSession()->addFlash('info', \Yii::t('widgets', 'Error while creating temporary export directory'));
+            }
         } else {
             throw new HttpException(500, \Yii::t('widgets', 'Error while downloading widget template'));
         }
@@ -59,15 +62,12 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
         $model = new WidgetTemplateImport();
         if (\Yii::$app->request->isPost) {
             $model->tarFiles = UploadedFile::getInstances($model, 'tarFiles');
-            if ($model->upload() && $model->extractFiles()) {
-                try {
-                    if ($model->import()) {
-                        \Yii::$app->getSession()->addFlash('success', \Yii::t('widgets', 'Import was successful'));
-                        return $this->refresh();
-                    }
-                } catch (WidgetTemplateCreateException $e) {
-                   $model->addError('tarFiles', $e->getMessage());
+            if ($model->uploadAndImport()) {
+                if (!$model->getTmpDirectoryWasRemoved()) {
+                    \Yii::$app->getSession()->addFlash('info', \Yii::t('widgets', 'Error while creating temporary import directory'));
                 }
+                \Yii::$app->getSession()->addFlash('success', \Yii::t('widgets', 'Import was successful'));
+                return $this->refresh();
             }
         }
 

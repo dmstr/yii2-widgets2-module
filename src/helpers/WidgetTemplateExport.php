@@ -94,11 +94,6 @@ class WidgetTemplateExport extends BaseObject
         }
 
         $this->_exportDirectory = \Yii::getAlias($this->baseExportDirectory . DIRECTORY_SEPARATOR . uniqid('widget-template-export', false));
-
-        // Create export directory if not exists
-        if (FileHelper::createDirectory($this->_exportDirectory) === false) {
-            throw new InvalidConfigException("Error while creating directory at: $this->_exportDirectory");
-        }
     }
 
     /**
@@ -118,9 +113,17 @@ class WidgetTemplateExport extends BaseObject
      *  - meta file (json): this contains some information about the export
      *
      * @return bool
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function generateTar(): bool
     {
+
+        // Create export directory if not exists
+        if (FileHelper::createDirectory($this->_exportDirectory) === false) {
+            throw new InvalidConfigException("Error while creating directory at: $this->_exportDirectory");
+        }
+
         // Remove existing tar file
         if (is_file($this->getTarFilePath()) && unlink($this->getTarFilePath()) === false) {
             return false;
@@ -134,6 +137,17 @@ class WidgetTemplateExport extends BaseObject
         $phar->addFromString(self::META_FILE, $this->metaFileContent());
 
         return true;
+    }
+
+
+    /**
+     * @return bool
+     * @throws \yii\base\ErrorException
+     */
+    public function cleanupTmpDirectory(): bool
+    {
+        FileHelper::removeDirectory($this->_exportDirectory);
+        return !is_dir($this->_exportDirectory);
     }
 
     /**
