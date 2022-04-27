@@ -4,9 +4,7 @@ namespace hrzg\widget\helpers;
 
 use hrzg\widget\models\crud\base\WidgetTemplate;
 use yii\base\BaseObject;
-use yii\base\ErrorException;
 use yii\base\InvalidConfigException;
-use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 
