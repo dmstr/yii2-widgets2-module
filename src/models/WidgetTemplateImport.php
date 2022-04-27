@@ -2,14 +2,12 @@
 
 namespace hrzg\widget\models;
 
+use hrzg\widget\exceptions\WidgetTemplateCreateException;
 use hrzg\widget\helpers\WidgetTemplateExport;
 use hrzg\widget\models\crud\WidgetTemplate;
 use hrzg\widget\widgets\TwigTemplate;
-use yii\base\ErrorException;
 use yii\base\InvalidArgumentException;
-use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 
@@ -33,36 +31,21 @@ class WidgetTemplateImport extends Model
      *
      * @var string
      */
-    public $importDirectory = '@runtime/tmp/dmstr/widgets/templates/import';
+    protected $_importDirectory;
+
+    /**
+     * @var array
+     */
+    protected $_filenames = [];
 
     /**
      * @return void
-     * @throws \yii\base\Exception if the export directory could not be created due to an php error
-     * @throws \yii\base\InvalidConfigException if either the import directory is not set or the export directory cannot
-     * be created due to permission errors
      */
     public function init()
     {
         parent::init();
 
-        // Ensure that the import directory for the generated files is set
-        if (empty($this->importDirectory)) {
-            throw new InvalidConfigException('$importDirectory must be set');
-        }
-
-        // Make sure that if an alias is set, it is resolved correctly
-        $this->importDirectory = \Yii::getAlias($this->importDirectory);
-
-        // recreate import directory
-        try {
-            FileHelper::removeDirectory($this->importDirectory);
-        } catch (ErrorException $e) {
-            \Yii::error($e->getMessage());
-            throw new InvalidConfigException("Error while recreating directory at: $this->importDirectory");
-        }
-        if (FileHelper::createDirectory($this->importDirectory) === false) {
-            throw new InvalidConfigException("Error while creating directory at: $this->importDirectory");
-        }
+        $this->_importDirectory = sys_get_temp_dir();
     }
 
     public function rules()
@@ -72,12 +55,18 @@ class WidgetTemplateImport extends Model
         ];
     }
 
+    /**
+     * @return bool
+     */
     public function upload(): bool
     {
         if ($this->validate()) {
             foreach ($this->tarFiles as $file) {
-                if ($file->saveAs($this->importDirectory . DIRECTORY_SEPARATOR . $file->baseName . '.' . $file->extension) === false) {
+                $filename = $this->_importDirectory . DIRECTORY_SEPARATOR . uniqid($file->baseName, false) . '.' . $file->extension;
+                if ($file->saveAs($filename) === false) {
                     $this->addError('tarFiles', \Yii::t('widgets', 'Error while saving file'));
+                } else {
+                    $this->_filenames[] = $filename;
                 }
             }
             return true;
@@ -86,6 +75,9 @@ class WidgetTemplateImport extends Model
         return false;
     }
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         $attributeLabels = parent::attributeLabels();
@@ -93,27 +85,23 @@ class WidgetTemplateImport extends Model
         return $attributeLabels;
     }
 
-    public function removeImportDirectory(): bool
-    {
-        try {
-            FileHelper::removeDirectory($this->importDirectory);
-            return true;
-        } catch (\ErrorException $e) {
-            \Yii::error($e->getMessage());
-            return false;
-        }
-    }
-
+    /**
+     * @param string $filepath
+     * @param string $extractDirectory
+     * @return bool
+     */
     protected function extractTar(string $filepath, string $extractDirectory): bool
     {
         return (new \PharData($filepath))->extractTo($extractDirectory);
     }
 
+    /**
+     * @return bool
+     */
     public function extractFiles(): bool
     {
-        foreach ($this->tarFiles as $file) {
-            $filepath = $this->importDirectory . DIRECTORY_SEPARATOR . $file->baseName . '.' . $file->extension;
-            if ($this->extractTar($filepath, $this->extractDirectory($file->baseName)) === false) {
+        foreach ($this->_filenames as $filename) {
+            if ($this->extractTar($filename, $this->extractDirectory($filename)) === false) {
                 $this->addError('tarFiles', \Yii::t('widgets', 'Error while extracting file'));
                 return false;
             }
@@ -121,24 +109,31 @@ class WidgetTemplateImport extends Model
         return true;
     }
 
+    /**
+     * @param string $filename
+     * @return string
+     */
     protected function extractDirectory(string $filename): string
     {
-        return $this->importDirectory . DIRECTORY_SEPARATOR . Inflector::slug(basename($filename));
+        return $this->_importDirectory . DIRECTORY_SEPARATOR . Inflector::slug(basename($filename));
     }
 
-    public function import()
+    /**
+     * @return bool
+     * @throws \hrzg\widget\exceptions\WidgetTemplateCreateException
+     * @throws \yii\db\Exception
+     */
+    public function import(): bool
     {
         $transaction = WidgetTemplate::getDb()->beginTransaction();
         if ($transaction && $transaction->getIsActive()) {
-            foreach ($this->tarFiles as $file) {
-                $extractDirectory = $this->extractDirectory($file->baseName);
+            foreach ($this->_filenames as $filename) {
+                $extractDirectory = $this->extractDirectory($filename);
                 if ($this->importTemplateByDirectory($extractDirectory) === false) {
                     $this->addError('tarFiles', \Yii::t('widgets', 'Error while importing widget template'));
                     $transaction->rollBack();
                     return false;
                 }
-
-                FileHelper::removeDirectory($extractDirectory);
             }
             $transaction->commit();
             return true;
@@ -146,6 +141,11 @@ class WidgetTemplateImport extends Model
         return false;
     }
 
+    /**
+     * @param string $extractDirectory
+     * @return bool
+     * @throws \hrzg\widget\exceptions\WidgetTemplateCreateException
+     */
     protected function importTemplateByDirectory(string $extractDirectory): bool
     {
         $meta = $this->templateMeta($extractDirectory);
@@ -160,12 +160,15 @@ class WidgetTemplateImport extends Model
         ]);
 
         if ($model->save() === false) {
-            \Yii::error($model->getErrors());
-            return false;
+            throw new WidgetTemplateCreateException(print_r($model->getErrors(), true));
         }
         return true;
     }
 
+    /**
+     * @param string $extractDirectory
+     * @return array
+     */
     protected function templateMeta(string $extractDirectory): array
     {
         $metaFilename = $extractDirectory . DIRECTORY_SEPARATOR . WidgetTemplateExport::META_FILE;
@@ -188,6 +191,10 @@ class WidgetTemplateImport extends Model
         ];
     }
 
+    /**
+     * @param string $extractDirectory
+     * @return string
+     */
     protected function templateContent(string $extractDirectory): string
     {
         $templateFilename = $extractDirectory . DIRECTORY_SEPARATOR . WidgetTemplateExport::TEMPLATE_FILE;
@@ -199,6 +206,10 @@ class WidgetTemplateImport extends Model
         return $fallbackTemplate;
     }
 
+    /**
+     * @param string $extractDirectory
+     * @return string
+     */
     protected function schemaContent(string $extractDirectory): string
     {
         $schemaFilename = $extractDirectory . DIRECTORY_SEPARATOR . WidgetTemplateExport::SCHEMA_FILE;

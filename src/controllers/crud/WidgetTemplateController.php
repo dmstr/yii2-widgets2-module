@@ -3,6 +3,7 @@
 namespace hrzg\widget\controllers\crud;
 
 use hrzg\widget\assets\WidgetAsset;
+use hrzg\widget\exceptions\WidgetTemplateCreateException;
 use hrzg\widget\helpers\WidgetTemplateExport;
 use hrzg\widget\models\WidgetTemplateImport;
 use yii\web\HttpException;
@@ -58,9 +59,15 @@ class WidgetTemplateController extends \hrzg\widget\controllers\crud\base\Widget
         $model = new WidgetTemplateImport();
         if (\Yii::$app->request->isPost) {
             $model->tarFiles = UploadedFile::getInstances($model, 'tarFiles');
-            if ($model->upload() && $model->extractFiles() && $model->import()) {
-                \Yii::$app->getSession()->addFlash('success', \Yii::t('widgets', 'Import was successful'));
-                return $this->refresh();
+            if ($model->upload() && $model->extractFiles()) {
+                try {
+                    if ($model->import()) {
+                        \Yii::$app->getSession()->addFlash('success', \Yii::t('widgets', 'Import was successful'));
+                        return $this->refresh();
+                    }
+                } catch (WidgetTemplateCreateException $e) {
+                   $model->addError('tarFiles', $e->getMessage());
+                }
             }
         }
 
