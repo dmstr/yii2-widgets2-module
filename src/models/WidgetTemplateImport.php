@@ -33,6 +33,11 @@ class WidgetTemplateImport extends Model
      *
      * @var string
      */
+    public $baseImportDirectory = '@runtime/tmp/widgets/import';
+    
+    /**
+     * @var string
+     */
     protected $_importDirectory;
 
     /**
@@ -49,7 +54,7 @@ class WidgetTemplateImport extends Model
     {
         parent::init();
 
-        $this->_importDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('widget-template-import', false);
+        $this->_importDirectory = \Yii::getAlias($this->baseImportDirectory . DIRECTORY_SEPARATOR . uniqid('widget-template-import', false));
 
         // Create export directory if not exists
         if (FileHelper::createDirectory($this->_importDirectory) === false) {
@@ -110,7 +115,7 @@ class WidgetTemplateImport extends Model
     public function extractFiles(): bool
     {
         foreach ($this->_filenames as $filename) {
-            if ($this->extractTar($filename, $this->extractDirectory($filename)) === false) {
+            if ($this->extractTar($filename, $this->getExtractDirectory($filename)) === false) {
                 $this->addError('tarFiles', \Yii::t('widgets', 'Error while extracting file'));
                 return false;
             }
@@ -122,7 +127,7 @@ class WidgetTemplateImport extends Model
      * @param string $filename
      * @return string
      */
-    protected function extractDirectory(string $filename): string
+    protected function getExtractDirectory(string $filename): string
     {
         return $this->_importDirectory . DIRECTORY_SEPARATOR . Inflector::slug(basename($filename));
     }
@@ -137,7 +142,7 @@ class WidgetTemplateImport extends Model
         $transaction = WidgetTemplate::getDb()->beginTransaction();
         if ($transaction && $transaction->getIsActive()) {
             foreach ($this->_filenames as $filename) {
-                $extractDirectory = $this->extractDirectory($filename);
+                $extractDirectory = $this->getExtractDirectory($filename);
                 if ($this->importTemplateByDirectory($extractDirectory) === false) {
                     $this->addError('tarFiles', \Yii::t('widgets', 'Error while importing widget template'));
                     $transaction->rollBack();

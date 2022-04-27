@@ -29,7 +29,15 @@ class WidgetTemplateExport extends BaseObject
 
 
     /**
+     * Export extract directory of the generated tar file
+     * If this is set with an alias, it will be automatically resolved later on
+     *
+     * @var string
+     */
+    protected $baseExportDirectory = '@runtime/tmp/widgets/export';
+    /**
      * Will be set to a tmp directory with a bit of randomness to prevent race conditions
+     *
      * @var string
      */
     protected $_exportDirectory;
@@ -85,7 +93,7 @@ class WidgetTemplateExport extends BaseObject
             $this->tarFileName = Inflector::slug($this->getWidgetTemplate()->name) . '.tar';
         }
 
-        $this->_exportDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('widget-template-export', false);
+        $this->_exportDirectory = \Yii::getAlias($this->baseExportDirectory . DIRECTORY_SEPARATOR . uniqid('widget-template-export', false));
 
         // Create export directory if not exists
         if (FileHelper::createDirectory($this->_exportDirectory) === false) {
