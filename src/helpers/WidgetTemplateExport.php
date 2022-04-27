@@ -31,29 +31,12 @@ class WidgetTemplateExport extends BaseObject
     public const TEMPLATE_FILE = 'template.twig';
     public const SCHEMA_FILE = 'schema.json';
 
-    /**
-     * Export directory of the generated tar file
-     * If this is set with an alias, it will be automatically resolved later on
-     *
-     * @var string
-     */
-    public $exportDirectory = '@runtime/tmp/dmstr/widgets/templates';
 
     /**
-     * Name of the file which is generated from the content of the attribute $twig_template from the widget template
-     * The name must contain the file extension
-     *
+     * Will be set to a tmp directory with a bit of randomness to prevent race conditions
      * @var string
      */
-    public $templateFilename = self::TEMPLATE_FILE;
-
-    /**
-     * Name of the file which is generated from the content of the attribute $json_schema from the widget template
-     * The name must not contain the file extension
-     *
-     * @var string
-     */
-    public $schemaFilename = self::SCHEMA_FILE;
+    protected $_exportDirectory;
 
     /**
      * Optional name for the tar file. If not set, the value of the $name attribute from the widget template is used.
@@ -96,11 +79,6 @@ class WidgetTemplateExport extends BaseObject
     {
         parent::init();
 
-        // Ensure that the export directory for the generated files is set
-        if (empty($this->exportDirectory)) {
-            throw new InvalidConfigException('$exportDirectory must be set');
-        }
-
         // Check if instance of widget template is not a new record or a new instance
         if ($this->widgetTemplate instanceof WidgetTemplate && $this->widgetTemplate->getIsNewRecord() === true) {
             throw new InvalidConfigException('Widget template must be saved at least once');
@@ -111,13 +89,7 @@ class WidgetTemplateExport extends BaseObject
             $this->tarFileName = Inflector::slug($this->getWidgetTemplate()->name) . '.tar';
         }
 
-        // Make sure that if an alias is set, it is resolved correctly
-        $this->exportDirectory = \Yii::getAlias($this->exportDirectory);
-
-        // Create export directory if not exists
-        if (FileHelper::createDirectory($this->exportDirectory) === false) {
-            throw new InvalidConfigException("Error while creating directory at: $this->exportDirectory");
-        }
+        $this->_exportDirectory = sys_get_temp_dir();
     }
 
     /**
@@ -127,37 +99,7 @@ class WidgetTemplateExport extends BaseObject
      */
     public function getTarFilePath(): string
     {
-        return $this->exportDirectory . DIRECTORY_SEPARATOR . $this->tarFileName;
-    }
-
-    /**
-     * Absolute file path to the template file
-     *
-     * @return string
-     */
-    protected function getTemplateFilePath(): string
-    {
-        return $this->exportDirectory . DIRECTORY_SEPARATOR . $this->templateFilename;
-    }
-
-    /**
-     * Absolute file path to the twig file
-     *
-     * @return string
-     */
-    protected function getSchemaFilePath(): string
-    {
-        return $this->exportDirectory . DIRECTORY_SEPARATOR . $this->schemaFilename;
-    }
-
-    /**
-     * Absolute file path to the meta file
-     *
-     * @return string
-     */
-    protected function getMetaFilePath(): string
-    {
-        return $this->exportDirectory . DIRECTORY_SEPARATOR . self::META_FILE;
+        return $this->_exportDirectory . DIRECTORY_SEPARATOR . $this->tarFileName;
     }
 
     /**
@@ -167,7 +109,6 @@ class WidgetTemplateExport extends BaseObject
      *  - meta file (json): this contains some information about the export
      *
      * @return bool
-     * @throws \yii\base\ErrorException
      */
     public function generateTar(): bool
     {
@@ -176,64 +117,22 @@ class WidgetTemplateExport extends BaseObject
             return false;
         }
 
-        // Generate needed files
-        if ($this->generateTemplateFile() === false) {
-            throw new ErrorException('Error while creating template file');
-        }
-        if ($this->generateSchemaFile() === false) {
-            throw new ErrorException('Error while creating schema file');
-        }
-        if ($this->generateMetaFile() === false) {
-            throw new ErrorException('Error while creating schema file');
-        }
-
         // Create the tar archive
         $phar = new \PharData($this->getTarFilePath());
-        // Add generated files
-        $phar->addFile($this->getTemplateFilePath(), $this->templateFilename);
-        $phar->addFile($this->getSchemaFilePath(), $this->schemaFilename);
-        $phar->addFile($this->getMetaFilePath(), self::META_FILE);
-
-        // Remove generated files
-        if (is_file($this->getTemplateFilePath()) && unlink($this->getTemplateFilePath()) === false) {
-            return false;
-        }
-        if (is_file($this->getSchemaFilePath()) && unlink($this->getSchemaFilePath()) === false) {
-            return false;
-        }
-        if (is_file($this->getMetaFilePath()) && unlink($this->getMetaFilePath()) === false) {
-            return false;
-        }
+        // Add files by string
+        $phar->addFromString(self::TEMPLATE_FILE, $this->getWidgetTemplate()->twig_template);
+        $phar->addFromString(self::SCHEMA_FILE, $this->getWidgetTemplate()->json_schema);
+        $phar->addFromString(self::META_FILE, $this->metaFileContent());
 
         return true;
     }
 
     /**
-     * Generate a twig file based on the value of the widget template $twig_template property
+     * Generate json file content based on the value of the widget template $json_schema property
      *
-     * @return bool
+     * @return string
      */
-    protected function generateTemplateFile(): bool
-    {
-        return file_put_contents($this->getTemplateFilePath(), $this->widgetTemplate->twig_template) !== false;
-    }
-
-    /**
-     * Generate a json file based on the value of the widget template $json_schema property
-     *
-     * @return bool
-     */
-    protected function generateSchemaFile(): bool
-    {
-        return file_put_contents($this->getSchemaFilePath(), $this->widgetTemplate->json_schema) !== false;
-    }
-
-    /**
-     * Generate a json file based on the value of the widget template $json_schema property
-     *
-     * @return bool
-     */
-    protected function generateMetaFile(): bool
+    protected function metaFileContent(): string
     {
         $data = [
             'id' => $this->getWidgetTemplate()->id,
@@ -244,7 +143,7 @@ class WidgetTemplateExport extends BaseObject
             'exported_at' => date('Y-m-d H:i:s'),
             'download_url' => \Yii::$app->getRequest()->getAbsoluteUrl()
         ];
-        return file_put_contents($this->getMetaFilePath(), Json::encode($data)) !== false;
+        return Json::encode($data);
     }
 
 }
