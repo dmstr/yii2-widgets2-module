@@ -7,7 +7,9 @@ use hrzg\widget\helpers\WidgetTemplateExport;
 use hrzg\widget\models\crud\WidgetTemplate;
 use hrzg\widget\widgets\TwigTemplate;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 
@@ -40,12 +42,19 @@ class WidgetTemplateImport extends Model
 
     /**
      * @return void
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {
         parent::init();
 
-        $this->_importDirectory = sys_get_temp_dir();
+        $this->_importDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('widget-template-import', false);
+
+        // Create export directory if not exists
+        if (FileHelper::createDirectory($this->_importDirectory) === false) {
+            throw new InvalidConfigException("Error while creating directory at: $this->_importDirectory");
+        }
     }
 
     public function rules()

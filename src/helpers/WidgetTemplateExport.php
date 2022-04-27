@@ -5,15 +5,13 @@ namespace hrzg\widget\helpers;
 use hrzg\widget\models\crud\base\WidgetTemplate;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
+use yii\helpers\FileHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 
 /**
  * --- PUBLIC PROPERTIES ---
  *
- * @property string $exportDirectory
- * @property string $templateFilename
- * @property string $schemaFilename
  * @property-write  WidgetTemplate $widgetTemplate
  * @property string $tarFileName
  *
@@ -87,7 +85,12 @@ class WidgetTemplateExport extends BaseObject
             $this->tarFileName = Inflector::slug($this->getWidgetTemplate()->name) . '.tar';
         }
 
-        $this->_exportDirectory = sys_get_temp_dir();
+        $this->_exportDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('widget-template-export', false);
+
+        // Create export directory if not exists
+        if (FileHelper::createDirectory($this->_exportDirectory) === false) {
+            throw new InvalidConfigException("Error while creating directory at: $this->_exportDirectory");
+        }
     }
 
     /**
