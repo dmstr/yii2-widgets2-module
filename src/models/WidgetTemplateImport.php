@@ -147,17 +147,20 @@ class WidgetTemplateImport extends Model
     {
         $transaction = WidgetTemplate::getDb()->beginTransaction();
         if ($transaction && $transaction->getIsActive()) {
-            $errors = false;
+            $errors = true;
             foreach ($this->_filenames as $filename) {
-                if (!$this->importTemplateByDirectory($filename)) {
+                if ($this->importTemplateByDirectory($filename)) {
+                    $errors = false;
+                } else {
                     $errors = true;
-                    $transaction->rollBack();
                     break;
                 }
             }
             if (!$errors) {
                 $transaction->commit();
                 return true;
+            } else {
+                $transaction->rollBack();
             }
         }
         return false;
