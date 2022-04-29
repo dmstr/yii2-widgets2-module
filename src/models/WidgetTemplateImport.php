@@ -2,7 +2,6 @@
 
 namespace hrzg\widget\models;
 
-use hrzg\widget\exceptions\WidgetTemplateCreateException;
 use hrzg\widget\helpers\WidgetTemplateExport;
 use hrzg\widget\models\crud\WidgetTemplate;
 use hrzg\widget\widgets\TwigTemplate;
@@ -141,28 +140,25 @@ class WidgetTemplateImport extends Model
 
     /**
      * @return bool
-     * @throws \yii\db\Exception
      */
     protected function import(): bool
     {
         $transaction = WidgetTemplate::getDb()->beginTransaction();
-        if ($transaction && $transaction->getIsActive()) {
-            $errors = true;
-            foreach ($this->_filenames as $filename) {
-                if ($this->importTemplateByDirectory($filename)) {
-                    $errors = false;
-                } else {
-                    $errors = true;
-                    break;
+        try {
+            if ($transaction && $transaction->getIsActive()) {
+                foreach ($this->_filenames as $filename) {
+                    if (! $this->importTemplateByDirectory($filename)) {
+                        throw new \Exception('Error while importing files');
+                    }
                 }
             }
-            if (!$errors) {
-                $transaction->commit();
-                return true;
-            } else {
-                $transaction->rollBack();
-            }
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            \Yii::error($e->getMessage());
+            $this->addError('tarFiles', $e->getMessage());
         }
+        $transaction->rollBack();
         return false;
     }
 
