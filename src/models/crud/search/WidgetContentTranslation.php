@@ -24,6 +24,7 @@ class WidgetContentTranslation extends WidgetTranslationModel
             [
                 [
                     'widget_content_id',
+                    'default_properties_json',
                     'language',
                     'access_owner',
                     'access_domain',

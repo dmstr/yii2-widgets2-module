@@ -129,6 +129,13 @@ $moduleId = $this->context->module->id;
                 <?php
             }
         } ?>
+        <?php
+        if (Yii::$app->getUser()->can('widgets_crud_widget-template_import')) {
+            echo Html::a(FA::icon(FA::_UPLOAD) . ' ' . \Yii::t('widgets', 'Import'),
+                ['crud/widget-template/import'],
+                ['class' => 'btn btn-app']);
+        }
+        ?>
     </div>
 </div>
 <?php Box::end() ?>
