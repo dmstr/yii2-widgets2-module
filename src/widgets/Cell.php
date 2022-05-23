@@ -135,7 +135,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
         $linkTarget = \Yii::$app->params['backend.iframe.name'] ?? '_self';
         return [
             [
-                'label' => ' ' . $this->id . ' <span class="label label-info">Cell</span>',
+                'label' => ' ' . $this->id . ' <span class="label label-info">' . \Yii::t('widgets', 'Cell') . '</span>',
                 'items' => [[
                     'label' => FA::icon(FA::_PLUS),
                     'url' => [
