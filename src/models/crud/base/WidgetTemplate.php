@@ -13,6 +13,7 @@ use Yii;
  * @property string $name
  * @property string $json_schema
  * @property string $twig_template
+ * @property bool $hide_in_list_selection
  */
 abstract class WidgetTemplate extends \yii\db\ActiveRecord
 {
@@ -55,7 +56,8 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'php_class', 'json_schema'], 'required'],
+            [['name', 'php_class', 'json_schema','hide_in_list_selection'], 'required'],
+            [['hide_in_list_selection'], 'boolean'],
             [['json_schema', 'twig_template'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
@@ -72,6 +74,7 @@ abstract class WidgetTemplate extends \yii\db\ActiveRecord
             'name' => Yii::t('widgets', 'Name'),
             'json_schema' => Yii::t('widgets', 'Json Schema'),
             'twig_template' => Yii::t('widgets', 'Twig Template'),
+            'hide_in_list_selection' => Yii::t('widgets', 'Hide In List Selection'),
             'created_at' => Yii::t('widgets', 'Created At'),
             'updated_at' => Yii::t('widgets', 'Updated At'),
         ];

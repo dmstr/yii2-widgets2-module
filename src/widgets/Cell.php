@@ -135,7 +135,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
         $linkTarget = \Yii::$app->params['backend.iframe.name'] ?? '_self';
         return [
             [
-                'label' => ' ' . $this->id . ' <span class="label label-info">Cell</span>',
+                'label' => ' ' . $this->id . ' <span class="label label-info">' . \Yii::t('widgets', 'Cell') . '</span>',
                 'items' => [[
                     'label' => FA::icon(FA::_PLUS),
                     'url' => [
@@ -302,7 +302,12 @@ class Cell extends Widget implements ContextMenuItemsInterface
             ['label' => $this->id]
         ];
 
-        foreach (WidgetTemplate::find()->where(['php_class' => TwigTemplate::class])->orderBy('name')->all() as $template) {
+        $templates = WidgetTemplate::find()
+            ->where(['php_class' => TwigTemplate::class])
+            ->andWhere(['hide_in_list_selection' => WidgetTemplate::IS_VISIBLE_IN_LIST])
+            ->orderBy('name')
+            ->all();
+        foreach ($templates as $template) {
             $items[] = [
                 'label' => $template->name,
                 'url' => [
