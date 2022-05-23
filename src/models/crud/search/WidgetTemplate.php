@@ -19,7 +19,7 @@ class WidgetTemplate extends WidgetTemplateModel
     {
         return [
             [['id'], 'integer'],
-            [['name', 'json_schema', 'twig_template', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'json_schema', 'twig_template', 'created_at', 'updated_at', 'php_class', 'hide_in_list_selection'], 'safe'],
         ];
     }
 
@@ -63,7 +63,9 @@ class WidgetTemplate extends WidgetTemplateModel
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'json_schema', $this->json_schema])
-            ->andFilterWhere(['like', 'twig_template', $this->twig_template]);
+            ->andFilterWhere(['like', 'twig_template', $this->twig_template])
+            ->andFilterWhere(['like', 'php_class', $this->php_class])
+            ->andFilterWhere(['like', 'hide_in_list_selection', $this->hide_in_list_selection]);
 
         $query->orderBy('name');
 

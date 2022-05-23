@@ -17,6 +17,10 @@ use yii\helpers\Json;
  */
 class WidgetTemplate extends BaseWidgetTemplate
 {
+
+    public const IS_VISIBLE_IN_LIST = 0;
+    public const IS_HIDDEN_IN_LIST = 1;
+
     /**
      * @inheritdoc
      */
@@ -58,7 +62,11 @@ class WidgetTemplate extends BaseWidgetTemplate
                         }
                     },
                 ],
-
+                [
+                    'hide_in_list_selection',
+                    'in',
+                    'range' => [self::IS_HIDDEN_IN_LIST, self::IS_VISIBLE_IN_LIST]
+                ]
             ]
         );
     }
