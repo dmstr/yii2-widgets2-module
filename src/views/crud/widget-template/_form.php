@@ -55,6 +55,8 @@
                 ['mode' => 'twig', 'containerOptions' => ['style' => 'height: 800px;']]
             ) ?>
         <?php $this->endBlock() ?>
+
+        <?php echo $form->field($model,'hide_in_list_selection')->checkbox() ?>
     </p>
     <?php $this->endBlock(); ?>
     <?= $this->blocks['main'] ?>

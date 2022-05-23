@@ -1,4 +1,5 @@
 <?php
+
 use hrzg\widget\models\crud\WidgetTemplate;
 use insolita\wgadminlte\Box;
 use yii\grid\GridView;
@@ -19,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Box::begin() ?>
     <?php Pjax::begin(
         [
-            'id'                 => 'widget-template-main',
+            'id' => 'widget-template-main',
             'enableReplaceState' => false,
-            'linkSelector'       => '#pjax-main ul.pagination a, th a',
+            'linkSelector' => '#pjax-main ul.pagination a, th a',
         ]
     ) ?>
     <h1>
@@ -30,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </h1>
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> '.\Yii::t('widgets', 'New'), ['create'],
+            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . \Yii::t('widgets', 'New'), ['create'],
                 ['class' => 'btn btn-success']) ?>
         </div>
     </div>
@@ -52,15 +53,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view} {update} {delete}',
                     'urlCreator' => function ($action, $model, $key, $index) {
                         // using the column name as key, not mapping to 'id' like the standard generator
-                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
-                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id.'/'.$action : $action;
+                        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string)$key];
+                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
 
                         return Url::toRoute($params);
                     },
                     'contentOptions' => ['nowrap' => 'nowrap'],
                 ],
                 'name',
-                'php_class',
+                [
+                    'attribute' => 'php_class',
+                    'filter' => $searchModel->optPhpClass()
+                ],
+                [
+                    'attribute' => 'hide_in_list_selection',
+                    'filter' => [
+                        WidgetTemplate::IS_VISIBLE_IN_LIST => Yii::t('widgets', 'Visible'),
+                        WidgetTemplate::IS_HIDDEN_IN_LIST => Yii::t('widgets', 'Hidden'),
+                    ],
+                    'value' => function ($model) {
+                        return $model->hide_in_list_selection === WidgetTemplate::IS_VISIBLE_IN_LIST ? Yii::t('widgets', 'Visible') : Yii::t('widgets', 'Hidden');
+                    }
+                ]
             ],
         ]); ?>
     </div>

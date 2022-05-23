@@ -4,6 +4,7 @@
  * @var hrzg\widget\models\crud\WidgetTemplate $model
  */
 use dmstr\bootstrap\Tabs;
+use hrzg\widget\models\crud\WidgetTemplate;
 use insolita\wgadminlte\Box;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -78,6 +79,12 @@ $this->params['breadcrumbs'][] = Yii::t('widgets', 'View');
                     'attribute' => 'twig_template',
                     'format'    => 'html',
                     'value'     => '<pre>' . Html::encode($model->twig_template) . '</pre>'
+                ],
+                [
+                    'attribute' => 'hide_in_list_selection',
+                    'value' => function ($model) {
+                        return $model->hide_in_list_selection === WidgetTemplate::IS_VISIBLE_IN_LIST ? Yii::t('widgets', 'Visible') : Yii::t('widgets', 'Hidden');
+                    }
                 ],
                 'created_at',
                 'updated_at',
