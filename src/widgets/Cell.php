@@ -20,6 +20,7 @@ use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
 use yii\bootstrap\ButtonDropdown;
+use yii\bootstrap\Modal;
 use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -98,6 +99,16 @@ class Cell extends Widget implements ContextMenuItemsInterface
     public $timezone;
 
     /**
+     * @var bool
+     */
+    protected $_enableFrontendEditing = false;
+
+    /**
+     * @var string
+     */
+    protected $_frontendEditingModalId;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -111,6 +122,11 @@ class Cell extends Widget implements ContextMenuItemsInterface
             $this->timezone = \Yii::$app->getModule($this->moduleName)->timezone;
         }
 
+        $this->_enableFrontendEditing = \Yii::$app->getModule($this->moduleName)->enableFrontendEditing;
+        if ($this->_enableFrontendEditing) {
+            $this->_frontendEditingModalId = $this->id . '-edit-modal';
+        }
+
         parent::init();
     }
 
@@ -121,7 +137,20 @@ class Cell extends Widget implements ContextMenuItemsInterface
      */
     public function run()
     {
-        return $this->renderWidgets();
+        $html = $this->renderWidgets();
+        if ($this->_enableFrontendEditing) {
+            $html .= $this->renderModal();
+        }
+        return $html;
+    }
+
+    protected function renderModal(): string {
+        return Modal::widget([
+            'id' => $this->_frontendEditingModalId,
+            'size' => Modal::SIZE_LARGE,
+            'header' => '<h4 class="modal-title"></h4>',
+            'footer' => Html::submitButton(\Yii::t('widgets','{icon} Apply', ['icon' => FA::icon(FA::_SAVE)]), ['class' => 'btn btn-success'])
+        ]);
     }
 
     /**
@@ -452,14 +481,19 @@ JS
         }
 
         ##$published = $this->checkPublicationStatus($widget);
-        $html .= Html::a(
-            FA::icon(FA::_PENCIL) . '',
-            ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
-            [
-                'class' => 'btn  btn-widget-control btn-primary',
-                'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
-            ]
-        );
+        if ($this->_enableFrontendEditing) {
+            $html .= $this->renderModalToggleButton($widget);
+        } else {
+            $html .= Html::a(
+                FA::icon(FA::_PENCIL),
+                ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
+                [
+                    'class' => 'btn  btn-widget-control btn-primary',
+                    'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
+                ]
+            );
+        }
+
 
 //        $html .= Html::a(
 //            FA::icon((($widget->status && $published) ? FA::_EYE : FA::_EYE_SLASH)) . '',
@@ -511,5 +545,82 @@ JS
         }
 
         return $published;
+    }
+
+    protected function renderModalToggleButton(WidgetContent $widget): string
+    {
+        $allowAjax = !empty(\Yii::$app->controller->module->allowAjaxInSchema) ? 1 : 0;
+        $postContentUrl = Url::to(['/' . $this->moduleName . '/crud/api/widget/update', 'id' => $widget->id]);
+        return AjaxButton::widget([
+            'content' => FA::icon(FA::_PENCIL),
+            'successExpression' => <<<JS
+function(resp,status,xhr) {
+  if (xhr.status === 200) {
+      var modalId = '$this->_frontendEditingModalId';
+      var editorId = modalId + '-editor';
+      var schema = JSON.parse(resp.json_schema);
+      var title = resp.name;
+      var value = '$widget->default_properties_json';
+      var postContentUrl = '$postContentUrl';
+      $('#' + modalId + ' .modal-title').html(title);
+      $('#' + modalId + ' .modal-body').html('<div id="' + editorId + '"></div>')
+      var editor = new JSONEditor(document.getElementById(editorId), {
+          schema: schema,
+          theme: 'bootstrap3',
+          disable_collapse: true,
+          disable_properties: false,
+          no_additional_properties: false,
+          keep_oneof_values: false,
+          expand_height: true,
+          ajax: $allowAjax
+      });
+      editor.on('ready',() => {
+        editor.setValue(JSON.parse(value))
+      });
+      var modalEl = $('#' + modalId);
+      $('#' + modalId + ' .modal-footer button[type="submit"]').on('click', function(e) {
+        e.preventDefault();
+        fetch(postContentUrl, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({default_properties_json: JSON.stringify(editor.getValue())})
+        }).then(function(response) {
+            return response.json()
+        }).then(function() {
+            window.location.reload();
+        }).finally(function() {
+            modalEl.modal('hide');
+        });
+      });
+      modalEl.modal('show');
+  }
+  button.button('reset');
+}
+JS
+
+            ,
+            'errorExpression' => <<<JS
+function(xhr) {
+  if (xhr.status === 404) {
+    button.addClass("btn-danger").html("Error");
+  }
+  button.button('reset');
+}
+JS
+            ,
+            'method' => 'get',
+            'url' => ['/' . $this->moduleName . '/crud/api/widget-template/view', 'id' => $widget->widget_template_id],
+            'options' => [
+                'class' => 'btn  btn-widget-control btn-primary',
+                'data' => [
+                    'button' => 'loading',
+                    'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
+                    'html' => true
+                ]
+            ],
+        ]);
     }
 }

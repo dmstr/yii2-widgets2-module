@@ -79,6 +79,13 @@ class Module extends \yii\base\Module
     public $validateContentSchema = false;
 
     /**
+     * If true, this options allows the user to edit content directly
+     *
+     * @var bool
+     */
+    public $enableFrontendEditing = false;
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool
