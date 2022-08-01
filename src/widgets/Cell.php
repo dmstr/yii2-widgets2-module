@@ -402,6 +402,7 @@ JS
             'params' => ['status' => $newStatus],
             'options' => [
                 'class' => 'btn  btn-widget-control btn-' . (($widget->status && $published) ? 'success' : 'warning'),
+                'aria-label' => \Yii::t('widgets', 'Toggle visibility status'),
                 'data' => [
                     'button' => 'loading',
                     'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
@@ -420,6 +421,7 @@ JS
                 ['/' . $this->moduleName . '/crud/widget-translation/delete', 'id' => $widget->getTranslation()->id],
                 [
                     'class' => 'btn  btn-widget-control btn-danger',
+                    'aria-label' => \Yii::t('widgets', 'Delete translation'),
                     'data' => [
                         'method' => 'delete',
                         'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
@@ -438,6 +440,7 @@ JS
                     ['/' . $this->moduleName . '/crud/widget/delete', 'id' => $widget->id],
                     [
                         'class' => 'btn  btn-widget-control btn-danger',
+                        'aria-label' => \Yii::t('widgets', 'Delete Widget'),
                         'data' => [
                             'method' => 'delete',
                             'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
@@ -457,6 +460,7 @@ JS
             ['/' . $this->moduleName . '/crud/widget/update', 'id' => $widget->id],
             [
                 'class' => 'btn  btn-widget-control btn-primary',
+                'aria-label' => \Yii::t('widgets', 'Update Widget'),
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );
@@ -477,6 +481,7 @@ JS
             ['/' . $this->moduleName . '/crud/widget/view', 'id' => $widget->id],
             [
                 'class' => 'btn  btn-widget-control btn-' . $color,
+                'aria-label' => \Yii::t('widgets', 'View Widget'),
                 'target' => \Yii::$app->params['backend.iframe.name'] ?? '_self'
             ]
         );

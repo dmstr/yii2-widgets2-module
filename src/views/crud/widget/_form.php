@@ -120,6 +120,7 @@ JS;
                     'schema' => $schema,
                     'clientOptions' => [
                         'theme' => 'bootstrap3',
+                        'iconlib' => 'fontawesome4',
                         'disable_collapse' => true,
                         'disable_properties' => false,
                         "no_additional_properties" => false,
