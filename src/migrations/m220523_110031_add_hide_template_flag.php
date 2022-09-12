@@ -13,7 +13,7 @@ class m220523_110031_add_hide_template_flag extends Migration
     public function safeUp()
     {
         $this->addColumn('{{%hrzg_widget_template}}', 'hide_in_list_selection',
-            $this->boolean()->notNull()->defaultValue(0)->after('twig_template'));
+            $this->boolean()->notNull()->defaultValue(false)->after('twig_template'));
     }
 
     /**
