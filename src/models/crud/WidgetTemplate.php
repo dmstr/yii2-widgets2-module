@@ -18,8 +18,8 @@ use yii\helpers\Json;
 class WidgetTemplate extends BaseWidgetTemplate
 {
 
-    public const IS_VISIBLE_IN_LIST = 0;
-    public const IS_HIDDEN_IN_LIST = 1;
+    public const IS_VISIBLE_IN_LIST = false;
+    public const IS_HIDDEN_IN_LIST = true;
 
     /**
      * @inheritdoc
