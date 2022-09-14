@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         WidgetTemplate::IS_HIDDEN_IN_LIST => Yii::t('widgets', 'Hidden'),
                     ],
                     'value' => function ($model) {
-                        return $model->hide_in_list_selection === WidgetTemplate::IS_VISIBLE_IN_LIST ? Yii::t('widgets', 'Visible') : Yii::t('widgets', 'Hidden');
+                        return (bool)$model->hide_in_list_selection === WidgetTemplate::IS_VISIBLE_IN_LIST ? Yii::t('widgets', 'Visible') : Yii::t('widgets', 'Hidden');
                     }
                 ]
             ],
