@@ -4,7 +4,7 @@
  * @var \hrzg\widget\models\crud\WidgetContentTranslation $model
  */
 
-use devgroup\jsoneditor\Jsoneditor;
+use kdn\yii2\JsonEditor;
 use Highlight\Highlighter;
 use hrzg\widget\Module;
 use insolita\wgadminlte\Box;
@@ -87,10 +87,11 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'View');
             [
                 'attribute' => 'default_properties_json',
                 'format' => 'raw',
+                'headerOptions' => ['style' => 'min-width: 600px'],
                 'value' => Jsoneditor::widget([
                     'name' => '_display',
                     'value' => $model->default_properties_json,
-                    'editorOptions' => [
+                    'clientOptions' => [
                         'mode' => 'view',
                         'modes' => [
                             'view',

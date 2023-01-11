@@ -4,7 +4,7 @@
  * @var \hrzg\widget\models\crud\WidgetContent $model
  */
 
-use devgroup\jsoneditor\Jsoneditor;
+use kdn\yii2\JsonEditor;
 use dmstr\bootstrap\Tabs;
 use Highlight\Highlighter;
 use hrzg\widget\Module;
@@ -111,17 +111,18 @@ JS
             [
                 'attribute' => 'default_properties_json',
                 'format' => 'raw',
+                'headerOptions' => ['style' => 'min-width: 600px'],
                 'value' => Jsoneditor::widget([
                     'name' => '_display',
                     'value' => $model->default_properties_json,
-                    'editorOptions' => [
+                    'clientOptions' => [
                         'mode' => 'view',
                         'modes' => [
                             'view',
                             'code'
                         ]
                     ]
-                ]),
+                ])
             ],
             'domain_id',
             'name_id',
@@ -169,18 +170,13 @@ JS
             [
                 'attribute' => 'default_properties_json',
                 'format' => 'raw',
+                'headerOptions' => ['style' => 'min-width: 600px'],
                 'value' => function ($model) {
-                    return \devgroup\jsoneditor\Jsoneditor::widget([
+                    return Jsoneditor::widget([
                         'name' => '_display',
                         'value' => $model->default_properties_json,
-                        'options' => [
-                            'style' => [
-                                'width' => '600px',
-                            ]
-                        ],
-                        'editorOptions' => [
+                        'clientOptions' => [
                             'mode' => 'view',
-
                             'modes' => [
                                 'view',
                                 'code'
