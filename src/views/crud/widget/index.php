@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use kdn\yii2\JsonEditor;
 
 $this->title = $searchModel->getAliasModel(true);
 $this->params['breadcrumbs'][] = $this->title;
@@ -172,23 +173,20 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                 [
                     'attribute' => 'default_properties_json',
                     'format' => 'raw',
-                    'value' => function ($model) { return \devgroup\jsoneditor\Jsoneditor::widget([
-                        'name' => '_display',
-                        'value' => $model->default_properties_json,
-                        'options' => [
-                            'style' => [
-                                'width' => '600px',
+                    'headerOptions' => ['style' => 'min-width: 600px'],
+                    'value' => function ($model) {
+                        return Jsoneditor::widget([
+                            'name' => '_display',
+                            'value' => $model->default_properties_json,
+                            'clientOptions' => [
+                                'mode' => 'view',
+                                'modes' => [
+                                    'view',
+                                    'code'
                                 ]
-                        ],
-                        'editorOptions' => [
-                            'mode' => 'view',
-
-                            'modes' => [
-                                'view',
-                                'code'
                             ]
-                        ]
-                    ]);},
+                        ]);
+                    }
                 ],
                 'access_domain',
                 /*'access_owner',*/
