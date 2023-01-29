@@ -3,7 +3,6 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
-use hrzg\widget\Module;
 use hrzg\widget\widgets\Cell;
 use JsonSchema\Validator;
 use yii\behaviors\TimestampBehavior;
@@ -35,6 +34,11 @@ class WidgetContent extends BaseWidget
     public $timezone;
 
     /**
+     * @var string
+     */
+    public $module = 'widgets';
+
+    /**
      * @inheritdoc
      * @return array
      */
@@ -59,7 +63,7 @@ class WidgetContent extends BaseWidget
         parent::init();
 
         if ($this->timezone === null) {
-            $this->timezone = Module::getInstance()->timezone;
+            $this->timezone = \Yii::$app->getModule('widgets')->timezone;
         }
     }
 
