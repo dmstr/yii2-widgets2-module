@@ -132,7 +132,8 @@ abstract class Widget extends ActiveRecord
             [['container_id', 'route'], 'string', 'max' => 128],
             [['domain_id'], 'string', 'max' => 64],
             [['widget_template_id', 'copied_from'], 'integer'],
-            [['rank', 'access_owner'], 'string', 'max' => 11],
+            [['rank'], 'string', 'max' => 11],
+            [['access_owner'], 'string', 'max' => 255, 'strict' => false],
             [['request_param', 'access_read', 'access_update', 'access_delete'], 'string', 'max' => 255],
             [['access_domain'], 'string', 'max' => 8],
         ];
