@@ -51,7 +51,7 @@ class Module extends \yii\base\Module
 
     /**
      * timezone for DateTime objects
-     * @var 'string
+     * @var string
      */
     public $timezone = 'UTC';
 
