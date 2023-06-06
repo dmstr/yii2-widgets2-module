@@ -93,7 +93,7 @@ abstract class WidgetTranslation extends \yii\db\ActiveRecord
             [['widget_content_id'], 'integer'],
             [['language'], 'required'],
             [['default_properties_json'], 'string'],
-            [['access_owner'], 'string', 'max' => 11],
+            [['access_owner'], 'string', 'max' => 255, 'strict' => false],
             [['access_read', 'access_update', 'access_delete'], 'string', 'max' => 255],
             [['access_domain'], 'string', 'max' => 8],
             [
