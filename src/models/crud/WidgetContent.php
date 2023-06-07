@@ -129,7 +129,7 @@ class WidgetContent extends BaseWidget
         $rules['unique-default-rank'] = [
             'rank',
             'default',
-            'value' => 'a-' . str_pad(self::find()->max('id'), 4, '0', STR_PAD_LEFT) . '0'
+            'value' => 'a-' . str_pad(self::find()->max('id') ?: '0', 4, '0', STR_PAD_LEFT) . '0'
         ];
         $rules['unique-default-domain_id'] = [
             'domain_id',
