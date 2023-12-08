@@ -17,6 +17,7 @@
     "yiisoft/yii2": "2.0.*",
     "yiisoft/yii2-twig": "^2.0.4",
     "2amigos/yii2-ckeditor-widget": "^2.0.2",
+    "ckeditor/ckeditor": "4.22.1",
     "2amigos/yii2-translateable-behavior": "^1.1.0",
     "kdn/yii2-json-editor": "^2.5.1",
     "rmrevin/yii2-fontawesome": "~2.9",
