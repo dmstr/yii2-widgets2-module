@@ -127,6 +127,7 @@ JS;
                         'keep_oneof_values' => false,
                         'expand_height' => true,
                         'ajax' => !empty(\Yii::$app->controller->module->allowAjaxInSchema) ? true : false,
+                        'show_errors' => $model->hasErrors() ? 'always' : 'interaction'
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
