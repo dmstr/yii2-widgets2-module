@@ -281,7 +281,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
-                $html .= Html::beginTag('div', ['class' => [$visibility,'hrzg-widget-content-frontend']]);
+                $html .= Html::beginTag('div', ['class' => [$visibility, 'hrzg-widget-content-frontend']]);
                 $html .= $class->run();
                 $html .= Html::endTag('div');
             }
@@ -292,8 +292,27 @@ class Cell extends Widget implements ContextMenuItemsInterface
     }
 
     /**
-     * @return string
+     * Widget template id as key and name as value.
+    */
+    protected function widgetTemplateItems(): array
+    {
+        // Static cache for template to prevent multiple calls
+        static $templates;
+        if (!is_array($templates)) {
+            $templates = WidgetTemplate::find()
+                ->indexBy('id')
+                ->select('name')
+                ->andWhere(['php_class' => TwigTemplate::class])
+                ->andWhere(['hide_in_list_selection' => WidgetTemplate::IS_VISIBLE_IN_LIST])
+                ->orderBy('name')
+                ->column();
+        }
+        return $templates;
+    }
+
+    /**
      * @throws \Exception
+     * @return string
      */
     private function generateCellControls()
     {
@@ -302,21 +321,16 @@ class Cell extends Widget implements ContextMenuItemsInterface
             ['label' => $this->id]
         ];
 
-        $templates = WidgetTemplate::find()
-            ->where(['php_class' => TwigTemplate::class])
-            ->andWhere(['hide_in_list_selection' => WidgetTemplate::IS_VISIBLE_IN_LIST])
-            ->orderBy('name')
-            ->all();
-        foreach ($templates as $template) {
+        foreach (self::widgetTemplateItems() as $templateId => $templateName) {
             $items[] = [
-                'label' => $template->name,
+                'label' => $templateName,
                 'url' => [
                     '/' . $this->moduleName . '/crud/widget/create',
                     'WidgetContent' => [
                         'route' => $this->getDefaultRoute(),
                         'container_id' => $this->id,
                         'request_param' => \Yii::$app->request->get($this->requestParam),
-                        'widget_template_id' => $template->id,
+                        'widget_template_id' => $templateId,
                     ],
                 ],
                 'linkOptions' => [
@@ -405,7 +419,7 @@ JS
                 'aria-label' => \Yii::t('widgets', 'Toggle visibility status'),
                 'data' => [
                     'button' => 'loading',
-                    'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
+                    'loading-text' => FA::icon(FA::_SPINNER, ['class' => 'fa-spin']),
                     'html' => true
                 ]
             ],
@@ -425,7 +439,7 @@ JS
                     'data' => [
                         'method' => 'delete',
                         'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
-                        'pjax'=> '0',
+                        'pjax' => '0',
                         'params' => [
                             'returnUrl' => Url::to('')
                         ]
@@ -444,7 +458,7 @@ JS
                         'data' => [
                             'method' => 'delete',
                             'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
-                            'pjax'=> '0',
+                            'pjax' => '0',
                             'params' => [
                                 'returnUrl' => Url::to('')
                             ]
