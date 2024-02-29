@@ -114,7 +114,9 @@ JS;
 
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-            <?= $form->field($model, 'default_properties_json')->label(false)
+            <?= $form->field($model, 'default_properties_json', [
+                'template' => '{input}'
+            ])->label(false)
                 ->widget(\dmstr\jsoneditor\JsonEditorWidget::className(), [
                     'id' => 'editor',
                     'schema' => $schema,
