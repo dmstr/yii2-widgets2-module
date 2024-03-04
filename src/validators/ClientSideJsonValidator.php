@@ -15,6 +15,11 @@ class ClientSideJsonValidator extends Validator
     {
         return <<<JS
             const editor = window.jsonEditors[0]
+            
+            if (!editor) {
+              return
+            }
+            
             const errors = editor.validate()
             
 
