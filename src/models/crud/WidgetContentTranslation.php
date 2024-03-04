@@ -11,6 +11,7 @@ namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget;
 use hrzg\widget\models\crud\base\WidgetTranslation;
+use hrzg\widget\validators\ClientSideJsonValidator;
 use JsonSchema\Validator;
 use yii\caching\TagDependency;
 use yii\helpers\Json;
@@ -30,6 +31,12 @@ class WidgetContentTranslation extends WidgetTranslation
     public function rules()
     {
         $rules = parent::rules();
+
+        $rules[] = [
+            'default_properties_json',
+            ClientSideJsonValidator::class
+        ];
+
         // add json schema validation if enabled in module
         if (!empty(\Yii::$app->controller->module->validateContentSchema)) {
             $rules['validate_properties_json'] = [

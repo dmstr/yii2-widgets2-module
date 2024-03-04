@@ -90,15 +90,22 @@ $userAuthItems = $model::getUsersAuthItems();
             <?= $form->errorSummary($model) ?>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
-            <?= $form->field($model, 'default_properties_json')->label(false)
+            <?= $form->field($model, 'default_properties_json', [
+                'template' => '{input}'
+            ])->label(false)
                 ->widget(\dmstr\jsoneditor\JsonEditorWidget::class, [
                     'id' => 'editor',
                     'schema' => $schema,
                     'clientOptions' => [
                         'theme' => 'bootstrap3',
+                        'iconlib' => 'fontawesome4',
                         'disable_collapse' => true,
-                        'disable_properties' => true,
-                        'keep_oneof_values' => false
+                        'disable_properties' => false,
+                        "no_additional_properties" => false,
+                        'keep_oneof_values' => false,
+                        'expand_height' => true,
+                        'ajax' => !empty(\Yii::$app->controller->module->allowAjaxInSchema) ? true : false,
+                        'show_errors' => $model->hasErrors() ? 'always' : 'interaction'
                     ],
                 ]); ?>
             <?php \yii\widgets\Pjax::end() ?>
