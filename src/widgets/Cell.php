@@ -505,13 +505,13 @@ JS
                 (
                     !$widget->publish_at
                     ||
-                    new \DateTime(null, new \DateTimeZone($this->timezone)) >= new \DateTime($widget->publish_at, new \DateTimeZone($this->timezone))
+                    new \DateTime('now', new \DateTimeZone($this->timezone)) >= new \DateTime($widget->publish_at, new \DateTimeZone($this->timezone))
                 )
                 &&
                 (
                     !$widget->expire_at
                     ||
-                    new \DateTime(null, new \DateTimeZone($this->timezone)) <= new \DateTime($widget->expire_at, new \DateTimeZone($this->timezone))
+                    new \DateTime('now', new \DateTimeZone($this->timezone)) <= new \DateTime($widget->expire_at, new \DateTimeZone($this->timezone))
                 );
         }
 
