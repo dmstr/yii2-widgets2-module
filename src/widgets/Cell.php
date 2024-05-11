@@ -24,6 +24,7 @@ use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 /**
  * Class Cell
@@ -268,6 +269,9 @@ class Cell extends Widget implements ContextMenuItemsInterface
             $class->setView($widget->getViewFile());
 
             if ($properties) {
+                if (is_string($properties)) {
+                    $properties = [$properties];
+                }
                 $class->setProperties($properties);
             }
             $visibility = $widget->isVisibleFrontend() ? '' : 'hrzg-widget-widget-invisible-frontend';
