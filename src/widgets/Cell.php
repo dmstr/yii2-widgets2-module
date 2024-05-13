@@ -268,8 +268,11 @@ class Cell extends Widget implements ContextMenuItemsInterface
             $class->setView($widget->getViewFile());
 
             if ($properties) {
-                if (is_string($properties)) {
-                    $properties = [$properties];
+                // $properties can only be type array, boolean, integer or float (!=0) or a string
+                // Cast $properties boolean, integer, float or string to an array
+                if (!is_array($properties)) {
+                    // If there is only one property, make it accessible as `value`
+                    $properties = ['value' => $properties];
                 }
                 $class->setProperties($properties);
             }
@@ -284,7 +287,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
             }
             $published = $this->checkPublicationStatus($widget);
             if (\Yii::$app->user->can($this->rbacEditRole, ['route' => true]) || ($widget->status == 1 && $published == true)) {
-                $html .= Html::beginTag('div', ['class' => [$visibility,'hrzg-widget-content-frontend']]);
+                $html .= Html::beginTag('div', ['class' => [$visibility, 'hrzg-widget-content-frontend']]);
                 $html .= $class->run();
                 $html .= Html::endTag('div');
             }
@@ -408,7 +411,7 @@ JS
                 'aria-label' => \Yii::t('widgets', 'Toggle visibility status'),
                 'data' => [
                     'button' => 'loading',
-                    'loading-text' => FA::icon(FA::_SPINNER,['class' => 'fa-spin']),
+                    'loading-text' => FA::icon(FA::_SPINNER, ['class' => 'fa-spin']),
                     'html' => true
                 ]
             ],
@@ -428,7 +431,7 @@ JS
                     'data' => [
                         'method' => 'delete',
                         'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
-                        'pjax'=> '0',
+                        'pjax' => '0',
                         'params' => [
                             'returnUrl' => Url::to('')
                         ]
@@ -447,7 +450,7 @@ JS
                         'data' => [
                             'method' => 'delete',
                             'confirm' => \Yii::t('widgets', 'Are you sure to delete this translation?'),
-                            'pjax'=> '0',
+                            'pjax' => '0',
                             'params' => [
                                 'returnUrl' => Url::to('')
                             ]
