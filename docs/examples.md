@@ -217,3 +217,16 @@ APP CLAUS WIDGET TEMPLATES (JSON)
 }
 
 ```
+
+*Single type schema*
+--------------------
+
+```json
+{
+  "type": "string"
+}
+```
+
+```twig
+{{ value }}
+```
