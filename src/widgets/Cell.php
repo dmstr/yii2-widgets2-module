@@ -24,7 +24,6 @@ use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use yii\helpers\VarDumper;
 
 /**
  * Class Cell
@@ -117,8 +116,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
 
     /**
      * @inheritdoc
-     * @return string
      * @throws \yii\base\InvalidConfigException
+     * @return string
      */
     public function run()
     {
@@ -245,9 +244,9 @@ class Cell extends Widget implements ContextMenuItemsInterface
     }
 
     /**
-     * @return string
      * @throws \yii\base\InvalidConfigException
      * @throws \Exception
+     * @return string
      */
     private function renderWidgets()
     {
@@ -296,8 +295,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
     }
 
     /**
-     * @return string
      * @throws \Exception
+     * @return string
      */
     private function generateCellControls()
     {
@@ -349,8 +348,8 @@ class Cell extends Widget implements ContextMenuItemsInterface
     /**
      * @param $widget
      *
-     * @return string
      * @throws \Exception
+     * @return string
      */
     private function generateWidgetControls(WidgetContent $widget)
     {
@@ -497,8 +496,8 @@ JS
     /**
      * @param $widget
      *
-     * @return boolean
      * @throws \Exception
+     * @return boolean
      */
     private function checkPublicationStatus($widget)
     {
