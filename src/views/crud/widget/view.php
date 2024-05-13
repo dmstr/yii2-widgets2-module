@@ -86,7 +86,7 @@ JS
             [
                 'attribute' => 'status',
                 'format' => 'raw',
-                'value' => (isset($model->status) ? Html::encode($model::optsStatus()[$model->status]) : 'n/a')
+                'value' => (Html::encode($model::optsStatus()[$model->status]) ?? 'n/a')
                     . ($model->getBehavior('translation_meta')->isFallbackTranslation ?
                         ' <span class="label label-warning" title="' . \Yii::t('widgets', 'Uses the same value as the fallback language. Edit and save to override the default.') . '" data-toggle="tooltip" data-placement="top">fallback</span>'
                         : ''),

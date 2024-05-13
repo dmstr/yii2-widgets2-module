@@ -208,7 +208,11 @@ class WidgetContent extends BaseWidget
 
             ];
         }
-
+        $rules['default-status'] = [
+            'status',
+            'in',
+            'range' => array_keys(self::optsStatus())
+        ];
         return $rules;
     }
 
