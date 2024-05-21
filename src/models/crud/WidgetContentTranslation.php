@@ -9,12 +9,11 @@
 
 namespace hrzg\widget\models\crud;
 
-use hrzg\widget\models\crud\base\Widget;
 use hrzg\widget\models\crud\base\WidgetTranslation;
-use JsonSchema\Validator;
 use yii\caching\TagDependency;
 use yii\helpers\Json;
-
+use Opis\JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
 
 /**
  * Class WidgetContentTranslation
@@ -35,30 +34,26 @@ class WidgetContentTranslation extends WidgetTranslation
             $rules['validate_properties_json'] = [
                 'default_properties_json',
                 function ($attribute) {
-
-                    /** @var Widget $baseWidget */
                     $baseWidget = $this->getWidgetContent()->one();
-                    /** @var WidgetTemplate $tmpl */
                     $tmpl = $baseWidget->getTemplate()->one();
-                    if (!$tmpl) {
-                        return;
-                    }
-                    $schema    = $tmpl->json_schema;
                     $validator = new Validator();
-                    $obj       = Json::decode($schema, false);
-                    $data      = Json::decode($this->{$attribute}, false);
-                    $validator->check($data, $obj);
+                    $schema = Json::decode($tmpl->json_schema, false);
+                    $data = Json::decode($this->{$attribute}, false);
+                    $validator->setMaxErrors(9999);
+                    $result = $validator->validate($data, $schema);
 
-                    if ($validator->getErrors()) {
-                        foreach ($validator->getErrors() as $error) {
-                            $this->addError($error['property'], "{$error['property']}: {$error['message']}");
+                    if (!$result->isValid()) {
+                        $formatter = new ErrorFormatter();
+                        $errors = $formatter->format($result->error(), false);
+
+                        foreach ($errors as $path => $message) {
+                            $this->addError($path, $path . ': ' . $message);
                         }
                     }
-
                 }
-
             ];
         }
+
         return $rules;
     }
 
