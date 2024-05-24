@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'id'                     => 'widget-create',
             'layout'                 => 'default',
-            'enableClientValidation' => false,
+            'enableClientValidation' => true,
             'errorSummaryCssClass'   => 'error-summary alert alert-error',
             'fieldConfig'            => [
                 'horizontalCssClasses' => [
