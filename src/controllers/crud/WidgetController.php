@@ -33,11 +33,18 @@ class WidgetController extends \hrzg\widget\controllers\crud\base\WidgetControll
     public function beforeAction($action)
     {
         WidgetAsset::register($this->view);
+
         // if set use CKEditor configurations from settings module else use default configuration.
         $json = \Yii::$app->settings->get('ckeditor.config', 'widgets');
         $ckeditorConfiguration = isset($json->scalar) ? $json->scalar : "{}";
-        $script = "window.CKCONFIG = {$ckeditorConfiguration};";
-        \Yii::$app->view->registerJs($script, \yii\web\View::POS_HEAD);
+        $CKConfigScript = "window.CKCONFIG = {$ckeditorConfiguration};";
+        \Yii::$app->view->registerJs($CKConfigScript, \yii\web\View::POS_HEAD);
+
+        // if set use FILEFLYCONFIG configurations from settings module else use default configuration.
+        $json = \Yii::$app->settings->get('filefly.config', 'widgets');
+        $fileflyConfiguration = isset($json->scalar) ? $json->scalar : "{}";
+        $fileflyConfigScript = "window.FILEFLYCONFIG = {$fileflyConfiguration};";
+        \Yii::$app->view->registerJs($fileflyConfigScript, \yii\web\View::POS_HEAD);
         return parent::beforeAction($action);
     }
 
