@@ -56,11 +56,45 @@ class Module extends \yii\base\Module
     public $timezone = 'UTC';
 
     /**
-     * @var array mappings for links
+     * mappings for links
+     *
+     * can be used to map route and requestParam attributes from WidgetContent
+     * Models to frontend URLs
+     *
+     * the elements can be
+     * - simple string to string mappings
+     * - string to array mappings where route and requestParam Name can be defined
+     *
+     * example:
+     *  ```php
+     *  [
+     *    'app/site/index' => '/',
+     *    'pages/default/page' => 'pages/default/page',
+     *     'frontend/tag/detail' => [
+     *          'route' => 'frontend/tag/detail',
+     *          'requestParamName' => 'tagId',
+     *     ],
+     *  ]
+     *  ```
+     *
+     * @see \hrzg\widget\models\crud\WidgetContent::getFrontendRoute
+     * @var array
      */
     public $frontendRouteMap = [
         'app/site/index' => '/',
     ];
+
+    /**
+     * default name used as RequestParamName when generating frontend URLs
+     * can be overwritten for each route in self::$frontendRouteMap
+     *
+     * BC: define 'pageId' as default
+     *
+     * @see self::$frontendRouteMap
+     * @see \hrzg\widget\models\crud\WidgetContent::getFrontendRoute
+     * @var string
+     */
+    public $frontendDefaultRequestParamName = 'pageId';
 
     /**
      * set ajax option for JsonEditor
