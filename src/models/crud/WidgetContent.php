@@ -282,14 +282,32 @@ class WidgetContent extends BaseWidget
     public function getFrontendRoute()
     {
         $mapping = \Yii::$app->controller->module->frontendRouteMap[$this->route] ?? false;
-
         if ($mapping) {
-            return Url::to(
-                [
-                    '/' . $mapping,
-                    'pageId' => $this->request_param,
-                    '#' => 'widget-' . $this->domain_id
-                ]);
+            // init params
+            $route = null;
+            // BC for <= 2.7.4: define 'pageId' as default paramName if not defined in Modul or in frontendRouteMap
+            $requestParamName = \Yii::$app->controller->module->frontendDefaultRequestParamName ?? 'pageId';
+            // simple route mapping
+            if (is_string($mapping)) {
+                $route = ltrim($mapping, '/');
+            }
+            // route and (optional) requestParamName mapping via array
+            if (is_array($mapping)) {
+                if (!empty($mapping['route']) && is_string($mapping['route'])) {
+                    $route = ltrim($mapping['route'], '/');
+                }
+                if (!empty($mapping['requestParamName']) && is_string($mapping['requestParamName'])) {
+                    $requestParamName = $mapping['requestParamName'];
+                }
+            }
+            if ($route) {
+                return Url::to(
+                    [
+                        '/' . $route,
+                        $requestParamName => $this->request_param,
+                        '#' => 'widget-' . $this->domain_id
+                    ]);
+            }
         }
 
         return false;
