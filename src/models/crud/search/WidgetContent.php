@@ -98,7 +98,7 @@ class WidgetContent extends WidgetModel
         $tableName = self::getTableSchema()->name;
 
         $query->andFilterWhere([ $tableName.'.id' => $this->id])
-            ->andFilterWhere(['LIKE', 'status', $this->status])
+            ->andFilterWhere(['status' => $this->status])
             ->andFilterWhere(['LIKE', 'domain_id', $this->domain_id])
             ->andFilterWhere(['LIKE', 'status', $this->status])
             ->andFilterWhere(['template.name' => $this->getAttribute('template.name')])
