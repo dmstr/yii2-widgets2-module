@@ -150,7 +150,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
                     'contentOptions' => ['nowrap' => 'nowrap'],
                     'filter'=> \hrzg\widget\models\crud\WidgetContent::optsStatus(),
                     'value' => function($model) {
-                        return $model::optsStatus()[$model->status] ?? 'n/a';
+                        return $model::optsStatus()[$model->status] ?? null;
                     },
                     'filterInputOptions' => [
                         'class' => 'form-control',
