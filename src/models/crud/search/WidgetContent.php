@@ -110,7 +110,8 @@ class WidgetContent extends WidgetModel
             ->andFilterWhere(['LIKE', $tableName.'.access_domain', $this->access_domain])
             ->andFilterWhere(['LIKE', $tableName.'.access_read', $this->access_read])
             ->andFilterWhere(['LIKE', $tableName.'.access_update', $this->access_update])
-            ->andFilterWhere(['LIKE', $tableName.'.access_delete', $this->access_delete]);
+            ->andFilterWhere(['LIKE', $tableName.'.access_delete', $this->access_delete])
+        ->groupBy($tableName.'.id');
 
         return $dataProvider;
     }
