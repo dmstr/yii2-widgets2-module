@@ -60,6 +60,9 @@
     position: absolute;
     right: 0;
     z-index: 1098;
+    &:has(.open) {
+      z-index: 1100;
+    }
     button {
       z-index: 1099;
     }
