@@ -4,13 +4,14 @@ namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
 use hrzg\widget\widgets\Cell;
-use JsonSchema\Validator;
 use yii\behaviors\TimestampBehavior;
 use yii\caching\TagDependency;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use Opis\JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
 
 /**
  * Class WidgetContent
@@ -187,25 +188,22 @@ class WidgetContent extends BaseWidget
             $rules['validate_properties_json'] = [
                 'default_properties_json',
                 function ($attribute) {
-                    /** @var WidgetTemplate $tmpl */
                     $tmpl = $this->getTemplate()->one();
-                    if (!$tmpl) {
-                        return;
-                    }
-                    $schema    = $tmpl->json_schema;
                     $validator = new Validator();
-                    $obj       = Json::decode($schema, false);
-                    $data      = Json::decode($this->{$attribute}, false);
-                    $validator->check($data, $obj);
+                    $schema = Json::decode($tmpl->json_schema, false);
+                    $data = Json::decode($this->{$attribute}, false);
+                    $validator->setMaxErrors(9999);
+                    $result = $validator->validate($data, $schema);
 
-                    if ($validator->getErrors()) {
-                        foreach ($validator->getErrors() as $error) {
-                            $this->addError($error['property'], "{$error['property']}: {$error['message']}");
+                    if (!$result->isValid()) {
+                        $formatter = new ErrorFormatter();
+                        $errors = $formatter->format($result->error(), false);
+
+                        foreach ($errors as $path => $message) {
+                            $this->addError($path, $path . ': ' . $message);
                         }
                     }
-
                 }
-
             ];
         }
         $rules['default-status'] = [
