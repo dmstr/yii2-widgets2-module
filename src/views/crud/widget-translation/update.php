@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = \Yii::t('widgets', 'Edit');
         [
             'id'                     => 'widget-update',
             'layout'                 => 'default',
-            'enableClientValidation' => false,
+            'enableClientValidation' => true,
             'errorSummaryCssClass'   => 'error-summary alert alert-error',
             'fieldConfig'            => [
                 'horizontalCssClasses' => [
