@@ -9,7 +9,7 @@
 
 use hrzg\widget\Module;
 use kartik\select2\Select2;
-use yii\bootstrap\Collapse;
+use yii\bootstrap5\Collapse;
 use zhuravljov\yii\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();

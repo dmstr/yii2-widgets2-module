@@ -11,8 +11,7 @@ namespace hrzg\widget\assets;
 
 use dmstr\jsoneditor\JsonEditorPluginsAsset;
 use dosamigos\ckeditor\CKEditorAsset;
-use dosamigos\selectize\SelectizeAsset;
-use yii\bootstrap\BootstrapPluginAsset;
+use yii\bootstrap5\BootstrapPluginAsset;
 use yii\web\AssetBundle;
 
 class WidgetAsset extends AssetBundle
@@ -48,7 +47,6 @@ class WidgetAsset extends AssetBundle
      */
     public $depends = [
         CKEditorAsset::class,
-        SelectizeAsset::class,
         \rmrevin\yii\fontawesome\AssetBundle::class,
         JsonEditorPluginsAsset::class,
         BootstrapPluginAsset::class,

@@ -4,7 +4,7 @@
  * @var \hrzg\widget\models\crud\WidgetTemplate $model
  */
 use insolita\wgadminlte\Box;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 
 $this->title                   = Yii::t('widgets', 'Create');

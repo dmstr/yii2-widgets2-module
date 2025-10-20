@@ -19,7 +19,7 @@ use rmrevin\yii\fontawesome\AssetBundle;
 use rmrevin\yii\fontawesome\FA;
 use yii\base\Event;
 use yii\base\Widget;
-use yii\bootstrap\ButtonDropdown;
+use yii\bootstrap5\ButtonDropdown;
 use yii\caching\TagDependency;
 use yii\helpers\Html;
 use yii\helpers\Json;
