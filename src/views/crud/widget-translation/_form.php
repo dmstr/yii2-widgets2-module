@@ -9,7 +9,7 @@
 
 use hrzg\widget\Module;
 use kartik\select2\Select2;
-use yii\bootstrap5\Collapse;
+use yii\bootstrap5\Accordion;
 use zhuravljov\yii\widgets\DateTimePicker;
 
 $userAuthItems = $model::getUsersAuthItems();
@@ -107,7 +107,7 @@ $userAuthItems = $model::getUsersAuthItems();
 
 
         <div class="col-md-3">
-            <?= Collapse::widget([
+            <?= Accordion::widget([
                 'items' => [
                     // equivalent to the above
                     [
