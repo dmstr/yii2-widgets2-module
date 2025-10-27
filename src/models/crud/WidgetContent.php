@@ -11,6 +11,8 @@ use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use project\modules\mitmachen\models\Thema;
+use project\modules\mitmachen\models\Beteiligung;
 
 /**
  * Class WidgetContent
@@ -225,21 +227,66 @@ class WidgetContent extends BaseWidget
      */
     public function beforeSave($insert)
     {
-        if (parent::beforeSave($insert)) {
-
-            if ($this->route === Cell::GLOBAL_ROUTE) {
-                $this->request_param = Cell::EMPTY_REQUEST_PARAM;
-            }
-
-            // ensure lowercase language id
-            $this->access_domain = mb_strtolower($this->access_domain);
-
-            return true;
-        } else {
+        if (!parent::beforeSave($insert)) {
             return false;
         }
-    }
+        
+        if ($this->route === Cell::GLOBAL_ROUTE) {
+            $this->request_param = Cell::EMPTY_REQUEST_PARAM;
+        } else {
 
+            // If request_param - UUID, convert into domain_id
+            if (!empty($this->request_param)) {
+                $param = $this->request_param;
+
+                if (preg_match('/^[a-f0-9-]{36}$/i', $param)) {
+                    $thema = \project\modules\mitmachen\models\Thema::find()->where(['id' => $param])->one();
+                    if ($thema && !empty($thema->domain_id)) {
+                        $this->request_param = $thema->domain_id;
+                    } else {
+                        $b = \project\modules\mitmachen\models\Beteiligung::find()->where(['id' => $param])->one();
+                        if ($b && !empty($b->domain_id)) {
+                            $this->request_param = $b->domain_id;
+                        }
+                    }
+                }
+            }
+
+            // if request_param is empty — from container_id
+            if (empty($this->request_param) && !empty($this->container_id)) {
+                if (preg_match('/thema-([a-z0-9\-]+)/i', $this->container_id, $m)) {
+                    $idOrDomain = $m[1];
+
+                    $thema = \project\modules\mitmachen\models\Thema::find()->where(['domain_id' => $idOrDomain])->one();
+                    if (!$thema) {
+                        // затем как id (UUID)
+                        $thema = \project\modules\mitmachen\models\Thema::find()->where(['id' => $idOrDomain])->one();
+                    }
+                    if ($thema && !empty($thema->domain_id)) {
+                        $this->request_param = $thema->domain_id;
+                    }
+                }
+                // …beteiligung-anhoerung-<UUID|domain_id>…
+                elseif (preg_match('/beteiligung-anhoerung-([a-z0-9\-]+)/i', $this->container_id, $m)) {
+                    $idOrDomain = $m[1];
+
+                    $b = \project\modules\mitmachen\models\Beteiligung::find()->where(['domain_id' => $idOrDomain])->one();
+                    if (!$b) {
+                        $b = \project\modules\mitmachen\models\Beteiligung::find()->where(['id' => $idOrDomain])->one();
+                    }
+                    if ($b && !empty($b->domain_id)) {
+                        $this->request_param = $b->domain_id;
+                    }
+                }
+            }
+        }
+
+        $this->access_domain = mb_strtolower($this->access_domain);
+
+        TagDependency::invalidate(\Yii::$app->cache, 'widgets');
+
+        return true;
+    }
 
     /**
      * @return array
@@ -281,15 +328,33 @@ class WidgetContent extends BaseWidget
 
     public function getFrontendRoute()
     {
-        $mapping = \Yii::$app->controller->module->frontendRouteMap[$this->route] ?? false;
-
-        if ($mapping) {
-            return Url::to(
-                [
-                    '/' . $mapping,
-                    'pageId' => $this->request_param,
-                    '#' => 'widget-' . $this->domain_id
+        if (!empty($this->request_param)) {
+            $thema = \project\modules\mitmachen\models\Thema::find()->where(['domain_id' => $this->request_param])->one();
+            if ($thema && $thema->beteiligung) {
+                return \yii\helpers\Url::to([
+                    '/mitmachen/beteiligung/anhoerung',
+                    'domainId' => $thema->beteiligung->domain_id,
+                    'themaDomainId' => $thema->domain_id,
                 ]);
+            }
+
+            $b = \project\modules\mitmachen\models\Beteiligung::find()->where(['domain_id' => $this->request_param])->one();
+            if ($b) {
+                return \yii\helpers\Url::to([
+                    '/mitmachen/beteiligung/anhoerung',
+                    'domainId' => $b->domain_id,
+                ]);
+            }
+        }
+
+        // logic for normal widgets
+        $mapping = \Yii::$app->controller->module->frontendRouteMap[$this->route] ?? false;
+        if ($mapping) {
+            return \yii\helpers\Url::to([
+                '/' . $mapping,
+                'pageId' => $this->request_param,
+                '#' => 'widget-' . $this->domain_id,
+            ]);
         }
 
         return false;

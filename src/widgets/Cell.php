@@ -37,6 +37,8 @@ use yii\helpers\Url;
  */
 class Cell extends Widget implements ContextMenuItemsInterface
 {
+    public ?string $pageParam = null;
+
     /**
      * Global route
      */
@@ -143,7 +145,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
                         'WidgetContent' => [
                             'route' => $this->getDefaultRoute(),
                             'container_id' => $this->id,
-                            'request_param' => \Yii::$app->request->get($this->requestParam),
+                            'request_param' => $this->pageParam ?: \Yii::$app->request->get($this->requestParam),
                         ],
                     ],
                     'linkOptions' => [
@@ -187,11 +189,13 @@ class Cell extends Widget implements ContextMenuItemsInterface
         $query = WidgetContent::find()
             ->orderBy('rank ASC')
             ->joinWith('template')
-            ->andFilterWhere(
-                [
-                    'request_param' => [\Yii::$app->request->get($this->requestParam), self::EMPTY_REQUEST_PARAM],
-                ]
-            )
+            ->andFilterWhere([
+                'request_param' => array_filter([
+                    \Yii::$app->request->get($this->requestParam),
+                    $this->pageParam,                 
+                    self::EMPTY_REQUEST_PARAM,
+                ]),
+            ])
             ->andWhere(
                 [
                     'container_id' => $this->id,
@@ -263,6 +267,10 @@ class Cell extends Widget implements ContextMenuItemsInterface
         }
 
         foreach ($this->queryWidgets() as $widget) {
+            // If the cell has a pageParam, assign it to the widget’s request_param
+            if (!empty($this->pageParam) && empty($widget->request_param)) {
+                $widget->request_param = $this->pageParam;
+            }
             $properties = Json::decode($widget->default_properties_json);
             $class = \Yii::createObject($widget->template->php_class);
             $class->setView($widget->getViewFile());
@@ -321,7 +329,7 @@ class Cell extends Widget implements ContextMenuItemsInterface
                     'WidgetContent' => [
                         'route' => $this->getDefaultRoute(),
                         'container_id' => $this->id,
-                        'request_param' => \Yii::$app->request->get($this->requestParam),
+                        'request_param' => $this->pageParam ?: \Yii::$app->request->get($this->requestParam),
                         'widget_template_id' => $template->id,
                     ],
                 ],
