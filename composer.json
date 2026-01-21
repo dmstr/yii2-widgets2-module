@@ -30,7 +30,7 @@
     "zhuravljov/yii2-datetime-widgets" : "^1.1.0",
     "dmstr/yii2-ajax-button": "^1.0",
     "trntv/yii2-aceeditor": "^2.1.0",
-    "justinrainbow/json-schema": "^5.2.0",
+    "opis/json-schema": "^2.0",
     "bower-asset/jquery-cookie": "~1.4.1"
   },
   "autoload": {
