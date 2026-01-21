@@ -3,6 +3,7 @@
 namespace hrzg\widget\models\crud;
 
 use hrzg\widget\models\crud\base\Widget as BaseWidget;
+use hrzg\widget\validators\ClientSideJsonValidator;
 use hrzg\widget\widgets\Cell;
 use JsonSchema\Validator;
 use yii\behaviors\TimestampBehavior;
@@ -182,6 +183,12 @@ class WidgetContent extends BaseWidget
             'operator' => '>',
             'type' => 'datetime'
         ];
+
+        $rules[] = [
+            'default_properties_json',
+            ClientSideJsonValidator::class
+        ];
+
         // add json schema validation if enabled in module
         if (!empty(\Yii::$app->controller->module->validateContentSchema)) {
             $rules['validate_properties_json'] = [
