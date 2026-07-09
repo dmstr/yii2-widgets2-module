@@ -103,6 +103,28 @@ class Module extends \yii\base\Module
      */
     public $allowAjaxInSchema = false;
 
+    /**
+     * Extra options merged into every JsonEditorWidget rendered by this module's
+     * edit forms. Generic passthrough so the module stays agnostic of any concrete
+     * editor plugin (file manager, WYSIWYG, ...). The array is deep-merged onto the
+     * view's defaults (values here win), so it can set top-level widget options
+     * (e.g. `flysystemRestConfig`, `registerJoditAsset`) as well as override
+     * `clientOptions`.
+     *
+     * Example (application config):
+     * ```php
+     * 'jsonEditorConfig' => [
+     *     'flysystemRestConfig' => [
+     *         'apiBaseUrl'      => '/filemanager/api',
+     *         'imageExtensions' => ['jpg', 'jpeg', 'gif', 'svg', 'png', 'bmp'],
+     *     ],
+     * ],
+     * ```
+     *
+     * @var array
+     */
+    public $jsonEditorConfig = [];
+
 
     /**
      * If true, the json content properties will be validated against the json schema from the widget_template.

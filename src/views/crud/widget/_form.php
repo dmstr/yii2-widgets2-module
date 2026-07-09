@@ -115,7 +115,7 @@ JS;
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
-                ->widget(\dmstr\jsoneditor\JsonEditorWidget::className(), [
+                ->widget(\dmstr\jsoneditor\JsonEditorWidget::className(), \yii\helpers\ArrayHelper::merge([
                     'id' => 'editor',
                     'schema' => $schema,
                     'clientOptions' => [
@@ -128,7 +128,7 @@ JS;
                         'expand_height' => true,
                         'ajax' => !empty(\Yii::$app->controller->module->allowAjaxInSchema) ? true : false,
                     ],
-                ]); ?>
+                ], Module::getInstance()->jsonEditorConfig)); ?>
             <?php \yii\widgets\Pjax::end() ?>
 
         </div>
