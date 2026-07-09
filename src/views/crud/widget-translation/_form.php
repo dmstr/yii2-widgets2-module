@@ -91,7 +91,7 @@ $userAuthItems = $model::getUsersAuthItems();
 
             <?php \yii\widgets\Pjax::begin(['id' => 'pjax-widget-form']) ?>
             <?= $form->field($model, 'default_properties_json')->label(false)
-                ->widget(\dmstr\jsoneditor\JsonEditorWidget::class, [
+                ->widget(\dmstr\jsoneditor\JsonEditorWidget::class, \yii\helpers\ArrayHelper::merge([
                     'id' => 'editor',
                     'schema' => $schema,
                     'clientOptions' => [
@@ -100,7 +100,7 @@ $userAuthItems = $model::getUsersAuthItems();
                         'disable_properties' => true,
                         'keep_oneof_values' => false
                     ],
-                ]); ?>
+                ], Module::getInstance()->resolveJsonEditorConfig($model, $schema))); ?>
             <?php \yii\widgets\Pjax::end() ?>
 
         </div>
