@@ -100,7 +100,7 @@ $userAuthItems = $model::getUsersAuthItems();
                         'disable_properties' => true,
                         'keep_oneof_values' => false
                     ],
-                ], Module::getInstance()->jsonEditorConfig)); ?>
+                ], Module::getInstance()->resolveJsonEditorConfig($model, $schema))); ?>
             <?php \yii\widgets\Pjax::end() ?>
 
         </div>

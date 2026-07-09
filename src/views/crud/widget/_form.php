@@ -128,7 +128,7 @@ JS;
                         'expand_height' => true,
                         'ajax' => !empty(\Yii::$app->controller->module->allowAjaxInSchema) ? true : false,
                     ],
-                ], Module::getInstance()->jsonEditorConfig)); ?>
+                ], Module::getInstance()->resolveJsonEditorConfig($model, $schema))); ?>
             <?php \yii\widgets\Pjax::end() ?>
 
         </div>
